@@ -34,23 +34,12 @@ android {
     buildFeatures {
         viewBinding true
     }
-
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
 }
 
-publishing {
-    publications {
-        release(MavenPublication) {
-            groupId = 'com.github.dataspike-io'
-            artifactId = 'MobileSDK-Android'
-            version = '1.0.0-rc03'
-
-            afterEvaluate {
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
                 from components.release
             }
         }
