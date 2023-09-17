@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">MobileSDK-Android</string>
+    <string name="logo">Logo</string>
+    <string name="poi_verification_flow">poi verification flow</string>
+    <string name="liveness_verification_flow">liveness verification flow</string>
+    <string name="poa_verification_flow">poa verification flow</string>
+    <string name="choose_verification_types">Choose verification types</string>
+    <string name="home_instruction">Select at least one document verification type and one face verification type</string>
+    <string name="id_verification">ID Verification</string>
+    <string name="client_verification">Client Verification</string>
+    <string name="passport">Passport</string>
+    <string name="id_card">ID Card</string>
+    <string name="driver_license">Driver License</string>
+    <string name="residence_permit">Residence Permit</string>
+    <string name="liveness">Liveness</string>
+    <string name="address_verification">Address Verification</string>
+    <string name="poa">PoA</string>
+    <string name="start_verification">Start Verification</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="OverlayView">
+        <attr name="overlay_type" format="enum">
+            <enum name="poi" value="0"/>
+            <enum name="liveness" value="1"/>
+            <enum name="poa" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>

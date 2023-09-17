@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.fragments.VerificationCompleteFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_checkmark"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/green_checkmark"
+        android:layout_marginTop="@dimen/dimen_100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_verification_complete_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/VerificationCompleteScreenTitleTextView"
+        android:layout_marginTop="@dimen/margin_30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_checkmark"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/thank_you"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_verification_complete_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/VerificationCompleteScreenTextTextView"
+        android:layout_marginTop="@dimen/margin_20dp"
+        android:layout_marginHorizontal="90dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_verification_complete_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/verification_successful"/>
+
+    <include
+        android:id="@+id/cl_complete_try_again_layout"
+        layout="@layout/complete_try_again_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/iv_powered_by"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_powered_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/powered_by_data_spike"
+        android:layout_marginBottom="@dimen/margin_30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
