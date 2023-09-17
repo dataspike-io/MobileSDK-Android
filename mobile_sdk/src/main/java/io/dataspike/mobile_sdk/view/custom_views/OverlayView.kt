@@ -3,7 +3,6 @@ package io.dataspike.mobile_sdk.view.custom_views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
@@ -33,6 +32,7 @@ internal class OverlayView @JvmOverloads constructor(
 
     var poiFrameRectF: RectF? = null
     var livenessFrameRectF: RectF? = null
+    //TODO fix
     var poaFrameRectF: RectF? = null
     private var faceIsInFrame = false
     private var documentIsInFrame = false
@@ -122,13 +122,13 @@ internal class OverlayView @JvmOverloads constructor(
                 }
             )
 
-            poiBoundingBox?.let {
-                canvas.drawRect(it, Paint().apply {
-                    color = Color.RED
-                    strokeWidth = 2f
-                    style = Paint.Style.STROKE
-                })
-            }
+//            poiBoundingBox?.let {
+//                canvas.drawRect(it, Paint().apply {
+//                    color = Color.RED
+//                    strokeWidth = 2f
+//                    style = Paint.Style.STROKE
+//                })
+//            }
         }
     }
 
@@ -159,13 +159,13 @@ internal class OverlayView @JvmOverloads constructor(
             canvas.drawOval(it, livenessFrame)
         }
 
-        livenessBoundingBox?.let {
-            canvas.drawRect(it, Paint().apply {
-                color = Color.RED
-                strokeWidth = 2f
-                style = Paint.Style.STROKE
-            })
-        }
+//        livenessBoundingBox?.let {
+//            canvas.drawRect(it, Paint().apply {
+//                color = Color.RED
+//                strokeWidth = 2f
+//                style = Paint.Style.STROKE
+//            })
+//        }
     }
 
     private fun drawOverlayCutoutForPOA(canvas: Canvas) {
@@ -211,13 +211,13 @@ internal class OverlayView @JvmOverloads constructor(
                 }
             )
 
-            poaBoundingBox?.let {
-                canvas.drawRect(it, Paint().apply {
-                    color = Color.RED
-                    strokeWidth = 2f
-                    style = Paint.Style.STROKE
-                })
-            }
+//            poaBoundingBox?.let {
+//                canvas.drawRect(it, Paint().apply {
+//                    color = Color.RED
+//                    strokeWidth = 2f
+//                    style = Paint.Style.STROKE
+//                })
+//            }
         }
     }
 
