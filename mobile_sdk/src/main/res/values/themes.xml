@@ -1,0 +1,3 @@
+<resources>
+    <style name="Theme.MobileSDKAndroid" parent="Theme.AppCompat.Light.NoActionBar" />
+</resources>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.fragments.BaseCameraFragment"
+    android:fitsSystemWindows="false">
+
+    <ImageView
+        android:id="@+id/iv_back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_26dp"
+        android:layout_marginTop="@dimen/margin_40dp"
+        android:paddingTop="@dimen/back_arrow_top_padding"
+        android:src="@drawable/white_back_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/back_arrow" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_top_instructions"
+        style="@style/WhiteTopInstructionsTextView"
+        android:layout_width="@dimen/dimen_0dp"
+        android:layout_height="@dimen/dimen_80dp"
+        android:autoSizeTextType="uniform"
+        app:autoSizeStepGranularity="@dimen/text_size_2sp"
+        android:autoSizeMinTextSize="@dimen/text_size_10sp"
+        android:autoSizeMaxTextSize="@dimen/text_size_26sp"
+        android:layout_marginStart="@dimen/margin_26dp"
+        android:layout_marginEnd="@dimen/margin_26dp"
+        android:text="@string/poi_instructions_title"
+        app:layout_constraintStart_toEndOf="@+id/iv_back_button"
+        app:layout_constraintTop_toTopOf="@+id/iv_back_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="UnusedAttribute" />
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/pv_view_finder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="@dimen/negative_elevation"/>
+
+    <io.dataspike.mobile_sdk.view.custom_views.OverlayView
+        android:id="@+id/ov_poi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        app:overlay_type="poi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="@dimen/negative_elevation"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_take_photo_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_image_caption_button"
+            android:layout_width="@dimen/photo_button_dimen"
+            android:layout_height="@dimen/photo_button_dimen"
+            android:layout_centerInParent="true"
+            android:foreground="@drawable/camera_button_ripple"
+            android:src="@drawable/camera_button"
+            tools:ignore="UnusedAttribute" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_camera_switch_button"
+            android:layout_width="@dimen/camera_switch_button_dimen"
+            android:layout_height="@dimen/camera_switch_button_dimen"
+            android:layout_marginEnd="@dimen/camera_switch_button_end_margin"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/camera_switch"/>
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".85"/>
+
+    <include
+        android:id="@+id/loading_view"
+        layout="@layout/loading_view"
+        android:visibility="gone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
