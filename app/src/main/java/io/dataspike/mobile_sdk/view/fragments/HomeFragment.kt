@@ -26,7 +26,7 @@ internal class HomeFragment : Fragment() {
 
     private var viewBinding: FragmentHomeBinding? = null
 
-    private val viewModel: HomeViewModel by viewModels{ SampleAppViewModelFactory() }
+    private val viewModel: HomeViewModel by viewModels { SampleAppViewModelFactory() }
 
     private val sampleAppDependencies = SampleAppDependencies(
         isDebug = true,
