@@ -49,7 +49,7 @@ internal class HomeFragment : Fragment() {
 
         collectVerificationFlow()
 
-        viewBinding?.tvStartVerificationButton?.setOnClickListener {
+        viewBinding?.mbStartVerification?.setOnClickListener {
             viewModel.createVerification(emptyMap())
         }
     }

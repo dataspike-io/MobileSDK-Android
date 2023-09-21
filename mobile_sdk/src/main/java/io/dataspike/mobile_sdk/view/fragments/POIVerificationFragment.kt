@@ -12,7 +12,6 @@ import io.dataspike.mobile_sdk.data.image_caching.ImageCacheManager
 import io.dataspike.mobile_sdk.databinding.FragmentPoiVerificationBinding
 import io.dataspike.mobile_sdk.utils.Utils.crop
 import io.dataspike.mobile_sdk.view.IMAGE_TYPE
-import io.dataspike.mobile_sdk.view.POI_FRONT
 
 internal class POIVerificationFragment : BaseCameraFragment() {
 
@@ -87,13 +86,7 @@ internal class POIVerificationFragment : BaseCameraFragment() {
             viewBinding?.ovPoi?.poiFrameRectF
         )
 
-//        ImageCacheManager.latestImage = croppedBitmap
-
-        if (imageType == POI_FRONT) {
-            ImageCacheManager.poiFront = croppedBitmap
-        } else {
-            ImageCacheManager.poiBack = croppedBitmap
-        }
+        ImageCacheManager.putBitmapIntoCache(imageType ?: "", croppedBitmap)
 
         activity
             ?.supportFragmentManager

@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "io.dataspike.mobile_sdk"
-        minSdk 26
+        minSdk 21
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -44,6 +44,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
     implementation project(':mobile_sdk')
-//    implementation files('libs/mobile_sdk-debug.aar')
-//    implementation 'com.github.dataspike-io:MobileSDK-Android:1.0.0-rc05'
+//    implementation files('libs/dataspike_mobile_sdk.aar')
+//    implementation 'com.github.dataspike-io:MobileSDK-Android:1.0.0-rc06'
 }

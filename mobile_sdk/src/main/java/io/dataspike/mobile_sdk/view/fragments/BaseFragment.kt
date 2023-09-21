@@ -1,18 +1,15 @@
 package io.dataspike.mobile_sdk.view.fragments
 
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.utils.Utils.launchInMain
 import io.dataspike.mobile_sdk.utils.Utils.visible
+import io.dataspike.mobile_sdk.view.REQUIREMENTS_TYPE
 import io.dataspike.mobile_sdk.view.view_models.BaseViewModel
-
-internal const val REQUIREMENTS_TYPE = "requirements_type"
-internal const val POI_REQUIREMENTS = "POI_requirements"
-internal const val POA_REQUIREMENTS = "poa_requirements"
-internal const val LIVENESS_REQUIREMENTS = "liveness_requirements"
 
 internal abstract class BaseFragment: Fragment() {
 
@@ -26,7 +23,7 @@ internal abstract class BaseFragment: Fragment() {
         }
     }
 
-    fun openRequirementsScreen(requirementsType: String) {
+    fun openRequirementsScreen(requirementsType: String?) {
         activity
             ?.supportFragmentManager
             ?.beginTransaction()
@@ -38,5 +35,25 @@ internal abstract class BaseFragment: Fragment() {
             )
             ?.addToBackStack(null)
             ?.commit()
+    }
+
+    fun goToFragment(fragment: BaseFragment) {
+        activity
+            ?.supportFragmentManager
+            ?.beginTransaction()
+            ?.add(
+                R.id.container,
+                fragment
+            )
+            ?.addToBackStack(null)
+            ?.commit()
+    }
+
+    fun makeToast(message: String) {
+        Toast.makeText(
+            requireContext(),
+            message,
+            Toast.LENGTH_LONG
+        ).show()
     }
 }

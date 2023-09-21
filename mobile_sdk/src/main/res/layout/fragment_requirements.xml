@@ -54,19 +54,13 @@
         </LinearLayout>
     </ScrollView>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_start_verification_button"
-        style="@style/PurpleButtonTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_20dp"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_continue"
+        style="@style/PurpleMaterialButton"
         android:layout_marginBottom="@dimen/margin_30dp"
-        android:background="@drawable/purple_button_background"
-        android:foreground="@drawable/rectangular_button_ripple"
         android:text="@string/_continue"
-        tools:ignore="UnusedAttribute"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

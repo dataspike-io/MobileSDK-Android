@@ -1,14 +1,12 @@
 package io.dataspike.mobile_sdk.view.fragments
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.RectF
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
@@ -238,9 +236,7 @@ internal abstract class BaseCameraFragment : BaseFragment(), ImageAnalysisListen
             ActivityResultContracts.RequestPermission()
         ) { granted ->
             if (!granted) {
-                Toast.makeText(
-                    requireContext(), "Permission request denied", Toast.LENGTH_SHORT
-                ).show()
+                makeToast("Permission request denied")
             } else {
                 startCamera(viewFinder)
             }
@@ -261,10 +257,6 @@ internal abstract class BaseCameraFragment : BaseFragment(), ImageAnalysisListen
             switchCamera(viewFinder)
         }
     }
-
-    fun cameraPermissionGranted() = ContextCompat.checkSelfPermission(
-        requireContext(), CAMERA_PERMISSION
-    ) == PackageManager.PERMISSION_GRANTED
 
     abstract fun photoTaken(bitmap: Bitmap)
 }

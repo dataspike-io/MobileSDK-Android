@@ -46,7 +46,7 @@ internal class POAVerificationFragment : BaseCameraFragment() {
             viewBinding?.ovPoa?.poiFrameRectF
         )
 
-        ImageCacheManager.poa = croppedBitmap
+        ImageCacheManager.putBitmapIntoCache(POA, croppedBitmap)
 
         activity
             ?.supportFragmentManager

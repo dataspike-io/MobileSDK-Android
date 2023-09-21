@@ -1,14 +1,11 @@
 package io.dataspike.mobile_sdk.view.view_models
 
-import android.util.Log
 import io.dataspike.mobile_sdk.data.image_caching.ImageCacheManager
 import io.dataspike.mobile_sdk.data.use_cases.UploadImageUseCase
 import io.dataspike.mobile_sdk.dependencies_provider.DataspikeInjector
 import io.dataspike.mobile_sdk.domain.VerificationChecksManager
 import io.dataspike.mobile_sdk.domain.models.UploadImageState
 import io.dataspike.mobile_sdk.utils.Utils.toFile
-import io.dataspike.mobile_sdk.view.LIVENESS
-import io.dataspike.mobile_sdk.view.POA
 import io.dataspike.mobile_sdk.view.POI
 import io.dataspike.mobile_sdk.view.POI_BACK
 import io.dataspike.mobile_sdk.view.POI_FRONT
@@ -27,39 +24,18 @@ internal class ImagePreviewViewModel(
     private val _imageUploadedFlow = MutableSharedFlow<UploadImageState>(replay = 1)
     val imageUploadedFlow: SharedFlow<UploadImageState> = _imageUploadedFlow
 
-    fun uploadImage(dir: String, imageType: String) {
+    fun uploadImage(dir: String, imageType: String?) {
         launchInVMScope {
             showLoading(true)
 
-            var docType = "poi"
-            val file = when (imageType) {
-                POI -> {
-                    ImageCacheManager.latestImage
-                }
-
-                POI_FRONT -> {
-                    ImageCacheManager.poiFront
-                }
-
-                POI_BACK -> {
-                    ImageCacheManager.poiBack
-                }
-
-                LIVENESS -> {
-                    docType = "liveness_photo"
-                    ImageCacheManager.liveness
-                }
-
-                POA -> {
-                    docType = "poa"
-                    ImageCacheManager.poa
-                }
-
-                else -> {
-                    Log.d("Dataspike", "Unknown image type")
-                    null
-                }
-            }?.toFile("${System.currentTimeMillis()}_DS", dir)
+            val docType = if (imageType == POI_FRONT || imageType == POI_BACK) {
+                POI
+            } else {
+                imageType ?: ""
+            }
+            val file =
+                ImageCacheManager.getBitmapFromCache(imageType)
+                    ?.toFile("${System.currentTimeMillis()}_DS", dir)
 
             val uploadImageResult = uploadImageUseCase.invoke(
                 DataspikeInjector.component.shortId ?: return@launchInVMScope,

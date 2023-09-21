@@ -6,7 +6,6 @@ import okhttp3.Response
 private const val DS_API_TOKEN = "ds-api-token"
 private const val CONTENT_TYPE_HEADER = "Content-Type"
 private const val APPLICATION_JSON = "application/json"
-private const val MULTIPART_FORM_DATA = "multipart/form-data"
 
 internal class HeadersInterceptor(
     private val dsApiToken: String,

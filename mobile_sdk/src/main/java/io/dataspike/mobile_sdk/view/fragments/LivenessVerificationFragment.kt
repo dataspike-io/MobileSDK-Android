@@ -64,7 +64,7 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
     }
 
     override fun photoTaken(bitmap: Bitmap) {
-        ImageCacheManager.liveness = bitmap
+        ImageCacheManager.putBitmapIntoCache(LIVENESS, bitmap)
 
         activity
             ?.supportFragmentManager
