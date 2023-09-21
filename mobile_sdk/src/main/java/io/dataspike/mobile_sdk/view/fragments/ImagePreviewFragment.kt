@@ -50,32 +50,11 @@ internal class ImagePreviewFragment: BaseFragment() {
 
         viewModel.uploadImage(
             requireContext().getExternalFilesDir(null)?.absolutePath ?: "",
-            imageType ?: ""
+            imageType
         )
 
         with(viewBinding ?: return) {
-            var requirementsType: String = POI_REQUIREMENTS
-            val image = when (imageType) {
-                POI_FRONT -> {
-                    ImageCacheManager.poiFront
-                }
-
-                POI_BACK -> {
-                    ImageCacheManager.poiBack
-                }
-
-                LIVENESS -> {
-                    requirementsType = LIVENESS_REQUIREMENTS
-                    ImageCacheManager.liveness
-                }
-
-                POA -> {
-                    requirementsType = POA_REQUIREMENTS
-                    ImageCacheManager.poa
-                }
-
-                else -> null
-            }
+            val image = ImageCacheManager.getBitmapFromCache(imageType)
 
             image?.let {
                 val roundedDrawable = RoundedBitmapDrawableFactory.create(resources, it).apply {
@@ -108,10 +87,10 @@ internal class ImagePreviewFragment: BaseFragment() {
 
             with(clButtons) {
                 tvRequirements.setOnClickListener {
-                    openRequirementsScreen(requirementsType)
+                    openRequirementsScreen(imageType)
                 }
 
-                tvRedoButton.setOnClickListener {
+                mbRedo.setOnClickListener {
                     parentFragmentManager.popBackStack()
                 }
             }
@@ -138,9 +117,9 @@ internal class ImagePreviewFragment: BaseFragment() {
                         clLivenessRequirements.root.visibility = View.GONE
                         clPoaRequirements.root.visibility = View.GONE
                         clButtons.tvRequirements.visibility = View.VISIBLE
-                        clButtons.tvContinueButton.visibility = View.VISIBLE
+                        clButtons.mbContinue.visibility = View.VISIBLE
 
-                        clButtons.tvContinueButton.setOnClickListener {
+                        clButtons.mbContinue.setOnClickListener {
                             val fragmentToGoTo = when (imageType) {
                                 POI_FRONT -> {
                                     if (uploadImageResult.detectedTwoSideDocument) {
@@ -154,7 +133,7 @@ internal class ImagePreviewFragment: BaseFragment() {
                                             }
 
                                             VerificationChecksManager.checks.poaIsRequired -> {
-                                                POAVerificationFragment()
+                                                POAChooserFragment()
                                             }
 
                                             else -> {
@@ -171,7 +150,7 @@ internal class ImagePreviewFragment: BaseFragment() {
                                         }
 
                                         VerificationChecksManager.checks.poaIsRequired -> {
-                                            POAVerificationFragment()
+                                            POAChooserFragment()
                                         }
 
                                         else -> {
@@ -182,7 +161,7 @@ internal class ImagePreviewFragment: BaseFragment() {
 
                                 LIVENESS -> {
                                     if (VerificationChecksManager.checks.poaIsRequired) {
-                                        POAVerificationFragment()
+                                        POAChooserFragment()
                                     } else {
                                         VerificationCompleteFragment()
                                     }
@@ -215,13 +194,13 @@ internal class ImagePreviewFragment: BaseFragment() {
                         clUploadResult.tvUploadWithErrors.visibility = View.VISIBLE
                         clUploadResult.tvUploadWithErrors.text = (uploadImageResult as UploadImageState.UploadImageError).message
                         clButtons.tvRequirements.visibility = View.GONE
-                        clButtons.tvContinueButton.visibility = View.GONE
-                        clButtons.tvRedoButton.background = ResourcesCompat.getDrawable(
+                        clButtons.mbContinue.visibility = View.GONE
+                        clButtons.mbRedo.background = ResourcesCompat.getDrawable(
                             resources,
                             R.drawable.purple_button_background,
                             null
                         )
-                        clButtons.tvRedoButton.setTextColor(
+                        clButtons.mbRedo.setTextColor(
                             ResourcesCompat.getColor(
                                 resources,
                                 R.color.white,

@@ -10,6 +10,9 @@ import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentOnboardingBinding
 import io.dataspike.mobile_sdk.domain.VerificationChecksManager
 import io.dataspike.mobile_sdk.view.IMAGE_TYPE
+import io.dataspike.mobile_sdk.view.LIVENESS
+import io.dataspike.mobile_sdk.view.POA
+import io.dataspike.mobile_sdk.view.POI
 import io.dataspike.mobile_sdk.view.POI_FRONT
 import io.dataspike.mobile_sdk.view.ViewPager2Adapter
 
@@ -32,22 +35,20 @@ internal class OnboardingFragment : BaseFragment() {
         with(viewBinding ?: return) {
             //TODO make onboarding show only required checks
             vpOnboarding.adapter = ViewPager2Adapter()
-            tvStartVerificationButton.setOnClickListener { goToVerification() }
+            mbStartVerification.setOnClickListener { goToVerification() }
 
             tvRequirements.setOnClickListener {
                 val requirementsType = when (vpOnboarding.currentItem) {
-                    0 -> { POI_REQUIREMENTS }
+                    0 -> { POI }
 
-                    1 -> { LIVENESS_REQUIREMENTS }
+                    1 -> { LIVENESS }
 
-                    2 -> { POA_REQUIREMENTS }
+                    2 -> { POA }
 
                     else -> null
                 }
 
-                requirementsType?.let {
-                    openRequirementsScreen(it)
-                }
+                openRequirementsScreen(requirementsType)
             }
         }
     }

@@ -7,20 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.HomeFragment">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_start_verification_button"
-        style="@style/PurpleButtonTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_40dp"
-        android:background="@drawable/purple_button_background"
-        android:foreground="@drawable/rectangular_button_ripple"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_start_verification"
+        style="@style/PurpleMaterialButton"
         android:text="@string/start_verification"
-        tools:ignore="UnusedAttribute"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"

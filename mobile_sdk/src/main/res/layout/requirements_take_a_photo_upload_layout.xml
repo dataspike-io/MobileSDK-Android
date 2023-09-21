@@ -7,32 +7,41 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_requirements"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         style="@style/PurpleTextView"
-        android:text="@string/requirements"
+        android:layout_marginBottom="@dimen/default_margin"
         android:paddingBottom="@dimen/dimen_4dp"
         android:background="@drawable/purple_dashed_line"
-        android:layout_marginBottom="@dimen/margin_30dp"
+        android:text="@string/requirements"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/mb_redo"/>
+        app:layout_constraintBottom_toTopOf="@+id/tv_poa_format_and_size_info"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_poa_format_and_size_info"
+        style="@style/LightGreyTextView"
+        android:layout_marginHorizontal="@dimen/margin_20dp"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:text="@string/poa_format_and_size_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/mb_take_a_photo"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/mb_redo"
+        android:id="@+id/mb_take_a_photo"
         style="@style/TransparentMaterialButtonWithPurpleStroke"
         android:layout_marginBottom="@dimen/default_margin"
-        app:layout_goneMarginBottom="@dimen/margin_30dp"
-        android:text="@string/redo_photo"
+        android:text="@string/take_a_photo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/mb_continue"/>
+        app:layout_constraintBottom_toTopOf="@+id/mb_upload"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/mb_continue"
+        android:id="@+id/mb_upload"
         style="@style/PurpleMaterialButton"
         android:layout_marginBottom="@dimen/margin_30dp"
-        android:text="@string/_continue"
+        app:icon="@drawable/upload"
+        app:iconGravity="textStart"
+        android:text="@string/upload"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

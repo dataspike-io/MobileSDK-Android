@@ -34,7 +34,7 @@ internal class VerificationCompleteFragment : BaseFragment() {
         viewModel.proceedWithVerification()
 
         with(viewBinding?.clCompleteTryAgainLayout ?: return) {
-            tvCompleteButton.setOnClickListener {
+            mbComplete.setOnClickListener {
                 activity?.finish()
             }
         }
@@ -45,8 +45,8 @@ internal class VerificationCompleteFragment : BaseFragment() {
             viewModel.proceedWithVerificationFlow.collect { result ->
                 if (result is EmptyState.EmptyStateError) {
                     with(viewBinding ?: return@collect) {
-                    clCompleteTryAgainLayout.tvTryAgainButton.visibility = View.VISIBLE
-                    clCompleteTryAgainLayout.tvTryAgainButton.setOnClickListener {
+                    clCompleteTryAgainLayout.mbTryAgain.visibility = View.VISIBLE
+                    clCompleteTryAgainLayout.mbTryAgain.setOnClickListener {
                         activity?.supportFragmentManager?.popBackStack(
                             activity?.supportFragmentManager?.getBackStackEntryAt(0)?.id ?: -1,
                             FragmentManager.POP_BACK_STACK_INCLUSIVE
