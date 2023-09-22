@@ -22,7 +22,8 @@ dependencies {
     implementation 'com.github.dataspike-io:MobileSDK-Android:1.0.0-rc6'
 }
 ```
-3. Initialize SDK in your project.
+3. In your app's activity of fragment implement VerificationCompletedCallback interface.
+4. Initialize SDK in your project.
 ```
 val dataspikeDependencies = DataspikeDependencies(
     isDebug = true/false,
@@ -30,10 +31,17 @@ val dataspikeDependencies = DataspikeDependencies(
     shortId = verification_url_id
 )
 
-DataspikeManager.startDataspikeFlow(
-    dataspikeDependencies,
-    context
-)
+fun startDataspikeFlow(
+        dataspikeDependencies: DataspikeDependencies,
+        callback: VerificationCompletedCallback,
+        context: Context,
+    )
+```
+5. Receive and handle verification result in your app after user completed verification process in SDK.
+```
+override fun onVerificationCompleted(verificationSucceeded: Boolean) {
+    ...
+} 
 ```
 
 ## Integrate via .aar
@@ -61,4 +69,4 @@ implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 ```
 implementation files(‘libs/dataspike_mobile_sdk.aar’)
 ```
-4. Initialize SDK in your project as described above.
+4. Implement callback and initialize SDK in your project as described above.
