@@ -11,9 +11,11 @@ object DataspikeManager {
 
     fun startDataspikeFlow(
         dataspikeDependencies: DataspikeDependencies,
+        callback: VerificationCompletedCallback,
         context: Context,
     ) {
         DataspikeInjector.setComponent(dataspikeDependencies)
+        setVerificationCompletedCallback(callback)
 
         startActivity(
             context,

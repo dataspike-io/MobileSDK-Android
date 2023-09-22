@@ -6,15 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.tabs.TabLayoutMediator
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentOnboardingBinding
 import io.dataspike.mobile_sdk.domain.VerificationChecksManager
 import io.dataspike.mobile_sdk.view.IMAGE_TYPE
-import io.dataspike.mobile_sdk.view.LIVENESS
-import io.dataspike.mobile_sdk.view.POA
-import io.dataspike.mobile_sdk.view.POI
+import io.dataspike.mobile_sdk.view.OnboardingViewPager2Adapter
 import io.dataspike.mobile_sdk.view.POI_FRONT
-import io.dataspike.mobile_sdk.view.ViewPager2Adapter
 
 internal class OnboardingFragment : BaseFragment() {
 
@@ -34,19 +33,18 @@ internal class OnboardingFragment : BaseFragment() {
 
         with(viewBinding ?: return) {
             //TODO make onboarding show only required checks
-            vpOnboarding.adapter = ViewPager2Adapter()
+            vpOnboarding.adapter = OnboardingViewPager2Adapter()
+            (vpOnboarding.getChildAt(0) as? RecyclerView)?.overScrollMode =
+                View.OVER_SCROLL_NEVER
+            TabLayoutMediator(tlIndicators, vpOnboarding) { _, _ -> }.attach()
+
             mbStartVerification.setOnClickListener { goToVerification() }
 
             tvRequirements.setOnClickListener {
-                val requirementsType = when (vpOnboarding.currentItem) {
-                    0 -> { POI }
-
-                    1 -> { LIVENESS }
-
-                    2 -> { POA }
-
-                    else -> null
-                }
+                val requirementsType =
+                    (vpOnboarding.adapter as? OnboardingViewPager2Adapter)?.getCurrentPage(
+                        vpOnboarding.currentItem
+                    )
 
                 openRequirementsScreen(requirementsType)
             }

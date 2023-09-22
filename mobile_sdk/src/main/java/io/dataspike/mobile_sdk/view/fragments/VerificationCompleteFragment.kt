@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentVerificationCompleteBinding
 import io.dataspike.mobile_sdk.domain.models.EmptyState
+import io.dataspike.mobile_sdk.passVerificationCompletedResult
 import io.dataspike.mobile_sdk.utils.Utils.launchInMain
 import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
 import io.dataspike.mobile_sdk.view.view_models.VerificationCompleteViewModel
@@ -18,6 +19,8 @@ internal class VerificationCompleteFragment : BaseFragment() {
 
     private var viewBinding: FragmentVerificationCompleteBinding? = null
     private val viewModel: VerificationCompleteViewModel by viewModels { DataspikeViewModelFactory() }
+
+    private var verificationSucceeded = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +38,7 @@ internal class VerificationCompleteFragment : BaseFragment() {
 
         with(viewBinding?.clCompleteTryAgainLayout ?: return) {
             mbComplete.setOnClickListener {
+                passVerificationCompletedResult(verificationSucceeded)
                 activity?.finish()
             }
         }
@@ -64,12 +68,8 @@ internal class VerificationCompleteFragment : BaseFragment() {
                     tvVerificationCompleteDescription.text =
                         requireContext().getString(R.string.something_went_wrong_this_time)
                 }
-
-//                    Toast.makeText(
-//                        requireContext(),
-//                        "${result.error}: ${result.details}",
-//                        Toast.LENGTH_LONG
-//                    ).show()
+                } else {
+                    verificationSucceeded = true
                 }
             }
         }

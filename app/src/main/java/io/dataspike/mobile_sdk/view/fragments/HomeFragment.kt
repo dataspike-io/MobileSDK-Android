@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import io.dataspike.mobile_sdk.DataspikeManager
+import io.dataspike.mobile_sdk.VerificationCompletedCallback
 import io.dataspike.mobile_sdk.databinding.FragmentHomeBinding
 import io.dataspike.mobile_sdk.dependencies_provider.SampleAppInjector
 import io.dataspike.mobile_sdk.dependencies_provider.model.DataspikeDependencies
@@ -22,7 +23,7 @@ import kotlinx.coroutines.launch
 
 internal const val API_TOKEN = "place_your_api_token_here"
 
-internal class HomeFragment : Fragment() {
+internal class HomeFragment : Fragment(), VerificationCompletedCallback {
 
     private var viewBinding: FragmentHomeBinding? = null
 
@@ -45,7 +46,7 @@ internal class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       SampleAppInjector.setComponent(sampleAppDependencies)
+        SampleAppInjector.setComponent(sampleAppDependencies)
 
         collectVerificationFlow()
 
@@ -69,6 +70,7 @@ internal class HomeFragment : Fragment() {
                                 dsApiToken = API_TOKEN,
                                 shortId = result.verificationUrlId,
                             ),
+                            this@HomeFragment,
                             requireContext()
                         )
                     }
@@ -83,5 +85,13 @@ internal class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onVerificationCompleted(verificationSucceeded: Boolean) {
+        Toast.makeText(
+            requireContext(),
+            "verificationSucceeded: $verificationSucceeded",
+            Toast.LENGTH_LONG
+        ).show()
     }
 }

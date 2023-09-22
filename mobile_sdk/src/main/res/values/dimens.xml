@@ -23,4 +23,5 @@
     <dimen name="text_size_10sp">10sp</dimen>
     <dimen name="text_size_12sp">12sp</dimen>
     <dimen name="text_size_26sp">26sp</dimen>
+    <dimen name="dimen_6dp">6dp</dimen>
 </resources>
