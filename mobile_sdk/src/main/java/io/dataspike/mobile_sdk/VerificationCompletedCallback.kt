@@ -2,14 +2,15 @@ package io.dataspike.mobile_sdk
 
 private var verificationCompletedCallback: VerificationCompletedCallback? = null
 
-fun setVerificationCompletedCallback(
+internal fun setVerificationCompletedCallback(
     callback: VerificationCompletedCallback
 ) {
     verificationCompletedCallback = callback
 }
 
-fun passVerificationCompletedResult(verificationSucceeded: Boolean) {
+internal fun passVerificationCompletedResult(verificationSucceeded: Boolean) {
     verificationCompletedCallback?.onVerificationCompleted(verificationSucceeded)
+    verificationCompletedCallback = null
 }
 
 interface VerificationCompletedCallback {

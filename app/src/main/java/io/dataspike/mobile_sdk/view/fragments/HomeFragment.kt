@@ -15,7 +15,6 @@ import io.dataspike.mobile_sdk.dependencies_provider.SampleAppInjector
 import io.dataspike.mobile_sdk.dependencies_provider.model.DataspikeDependencies
 import io.dataspike.mobile_sdk.dependencies_provider.model.SampleAppDependencies
 import io.dataspike.mobile_sdk.domain.models.NewVerificationState
-import io.dataspike.mobile_sdk.setVerificationCompletedCallback
 import io.dataspike.mobile_sdk.view.view_models.HomeViewModel
 import io.dataspike.mobile_sdk.view.view_models.SampleAppViewModelFactory
 import kotlinx.coroutines.CoroutineScope
@@ -65,13 +64,13 @@ internal class HomeFragment : Fragment(), VerificationCompletedCallback {
             viewModel.verificationFlow.collect { result ->
                 when (result) {
                     is NewVerificationState.NewVerificationSuccess -> {
-                        setVerificationCompletedCallback(this@HomeFragment)
                         DataspikeManager.startDataspikeFlow(
                             DataspikeDependencies(
                                 isDebug = true,
                                 dsApiToken = API_TOKEN,
                                 shortId = result.verificationUrlId,
                             ),
+                            this@HomeFragment,
                             requireContext()
                         )
                     }
