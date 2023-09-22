@@ -9,6 +9,8 @@ import io.dataspike.mobile_sdk.view.DataspikeActivity
 
 object DataspikeManager {
 
+//    private var verificationCompletedCallback: VerificationCompletedCallback? = null
+
     fun startDataspikeFlow(
         dataspikeDependencies: DataspikeDependencies,
         context: Context,
@@ -24,4 +26,19 @@ object DataspikeManager {
             null
         )
     }
+
+//    fun setVerificationCompletedCallback(
+//        verificationCompletedCallback: VerificationCompletedCallback
+//    ) {
+//        this.verificationCompletedCallback = verificationCompletedCallback
+//    }
+//
+//    fun passVerificationCompletedResult(verificationSucceeded: Boolean) {
+//        verificationCompletedCallback?.onVerificationCompleted(verificationSucceeded)
+//    }
+//
+//    interface VerificationCompletedCallback {
+//
+//        fun onVerificationCompleted(verificationSucceeded: Boolean)
+//    }
 }
