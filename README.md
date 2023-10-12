@@ -19,7 +19,7 @@ allprojects {
 2. In your app module's ```build.gradle``` file, add the dependency for the Dataspike Mobile SDK.
 ```
 dependencies {
-    implementation 'com.github.dataspike-io:MobileSDK-Android:1.0.0-rc6'
+    implementation 'com.github.dataspike-io:MobileSDK-Android:1.0.0-rc07'
 }
 ```
 3. In your app's activity of fragment implement VerificationCompletedCallback interface.
