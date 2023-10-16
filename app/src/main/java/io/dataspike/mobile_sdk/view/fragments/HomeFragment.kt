@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import io.dataspike.mobile_sdk.DataspikeManager
+import io.dataspike.mobile_sdk.DataspikeVerificationStatus
 import io.dataspike.mobile_sdk.VerificationCompletedCallback
 import io.dataspike.mobile_sdk.databinding.FragmentHomeBinding
 import io.dataspike.mobile_sdk.dependencies_provider.SampleAppInjector
@@ -87,10 +88,10 @@ internal class HomeFragment : Fragment(), VerificationCompletedCallback {
         }
     }
 
-    override fun onVerificationCompleted(verificationSucceeded: Boolean) {
+    override fun onVerificationCompleted(dataspikeVerificationStatus: DataspikeVerificationStatus) {
         Toast.makeText(
             requireContext(),
-            "verificationSucceeded: $verificationSucceeded",
+            "verificationStatus: $dataspikeVerificationStatus",
             Toast.LENGTH_LONG
         ).show()
     }

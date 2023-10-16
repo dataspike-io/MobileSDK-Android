@@ -1,8 +1,8 @@
 package io.dataspike.mobile_sdk.view.custom_views
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
@@ -11,15 +11,13 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
-import com.google.android.material.internal.ViewUtils.dpToPx
 import io.dataspike.mobile_sdk.R
+import io.dataspike.mobile_sdk.utils.Utils.dpToPx
 
 private const val POI_OVERLAY = "0"
 private const val LIVENESS_OVERLAY = "1"
 private const val POA_OVERLAY = "2"
 
-//TODO ?
-@SuppressLint("RestrictedApi")
 internal class OverlayView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -29,33 +27,37 @@ internal class OverlayView @JvmOverloads constructor(
     attrs,
     defStyleAttr
 ) {
-
-    var poiFrameRectF: RectF? = null
-    var livenessFrameRectF: RectF? = null
-    //TODO fix
-    var poaFrameRectF: RectF? = null
     private var faceIsInFrame = false
     private var documentIsInFrame = false
-    var poiBoundingBox: RectF? = null
-    var livenessBoundingBox: RectF? = null
-    var poaBoundingBox: RectF? = null
-
     private val overlayType = context.obtainStyledAttributes(
         attrs,
         R.styleable.OverlayView
     ).getString(R.styleable.OverlayView_overlay_type)
-
     private val cutoutAreaPaint = Paint().apply {
         color = ContextCompat.getColor(context, android.R.color.transparent)
         xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
     }
-
     private val backgroundPaint = Paint().apply {
         color = ContextCompat.getColor(context, R.color.overlay_black)
     }
+    private val framePaint get() = Paint().apply {
+        color = if (documentIsInFrame) {
+            ContextCompat.getColor(context, R.color.light_green)
+        } else {
+            ContextCompat.getColor(context, R.color.white)
+        }
+        strokeWidth = dpToPx(2f)
+        style = Paint.Style.STROKE
+    }
+    var poiFrameRectF: RectF? = null
+    var livenessFrameRectF: RectF? = null
+    var poaFrameRectF: RectF? = null
+    var poiBoundingBox: RectF? = null
+    var livenessBoundingBox: RectF? = null
+    var poaBoundingBox: RectF? = null
 
     init {
-        setLayerType(LAYER_TYPE_HARDWARE, null)
+        setLayerType(LAYER_TYPE_SOFTWARE, null)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -80,12 +82,12 @@ internal class OverlayView @JvmOverloads constructor(
     }
 
     private fun drawOverlayCutoutForPOI(canvas: Canvas) {
-        val cutoutMargin = dpToPx(context, 16)
+        val cutoutMargin = dpToPx(16f)
         val cutoutHeight = ((width - (cutoutMargin * 2)) * .66).toInt()
         val top = (height / 1.6f) - cutoutHeight
         val bottom = top + cutoutHeight
-        val frameCornerRadius = dpToPx(context, 2)
-        val cornersCornerRadius = dpToPx(context, 14)
+        val frameCornerRadius = dpToPx(2f)
+        val cornersCornerRadius = dpToPx(14f)
 
         poiFrameRectF = RectF(
             cutoutMargin,
@@ -109,33 +111,28 @@ internal class OverlayView @JvmOverloads constructor(
                     right = it.right + 1,
                     bottom = it.bottom + 1,
                     cornerRadius = cornersCornerRadius,
-                    cornerLength = dpToPx(context, 50)
+                    cornerLength = dpToPx(50f)
                 ),
-                Paint().apply {
-                    color = if (documentIsInFrame) {
-                        ContextCompat.getColor(context, R.color.light_green)
-                    } else {
-                        ContextCompat.getColor(context, R.color.white)
-                    }
-                    strokeWidth = dpToPx(context, 2)
-                    style = Paint.Style.STROKE
-                }
+                framePaint
             )
 
-//            poiBoundingBox?.let {
-//                canvas.drawRect(it, Paint().apply {
-//                    color = Color.RED
-//                    strokeWidth = 2f
-//                    style = Paint.Style.STROKE
-//                })
-//            }
+            poiBoundingBox?.let { rectF ->
+                canvas.drawRect(
+                    rectF,
+                    Paint().apply {
+                        color = Color.RED
+                        strokeWidth = 2f
+                        style = Paint.Style.STROKE
+                    }
+                )
+            }
         }
     }
 
     private fun drawOverlayCutoutForLiveness(canvas: Canvas) {
-        val cutoutMargin = dpToPx(context, 60)
+        val cutoutMargin = dpToPx(60f)
         val cutoutHeight = ((width - (cutoutMargin * 2)) * 1.35).toFloat()
-        val top = (height / 1.4f) - cutoutHeight
+        val top = (height / 1.2f) - cutoutHeight
         val bottom = top + cutoutHeight
         val livenessFrame = Paint().apply {
             color = if (faceIsInFrame) {
@@ -144,7 +141,7 @@ internal class OverlayView @JvmOverloads constructor(
                 ContextCompat.getColor(context, R.color.light_red)
             }
             style = Paint.Style.STROKE
-            strokeWidth = dpToPx(context, 2)
+            strokeWidth = dpToPx(2f)
         }
 
         livenessFrameRectF = RectF(
@@ -159,22 +156,25 @@ internal class OverlayView @JvmOverloads constructor(
             canvas.drawOval(it, livenessFrame)
         }
 
-//        livenessBoundingBox?.let {
-//            canvas.drawRect(it, Paint().apply {
-//                color = Color.RED
-//                strokeWidth = 2f
-//                style = Paint.Style.STROKE
-//            })
-//        }
+        livenessBoundingBox?.let {
+            canvas.drawRect(
+                it,
+                Paint().apply {
+                    color = Color.RED
+                    strokeWidth = 2f
+                    style = Paint.Style.STROKE
+                }
+            )
+        }
     }
 
     private fun drawOverlayCutoutForPOA(canvas: Canvas) {
-        val cutoutMargin = dpToPx(context, 50)
+        val cutoutMargin = dpToPx(50f)
         val cutoutHeight = ((width - (cutoutMargin * 2)) * 1.38).toInt()
         val top = (height / 1.25f) - cutoutHeight
         val bottom = top + cutoutHeight
-        val frameCornerRadius = dpToPx(context, 2)
-        val cornersCornerRadius = dpToPx(context, 14)
+        val frameCornerRadius = dpToPx(2f)
+        val cornersCornerRadius = dpToPx(4f)
 
         poaFrameRectF = RectF(
             cutoutMargin,
@@ -198,26 +198,21 @@ internal class OverlayView @JvmOverloads constructor(
                     right = it.right + 1,
                     bottom = it.bottom + 1,
                     cornerRadius = cornersCornerRadius,
-                    cornerLength = dpToPx(context, 50)
+                    cornerLength = dpToPx(50f)
                 ),
-                Paint().apply {
-                    color = if (documentIsInFrame) {
-                        ContextCompat.getColor(context, R.color.light_green)
-                    } else {
-                        ContextCompat.getColor(context, R.color.white)
-                    }
-                    strokeWidth = dpToPx(context, 2)
-                    style = Paint.Style.STROKE
-                }
+                framePaint
             )
 
-//            poaBoundingBox?.let {
-//                canvas.drawRect(it, Paint().apply {
-//                    color = Color.RED
-//                    strokeWidth = 2f
-//                    style = Paint.Style.STROKE
-//                })
-//            }
+            poaBoundingBox?.let { rectF ->
+                canvas.drawRect(
+                    rectF,
+                    Paint().apply {
+                        color = Color.RED
+                        strokeWidth = 2f
+                        style = Paint.Style.STROKE
+                    }
+                )
+            }
         }
     }
 

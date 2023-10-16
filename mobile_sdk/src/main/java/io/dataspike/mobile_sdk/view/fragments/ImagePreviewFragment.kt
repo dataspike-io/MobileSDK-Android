@@ -13,7 +13,8 @@ import com.google.android.material.internal.ViewUtils.dpToPx
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.data.image_caching.ImageCacheManager
 import io.dataspike.mobile_sdk.databinding.FragmentImagePreviewBinding
-import io.dataspike.mobile_sdk.domain.VerificationChecksManager
+import io.dataspike.mobile_sdk.domain.VerificationManager
+import io.dataspike.mobile_sdk.domain.mappers.ERROR_CODE_EXPIRED
 import io.dataspike.mobile_sdk.domain.models.UploadImageState
 import io.dataspike.mobile_sdk.utils.Utils.launchInMain
 import io.dataspike.mobile_sdk.view.IMAGE_TYPE
@@ -23,9 +24,8 @@ import io.dataspike.mobile_sdk.view.POI_BACK
 import io.dataspike.mobile_sdk.view.POI_FRONT
 import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
 import io.dataspike.mobile_sdk.view.view_models.ImagePreviewViewModel
-//!!!
-//TODO ?
 
+//TODO ?
 @SuppressLint("RestrictedApi")
 internal class ImagePreviewFragment: BaseFragment() {
 
@@ -54,6 +54,8 @@ internal class ImagePreviewFragment: BaseFragment() {
         )
 
         with(viewBinding ?: return) {
+            viewBinding?.clSteps?.setStepsState(imageType ?: "")
+
             val image = ImageCacheManager.getBitmapFromCache(imageType)
 
             image?.let {
@@ -68,11 +70,13 @@ internal class ImagePreviewFragment: BaseFragment() {
                     POI_FRONT, POI_BACK -> {
                         requireContext().getString(R.string.poi_instructions_title)
                     }
+
                     LIVENESS -> {
-                        requireContext().getString(R.string.liveness_instructions_title)
+                        requireContext().getString(R.string.liveness_instructions_bad_title)
                     }
+
                     POA -> {
-                        requireContext().getString(R.string.poa_instructions_title)
+                        requireContext().getString(R.string.let_s_upload_proof_of_address_document)
                     }
 
                     else -> {
@@ -109,6 +113,11 @@ internal class ImagePreviewFragment: BaseFragment() {
 //
 //            }
             viewModel.imageUploadedFlow.collect { uploadImageResult ->
+                viewBinding?.clSteps?.setStepsState(
+                    imageType ?: "",
+                    uploadImageResult is UploadImageState.UploadImageSuccess
+                )
+
                 if (uploadImageResult is UploadImageState.UploadImageSuccess) {
                     with(viewBinding ?: return@collect) {
                         clUploadResult.tvUploadSuccessful.visibility = View.VISIBLE
@@ -120,7 +129,7 @@ internal class ImagePreviewFragment: BaseFragment() {
                         clButtons.mbContinue.visibility = View.VISIBLE
 
                         clButtons.mbContinue.setOnClickListener {
-                            val fragmentToGoTo = when (imageType) {
+                            val fragmentToNavigateTo = when (imageType) {
                                 POI_FRONT -> {
                                     if (uploadImageResult.detectedTwoSideDocument) {
                                         POIVerificationFragment().apply {
@@ -128,11 +137,11 @@ internal class ImagePreviewFragment: BaseFragment() {
                                         }
                                     } else {
                                         when {
-                                            VerificationChecksManager.checks.livenessIsRequired -> {
+                                            VerificationManager.checks.livenessIsRequired -> {
                                                 LivenessVerificationFragment()
                                             }
 
-                                            VerificationChecksManager.checks.poaIsRequired -> {
+                                            VerificationManager.checks.poaIsRequired -> {
                                                 POAChooserFragment()
                                             }
 
@@ -145,11 +154,11 @@ internal class ImagePreviewFragment: BaseFragment() {
 
                                 POI_BACK -> {
                                     when {
-                                        VerificationChecksManager.checks.livenessIsRequired -> {
+                                        VerificationManager.checks.livenessIsRequired -> {
                                             LivenessVerificationFragment()
                                         }
 
-                                        VerificationChecksManager.checks.poaIsRequired -> {
+                                        VerificationManager.checks.poaIsRequired -> {
                                             POAChooserFragment()
                                         }
 
@@ -160,7 +169,7 @@ internal class ImagePreviewFragment: BaseFragment() {
                                 }
 
                                 LIVENESS -> {
-                                    if (VerificationChecksManager.checks.poaIsRequired) {
+                                    if (VerificationManager.checks.poaIsRequired) {
                                         POAChooserFragment()
                                     } else {
                                         VerificationCompleteFragment()
@@ -176,23 +185,25 @@ internal class ImagePreviewFragment: BaseFragment() {
                                 }
                             }
 
-                            activity
-                                ?.supportFragmentManager
-                                ?.beginTransaction()
-                                ?.add(
-                                    R.id.container,
-                                    fragmentToGoTo
-                                )
-                                ?.addToBackStack(null)
-                                ?.commit()
+                            navigateToFragment(fragmentToNavigateTo)
+                        }
+
+                        if (imageType == POI_FRONT && uploadImageResult.detectedCountry.isEmpty()) {
+                            navigateToFragment(SelectCountryFragment())
                         }
                     }
                 } else {
+                    val uploadImageError = uploadImageResult as? UploadImageState.UploadImageError
+
+                    if (uploadImageError?.code == ERROR_CODE_EXPIRED) {
+                        navigateToFragment(VerificationExpiredFragment())
+                    }
+
                     //TODO fix
                     with(viewBinding ?: return@collect) {
                         clUploadResult.tvUploadSuccessful.visibility = View.GONE
                         clUploadResult.tvUploadWithErrors.visibility = View.VISIBLE
-                        clUploadResult.tvUploadWithErrors.text = (uploadImageResult as UploadImageState.UploadImageError).message
+                        clUploadResult.tvUploadWithErrors.text = uploadImageError?.message
                         clButtons.tvRequirements.visibility = View.GONE
                         clButtons.mbContinue.visibility = View.GONE
                         clButtons.mbRedo.background = ResourcesCompat.getDrawable(

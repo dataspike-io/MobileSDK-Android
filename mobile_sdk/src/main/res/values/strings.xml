@@ -1,5 +1,11 @@
 <resources>
-    <string name="photo_requires_more_light">Photo requires more light</string>
+    <string name="adjust_lighting_conditions">Adjust lighting conditions</string>
+    <string name="tilt_your_face_upward">Tilt your face upward</string>
+    <string name="tilt_your_face_downward">Tilt your face downward</string>
+    <string name="tilt_your_face_to_the_left">Tilt your face to the left</string>
+    <string name="tilt_your_face_to_the_right">Tilt your face to the right</string>
+    <string name="turn_your_face_slightly_left">Turn your face slightly to the left</string>
+    <string name="turn_your_face_slightly_right">Turn your face slightly to the right</string>
     <string name="back_arrow">Back Arrow</string>
     <string name="poi_instructions_title">First let’s get photo of your document</string>
     <string name="liveness_instructions_title">Keep your face in the ellipse</string>
@@ -52,4 +58,17 @@
     <string name="something_went_wrong_this_time">Something went wrong this time.</string>
     <string name="poa_instructions_title">Finally let’s take Proof of Address photo</string>
     <string name="poa_format_and_size_info">File size must be between 100KB and 8MB in .pdf / .jpg / .jpeg / .png format</string>
+    <string name="place_the_document_in_frame_and_take_a_photo">Place the document in frame and take a photo</string>
+    <string name="let_s_upload_proof_of_address_document">Let’s upload Proof of Address document</string>
+    <string name="country_not_identified">Sorry, we couldn\'t identify your document\'s country of issue</string>
+    <string name="document">Document</string>
+    <string name="selfie">Selfie</string>
+    <string name="address">Address</string>
+    <string name="select_country">Select country</string>
+    <string name="select_country_title">Please specify country of issue of the document</string>
+    <string name="search">Search</string>
+    <string name="your_verification_link_has_expired">Your verification link has expired</string>
+    <string name="please_contact_your_compliance_officer">Please contact your compliance officer to request a new link.</string>
+    <string name="time_left">Time left: %s</string>
+
 </resources>

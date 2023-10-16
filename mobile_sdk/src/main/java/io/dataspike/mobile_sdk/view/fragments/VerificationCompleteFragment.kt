@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import io.dataspike.mobile_sdk.DataspikeVerificationStatus
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentVerificationCompleteBinding
 import io.dataspike.mobile_sdk.domain.models.EmptyState
-import io.dataspike.mobile_sdk.passVerificationCompletedResult
 import io.dataspike.mobile_sdk.utils.Utils.launchInMain
 import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
 import io.dataspike.mobile_sdk.view.view_models.VerificationCompleteViewModel
@@ -18,9 +19,11 @@ import io.dataspike.mobile_sdk.view.view_models.VerificationCompleteViewModel
 internal class VerificationCompleteFragment : BaseFragment() {
 
     private var viewBinding: FragmentVerificationCompleteBinding? = null
-    private val viewModel: VerificationCompleteViewModel by viewModels { DataspikeViewModelFactory() }
+    private val viewModel: VerificationCompleteViewModel by viewModels {
+        DataspikeViewModelFactory()
+    }
 
-    private var verificationSucceeded = false
+    private var dataspikeVerificationStatus = DataspikeVerificationStatus.VERIFICATION_FAILED
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,12 +39,20 @@ internal class VerificationCompleteFragment : BaseFragment() {
         collectUploadImageFlow()
         viewModel.proceedWithVerification()
 
-        with(viewBinding?.clCompleteTryAgainLayout ?: return) {
-            mbComplete.setOnClickListener {
-                passVerificationCompletedResult(verificationSucceeded)
-                activity?.finish()
+        viewBinding?.clCompleteTryAgainVerification?.mbComplete?.setOnClickListener {
+            setVerificationStatusAndFinish(dataspikeVerificationStatus)
+        }
+
+        //TODO test
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                setVerificationStatusAndFinish(
+                    DataspikeVerificationStatus.VERIFICATION_EXPIRED
+                )
             }
         }
+
+        activity?.onBackPressedDispatcher?.addCallback(onBackPressedCallback)
     }
 
     private fun collectUploadImageFlow() {
@@ -49,8 +60,8 @@ internal class VerificationCompleteFragment : BaseFragment() {
             viewModel.proceedWithVerificationFlow.collect { result ->
                 if (result is EmptyState.EmptyStateError) {
                     with(viewBinding ?: return@collect) {
-                    clCompleteTryAgainLayout.mbTryAgain.visibility = View.VISIBLE
-                    clCompleteTryAgainLayout.mbTryAgain.setOnClickListener {
+                        clCompleteTryAgainVerification.mbTryAgain.visibility = View.VISIBLE
+                        clCompleteTryAgainVerification.mbTryAgain.setOnClickListener {
                         activity?.supportFragmentManager?.popBackStack(
                             activity?.supportFragmentManager?.getBackStackEntryAt(0)?.id ?: -1,
                             FragmentManager.POP_BACK_STACK_INCLUSIVE
@@ -69,7 +80,7 @@ internal class VerificationCompleteFragment : BaseFragment() {
                         requireContext().getString(R.string.something_went_wrong_this_time)
                 }
                 } else {
-                    verificationSucceeded = true
+                    dataspikeVerificationStatus = DataspikeVerificationStatus.VERIFICATION_SUCCESSFUL
                 }
             }
         }

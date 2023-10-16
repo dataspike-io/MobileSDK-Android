@@ -2,18 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:layout_height="wrap_content">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_26dp"
-        android:layout_marginTop="@dimen/margin_40dp"
-        android:paddingTop="@dimen/back_arrow_top_padding"
-        android:src="@drawable/black_back_button"
+        style="@style/BlackArrowImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/back_arrow" />
@@ -21,11 +16,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_top_instructions"
         style="@style/BlackTopInstructionsTextView"
-        android:layout_width="@dimen/dimen_0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_26dp"
-        android:layout_marginEnd="@dimen/margin_26dp"
-        android:text="@string/poi_instructions_title"
+        tools:text="@string/poi_instructions_title"
         app:layout_constraintStart_toEndOf="@+id/iv_back_button"
         app:layout_constraintTop_toTopOf="@+id/iv_back_button"
         app:layout_constraintEnd_toEndOf="parent"/>

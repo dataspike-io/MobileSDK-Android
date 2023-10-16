@@ -8,6 +8,8 @@ import io.dataspike.mobile_sdk.domain.models.ErrorDomainModel
 import io.dataspike.mobile_sdk.domain.models.UploadImageState
 import retrofit2.HttpException
 
+internal const val ERROR_CODE_EXPIRED = 8000
+
 internal object UploadImageResponseMapper {
 
     fun map(result: Result<UploadImageResponse>): UploadImageState {
@@ -18,6 +20,7 @@ internal object UploadImageResponseMapper {
                     detectedDocumentType = uploadImageResponse.detectedDocumentType ?: "",
                     detectedDocumentSide = uploadImageResponse.detectedDocumentSide ?: "",
                     detectedTwoSideDocument = uploadImageResponse.detectedTwoSideDocument ?: false,
+                    detectedCountry = uploadImageResponse.detectedCountry ?: "",
                     errors = uploadImageResponse.errors?.map { errorResponse ->
                         ErrorDomainModel(
                             code = errorResponse.code ?: -1,
@@ -27,23 +30,17 @@ internal object UploadImageResponseMapper {
                 )
             }
             .onFailure { throwable ->
-                val message = when (throwable) {
-                    is HttpException -> {
-                        throwable.toUploadImageErrorMessage()
-                    }
-
-                    else -> "Unknown error occurred"
-                }
-
-                return UploadImageState.UploadImageError(
-                    message = message
+                return (throwable as? HttpException)?.toUploadImageError() ?:
+                UploadImageState.UploadImageError(
+                    code = -1,
+                    message = "Unknown error occurred",
                 )
             }
 
         throw IllegalStateException("Unknown error occurred")
     }
 
-    private fun HttpException.toUploadImageErrorMessage(): String {
+    private fun HttpException.toUploadImageError(): UploadImageState.UploadImageError {
         val uploadImageErrorResponse = try {
             Gson().fromJson(
                 response()?.errorBody()?.string(),
@@ -53,12 +50,13 @@ internal object UploadImageResponseMapper {
             null
         }
 
-        return uploadImageErrorResponse?.errors?.get(0)?.message?.replaceFirstChar { char ->
-            if (char.isLowerCase()) {
-                char.titlecase()
-            } else {
-                char.toString()
-            }
-        } ?: "Unknown error occurred"
+        val errors = uploadImageErrorResponse?.errors
+        val expiredError = errors?.firstOrNull { error -> error.code == ERROR_CODE_EXPIRED }
+        val firstError = uploadImageErrorResponse?.errors?.get(0)
+
+        return UploadImageState.UploadImageError(
+            code = expiredError?.code ?: firstError?.code ?: -1,
+            message = expiredError?.message ?: firstError?.message ?: "Unknown error occurred"
+        )
     }
 }

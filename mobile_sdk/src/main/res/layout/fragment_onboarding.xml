@@ -2,72 +2,53 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.fragments.BaseCameraFragment"
     android:fitsSystemWindows="false"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".view.fragments.BaseCameraFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_start_verification_title"
         style="@style/BlackTopInstructionsTextView"
-        android:layout_width="@dimen/dimen_0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_40dp"
+        android:layout_marginTop="@dimen/dimen_40dp"
         android:gravity="center"
         android:text="@string/let_s_get_you_verified"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp_onboarding"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:overScrollMode="never"
+    <include
+        android:id="@+id/cl_timer"
+        layout="@layout/timer_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_start_verification_title"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_onboarding"
+        style="@style/ViewPager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_timer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/tl_indicators"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tl_indicators"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_marginBottom="@dimen/dimen_100dp"
-        app:tabIndicatorAnimationMode="linear"
-        app:tabIndicatorHeight="@dimen/dimen_0dp"
-        app:tabRippleColor="@null"
-        app:tabMode="fixed"
-        app:tabGravity="center"
-        app:tabBackground="@drawable/page_selector"
+        style="@style/TabsLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vp_onboarding"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tv_requirements"/>
+        app:layout_constraintBottom_toTopOf="@+id/cl_buttons"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_requirements"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/cl_buttons"
+        layout="@layout/requirements_one_button_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/PurpleTextView"
-        android:text="@string/requirements"
-        android:paddingHorizontal="@dimen/dimen_0dp"
-        android:paddingBottom="@dimen/dimen_4dp"
-        android:background="@drawable/purple_dashed_line"
-        android:layout_marginBottom="@dimen/margin_30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/mb_start_verification"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/mb_start_verification"
-        style="@style/PurpleMaterialButton"
-        android:layout_marginBottom="@dimen/margin_30dp"
-        android:text="@string/start_verification"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

@@ -11,6 +11,8 @@ internal data class UploadImageResponse(
     val detectedDocumentSide: String?,
     @SerializedName("detected_two_side_document")
     val detectedTwoSideDocument: Boolean?,
+    @SerializedName("detected_country")
+    val detectedCountry: String?,
     @SerializedName("errors")
     val errors: List<ErrorResponse>?,
 )

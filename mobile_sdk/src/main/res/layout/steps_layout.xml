@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="io.dataspike.mobile_sdk.view.custom_views.StepsLayout">
+
+    <LinearLayout
+        android:id="@+id/ll_poi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ll_liveness">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_poi"
+            style="@style/StepTextTextView"
+            android:text="@string/document"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_poi"
+            style="@style/StepImageView"
+            android:src="@drawable/step_indicator"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_liveness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@+id/ll_poi"
+        app:layout_constraintTop_toTopOf="@+id/ll_poi"
+        app:layout_constraintEnd_toStartOf="@+id/ll_poa">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_liveness"
+            style="@style/StepTextTextView"
+            android:text="@string/selfie" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_liveness"
+            style="@style/StepImageView"
+            android:src="@drawable/step_indicator"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_poa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@+id/ll_liveness"
+        app:layout_constraintTop_toTopOf="@+id/ll_poi"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_poa"
+            style="@style/StepTextTextView"
+            android:text="@string/address"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_poa"
+            style="@style/StepImageView"
+            android:src="@drawable/step_indicator"/>
+
+    </LinearLayout>
+
+</merge>

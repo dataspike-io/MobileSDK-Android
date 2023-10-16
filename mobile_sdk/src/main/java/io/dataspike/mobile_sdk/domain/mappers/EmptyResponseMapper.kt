@@ -7,7 +7,7 @@ import io.dataspike.mobile_sdk.data.models.responses.HttpErrorResponse
 import io.dataspike.mobile_sdk.domain.models.EmptyState
 import retrofit2.HttpException
 
-internal object EmptyStateMapper {
+internal object EmptyResponseMapper {
 
     fun map(result: Result<EmptyResponse>): EmptyState {
         result

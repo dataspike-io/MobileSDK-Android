@@ -8,9 +8,6 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_poi_requirements_title"
         style="@style/DocumentInstructionTitleTextView"
-        android:layout_width="@dimen/dimen_0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
         android:text="@string/poi_requirements_description"
         app:layout_constraintEnd_toEndOf="@+id/cl_no_black_and_white_poi"
         app:layout_constraintStart_toStartOf="@+id/cl_good_poi"
@@ -20,15 +17,14 @@
         android:id="@+id/cl_good_poi"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dimen_0dp"
-        android:layout_marginTop="@dimen/margin_30dp"
+        android:layout_marginTop="@dimen/dimen_30dp"
         app:layout_constraintEnd_toStartOf="@+id/cl_no_black_and_white_poi"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_poi_requirements_title">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_good_poi"
-            android:layout_width="@dimen/requirement_card_width_138dp"
-            android:layout_height="@dimen/requirement_card_height_108dp"
+            style="@style/RequirementImageView"
             android:src="@drawable/good_poi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,13 +32,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/DocumentInstructionTextView"
-            android:layout_width="@dimen/dimen_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/half_margin"
             android:text="@string/good_poi"
             app:layout_constraintEnd_toEndOf="@+id/iv_good_poi"
             app:layout_constraintStart_toStartOf="@+id/iv_good_poi"
             app:layout_constraintTop_toBottomOf="@+id/iv_good_poi" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,8 +49,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_no_black_and_white_poi"
-            android:layout_width="@dimen/requirement_card_width_138dp"
-            android:layout_height="@dimen/requirement_card_height_108dp"
+            style="@style/RequirementImageView"
             android:src="@drawable/no_black_and_white_poi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,27 +57,24 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/DocumentInstructionTextView"
-            android:layout_width="@dimen/dimen_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/half_margin"
             android:text="@string/no_black_and_white_poi"
             app:layout_constraintEnd_toEndOf="@+id/iv_no_black_and_white_poi"
             app:layout_constraintStart_toStartOf="@+id/iv_no_black_and_white_poi"
             app:layout_constraintTop_toBottomOf="@+id/iv_no_black_and_white_poi" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_no_dark_poi"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dimen_0dp"
-        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginTop="@dimen/dimen_16dp"
         app:layout_constraintStart_toStartOf="@+id/cl_good_poi"
         app:layout_constraintTop_toBottomOf="@+id/cl_good_poi">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_no_dark_poi"
-            android:layout_width="@dimen/requirement_card_width_138dp"
-            android:layout_height="@dimen/requirement_card_height_108dp"
+            style="@style/RequirementImageView"
             android:src="@drawable/no_dark_poi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -92,13 +82,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/DocumentInstructionTextView"
-            android:layout_width="@dimen/dimen_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/half_margin"
             android:text="@string/no_dark_poi"
             app:layout_constraintEnd_toEndOf="@+id/iv_no_dark_poi"
             app:layout_constraintStart_toStartOf="@+id/iv_no_dark_poi"
             app:layout_constraintTop_toBottomOf="@+id/iv_no_dark_poi" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -110,8 +98,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_no_blurry_poi"
-            android:layout_width="@dimen/requirement_card_width_138dp"
-            android:layout_height="@dimen/requirement_card_height_108dp"
+            style="@style/RequirementImageView"
             android:src="@drawable/no_blurry_poi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -119,13 +106,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/DocumentInstructionTextView"
-            android:layout_width="@dimen/dimen_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/half_margin"
             android:text="@string/no_blurred_poi"
             app:layout_constraintEnd_toEndOf="@+id/iv_no_blurry_poi"
             app:layout_constraintStart_toStartOf="@+id/iv_no_blurry_poi"
             app:layout_constraintTop_toBottomOf="@+id/iv_no_blurry_poi" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -137,8 +122,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_no_damaged_poi"
-            android:layout_width="@dimen/requirement_card_width_138dp"
-            android:layout_height="@dimen/requirement_card_height_108dp"
+            style="@style/RequirementImageView"
             android:src="@drawable/no_damaged_poi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -146,27 +130,24 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/DocumentInstructionTextView"
-            android:layout_width="@dimen/dimen_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/half_margin"
             android:text="@string/no_damaged_poi"
             app:layout_constraintEnd_toEndOf="@+id/iv_no_damaged_poi"
             app:layout_constraintStart_toStartOf="@+id/iv_no_damaged_poi"
             app:layout_constraintTop_toBottomOf="@+id/iv_no_damaged_poi" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_no_expired_poi"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dimen_0dp"
-        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginTop="@dimen/dimen_16dp"
         app:layout_constraintStart_toStartOf="@+id/cl_no_blurry_poi"
         app:layout_constraintTop_toBottomOf="@+id/cl_no_blurry_poi">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_no_expired_poi"
-            android:layout_width="@dimen/requirement_card_width_138dp"
-            android:layout_height="@dimen/requirement_card_height_108dp"
+            style="@style/RequirementImageView"
             android:src="@drawable/no_expired_poi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -174,13 +155,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/DocumentInstructionTextView"
-            android:layout_width="@dimen/dimen_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/half_margin"
             android:text="@string/no_expired_poi"
             app:layout_constraintEnd_toEndOf="@+id/iv_no_expired_poi"
             app:layout_constraintStart_toStartOf="@+id/iv_no_expired_poi"
             app:layout_constraintTop_toBottomOf="@+id/iv_no_expired_poi" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
@@ -189,4 +168,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cl_no_expired_poi" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

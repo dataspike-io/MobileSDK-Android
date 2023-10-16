@@ -15,7 +15,8 @@
         <activity
             android:name=".view.SampleAppActivity"
             android:exported="true"
-            android:theme="@style/Theme.MobileSDKAndroid">
+            android:theme="@style/Theme.MobileSDKAndroid"
+            android:screenOrientation="locked">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

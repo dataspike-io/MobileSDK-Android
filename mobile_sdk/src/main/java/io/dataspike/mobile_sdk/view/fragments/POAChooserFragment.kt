@@ -11,8 +11,9 @@ import androidx.core.os.bundleOf
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.data.image_caching.ImageCacheManager
 import io.dataspike.mobile_sdk.databinding.FragmentPoaChooserBinding
+import io.dataspike.mobile_sdk.utils.Utils.acceptableForUploadFileFormats
+import io.dataspike.mobile_sdk.utils.Utils.displayMetrics
 import io.dataspike.mobile_sdk.utils.Utils.toBitmap
-import io.dataspike.mobile_sdk.utils.acceptableForUploadFileFormats
 import io.dataspike.mobile_sdk.view.IMAGE_TYPE
 import io.dataspike.mobile_sdk.view.POA
 
@@ -42,7 +43,7 @@ internal class POAChooserFragment : BaseFragment() {
         with(viewBinding ?: return) {
             with(clBlackTextHeaderLayout) {
                 tvTopInstructions.text =
-                    requireContext().getString(R.string.poa_instructions_title)
+                    requireContext().getString(R.string.let_s_upload_proof_of_address_document)
                 ivBackButton.setOnClickListener {
                     parentFragmentManager.popBackStack()
                 }
@@ -53,12 +54,14 @@ internal class POAChooserFragment : BaseFragment() {
                     openRequirementsScreen(POA)
                 }
                 mbTakeAPhoto.setOnClickListener {
-                    goToFragment(POAVerificationFragment())
+                    navigateToFragment(POAVerificationFragment())
                 }
                 mbUpload.setOnClickListener {
                     pickFile()
                 }
             }
+
+            clSteps.setStepsState(POA)
         }
     }
 
@@ -89,18 +92,19 @@ internal class POAChooserFragment : BaseFragment() {
                         contentResolver.openInputStream(uri).use { inputStream ->
                             inputStream ?: return@registerForActivityResult
 
-                            val display = activity?.windowManager?.defaultDisplay
+                            val width = displayMetrics.widthPixels
+                            val height = (width * 1.3).toInt()
 
                             ImageCacheManager.putBitmapIntoCache(
                                 POA,
                                 inputStream.toBitmap(
                                     fileType,
-                                    display?.width,
-                                    display?.height
+                                    width,
+                                    height
                                 )
                             )
 
-                            goToFragment(
+                            navigateToFragment(
                                 ImagePreviewFragment().apply {
                                     arguments = bundleOf(IMAGE_TYPE to POA)
                                 }
