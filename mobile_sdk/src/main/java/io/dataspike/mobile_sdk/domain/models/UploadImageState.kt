@@ -7,10 +7,12 @@ internal sealed class UploadImageState {
         val detectedDocumentType: String,
         val detectedDocumentSide: String,
         val detectedTwoSideDocument: Boolean,
+        val detectedCountry: String,
         val errors: List<ErrorDomainModel>,
     ): UploadImageState()
 
     internal data class UploadImageError(
+        val code: Int,
         val message: String,
     ): UploadImageState()
 }

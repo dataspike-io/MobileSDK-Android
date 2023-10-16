@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import io.dataspike.mobile_sdk.AppInfo
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.data.image_caching.ImageCacheManager
 import io.dataspike.mobile_sdk.databinding.ActivityDataspikeBinding
@@ -13,6 +14,7 @@ import io.dataspike.mobile_sdk.utils.Utils.launchInMain
 import io.dataspike.mobile_sdk.view.fragments.OnboardingFragment
 import io.dataspike.mobile_sdk.view.view_models.DataspikeActivityViewModel
 import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
+import kotlinx.coroutines.runBlocking
 
 internal const val REQUIREMENTS_TYPE = "requirements_type"
 internal const val IMAGE_TYPE = "image_type"
@@ -33,6 +35,14 @@ internal class DataspikeActivity : AppCompatActivity() {
         setContentView(viewBinding?.root)
 
         collectVerificationFlow()
+
+        runBlocking {
+            AppInfo.setAppInfo(
+                getString(applicationInfo.labelRes),
+                packageManager.getPackageInfo(packageName, 0).versionName,
+            )
+        }
+
         viewModel.getVerification()
     }
 
@@ -54,7 +64,7 @@ internal class DataspikeActivity : AppCompatActivity() {
                         supportFragmentManager
                             .beginTransaction()
                             .add(
-                                R.id.container,
+                                R.id.fcv_container,
                                 OnboardingFragment()
                             ).commit()
                     }

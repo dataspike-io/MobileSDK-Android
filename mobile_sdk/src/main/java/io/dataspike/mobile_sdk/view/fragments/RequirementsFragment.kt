@@ -8,7 +8,8 @@ import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentRequirementsBinding
 import io.dataspike.mobile_sdk.view.LIVENESS
 import io.dataspike.mobile_sdk.view.POA
-import io.dataspike.mobile_sdk.view.POI
+import io.dataspike.mobile_sdk.view.POI_BACK
+import io.dataspike.mobile_sdk.view.POI_FRONT
 import io.dataspike.mobile_sdk.view.REQUIREMENTS_TYPE
 
 internal class RequirementsFragment: BaseFragment() {
@@ -31,7 +32,7 @@ internal class RequirementsFragment: BaseFragment() {
         requirementsType = arguments?.getString(REQUIREMENTS_TYPE)
 
         with(viewBinding ?: return) {
-            clHeaderLayout.ivBackButton.setOnClickListener {
+            clBlackTextHeaderLayout.ivBackButton.setOnClickListener {
                 parentFragmentManager.popBackStack()
             }
 
@@ -39,8 +40,8 @@ internal class RequirementsFragment: BaseFragment() {
                 parentFragmentManager.popBackStack()
             }
 
-            clHeaderLayout.tvTopInstructions.text = when (requirementsType) {
-                POI -> {
+            clBlackTextHeaderLayout.tvTopInstructions.text = when (requirementsType) {
+                POI_FRONT, POI_BACK -> {
                     clPoiRequirements.root.visibility = View.VISIBLE
                     requireContext().getString(R.string.poi_requirements_title)
                 }

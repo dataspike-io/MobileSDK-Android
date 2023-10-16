@@ -8,6 +8,8 @@
     <color name="light_red">#FF5387</color>
     <color name="light_green">#52C27F</color>
     <color name="light_grey">#747391</color>
+    <color name="lighter_grey">#BBBAC9</color>
     <color name="transparent_ds_purple">#306764E8</color>
+    <color name="lighter_purple">#D8DEFB</color>
     <color name="light_purple">#AFAFF0</color>
 </resources>

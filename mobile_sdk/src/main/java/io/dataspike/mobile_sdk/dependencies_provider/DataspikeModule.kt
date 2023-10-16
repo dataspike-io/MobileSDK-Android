@@ -2,11 +2,11 @@ package io.dataspike.mobile_sdk.dependencies_provider
 
 import com.google.gson.Gson
 import io.dataspike.mobile_sdk.data.api.IDataspikeApiService
-import io.dataspike.mobile_sdk.data.remote.HeadersInterceptor
+import io.dataspike.mobile_sdk.data.remote.DataspikeHeadersInterceptor
 import io.dataspike.mobile_sdk.data.repository.DataspikeRepositoryImpl
 import io.dataspike.mobile_sdk.data.repository.IDataspikeRepository
 import io.dataspike.mobile_sdk.dependencies_provider.model.DataspikeDependencies
-import io.dataspike.mobile_sdk.domain.VerificationChecksManager
+import io.dataspike.mobile_sdk.domain.VerificationManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -16,12 +16,12 @@ internal interface DataspikeModule {
 
     val dataspikeRepository: IDataspikeRepository
 
-    val verificationSettingsManager: VerificationChecksManager
+    val verificationSettingsManager: VerificationManager
 
     class Impl(dependencies: DataspikeDependencies) : DataspikeModule {
         private val okHttpClient: OkHttpClient =
             OkHttpClient().newBuilder()
-                .addInterceptor(HeadersInterceptor(dependencies.dsApiToken))
+                .addInterceptor(DataspikeHeadersInterceptor(dependencies.dsApiToken))
                 .addInterceptor(
                     HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
                 )
@@ -48,8 +48,8 @@ internal interface DataspikeModule {
             )
 
         //TODO change to class
-        override val verificationSettingsManager: VerificationChecksManager =
-            VerificationChecksManager
+        override val verificationSettingsManager: VerificationManager =
+            VerificationManager
     }
 
     companion object {

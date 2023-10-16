@@ -8,12 +8,14 @@ internal fun setVerificationCompletedCallback(
     verificationCompletedCallback = callback
 }
 
-internal fun passVerificationCompletedResult(verificationSucceeded: Boolean) {
-    verificationCompletedCallback?.onVerificationCompleted(verificationSucceeded)
+internal fun passVerificationCompletedResult(
+    dataspikeVerificationStatus: DataspikeVerificationStatus
+) {
+    verificationCompletedCallback?.onVerificationCompleted(dataspikeVerificationStatus)
     verificationCompletedCallback = null
 }
 
 interface VerificationCompletedCallback {
 
-    fun onVerificationCompleted(verificationSucceeded: Boolean)
+    fun onVerificationCompleted(dataspikeVerificationStatus: DataspikeVerificationStatus)
 }

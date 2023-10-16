@@ -5,14 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/transparent_ds_purple"
-    android:elevation="@dimen/default_margin"
+    android:elevation="@dimen/dimen_16dp"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:visibility="gone">
 
 <ProgressBar
-    android:layout_width="wrap_content"
-    android:layout_height="0dp"
-    android:layout_gravity="center"
-    android:layout_weight="1"
-    android:indeterminateTint="@color/ds_purple"/>
+    style="@style/ProgressBar"/>
+
 </LinearLayout>

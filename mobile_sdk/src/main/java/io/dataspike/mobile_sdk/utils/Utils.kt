@@ -1,15 +1,17 @@
 package io.dataspike.mobile_sdk.utils
 
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.RectF
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
+import android.util.DisplayMetrics
 import android.util.Log
-import android.view.Display
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.TypedValueCompat.dpToPx
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
@@ -21,18 +23,21 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.nio.ByteBuffer
 
-internal val acceptableForUploadFileFormats = arrayOf(
-    "image/jpeg",
-    "image/jpg",
-    "image/png",
-    "application/pdf"
-)
 internal object Utils {
+
+    val acceptableForUploadFileFormats = arrayOf(
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "application/pdf"
+    )
+    val displayMetrics: DisplayMetrics get() = Resources.getSystem().displayMetrics
 
     fun ByteBuffer.toByteArray(): ByteArray {
         rewind()
         val data = ByteArray(remaining())
         get(data)
+
         return data
     }
 
@@ -84,15 +89,17 @@ internal object Utils {
         }
     }
 
-    fun Bitmap.crop(display: Display?, cropArea: RectF?): Bitmap {
-        if (display == null || cropArea == null) return this
+    fun Bitmap.crop(cropArea: RectF?): Bitmap {
+        cropArea ?: return this
 
-        val displayWidth = display.width
-        val displayHeight = display.height
-        val x = ((width * cropArea.left) / displayWidth).toInt()
-        val y = ((height * cropArea.top) / displayHeight).toInt()
-        val croppedBitmapWidth = ((width * cropArea.width()) / displayWidth).toInt()
-        val croppedBitmapHeight = ((height * cropArea.height()) / displayHeight).toInt()
+        val x = ((width * cropArea.left) / displayMetrics.widthPixels).toInt()
+        val y = ((height * cropArea.top) / displayMetrics.heightPixels).toInt()
+        val croppedBitmapWidth = (
+                (width * cropArea.width()) / displayMetrics.widthPixels
+                ).toInt()
+        val croppedBitmapHeight = (
+                (height * cropArea.height()) / displayMetrics.heightPixels
+                ).toInt()
 
         return Bitmap.createBitmap(
             this,
@@ -103,11 +110,11 @@ internal object Utils {
         )
     }
 
-    //TODO should catch possible exceptions
+    //TODO should catch possible exceptions?
     fun InputStream.toBitmap(
         fileType: String,
-        width: Int? = null,
-        height: Int? = null
+        width: Int,
+        height: Int,
     ): Bitmap? {
         if (!acceptableForUploadFileFormats.contains(fileType)) {
             Log.d("Dataspike", "File is not of a supported type")
@@ -127,10 +134,9 @@ internal object Utils {
                 )
             )
 
-            //TODO fix width and height & does stream need to be closed?
+            //TODO does stream need to be closed?
             val page = renderer.openPage(0)
-            val bitmap =
-                Bitmap.createBitmap(width ?: 0, height ?: 0, Bitmap.Config.ARGB_8888)
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
             page.render(
                 bitmap,
@@ -145,9 +151,12 @@ internal object Utils {
             bitmap
         } else {
             val bitmap = BitmapFactory.decodeStream(this)
+
             close()
 
             bitmap
         }
     }
+
+    fun dpToPx(dp: Float): Float = dpToPx(dp, displayMetrics)
 }

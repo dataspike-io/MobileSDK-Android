@@ -1,7 +1,7 @@
 <resources>
-    <dimen name="default_margin">16dp</dimen>
+    <dimen name="dimen_16dp">16dp</dimen>
     <dimen name="buttons_margin">30dp</dimen>
     <dimen name="button_text_size">20sp</dimen>
-    <dimen name="margin_30dp">30dp</dimen>
-    <dimen name="margin_40dp">40dp</dimen>
+    <dimen name="dimen_30dp">30dp</dimen>
+    <dimen name="dimen_40dp">40dp</dimen>
 </resources>

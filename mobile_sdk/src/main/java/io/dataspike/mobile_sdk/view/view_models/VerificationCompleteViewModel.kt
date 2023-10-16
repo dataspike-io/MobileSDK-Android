@@ -15,11 +15,9 @@ internal class VerificationCompleteViewModel(
 
     fun proceedWithVerification() {
         launchInVMScope {
-            DataspikeInjector.component.shortId?.let { shortId ->
-                _proceedWithVerificationFlow.emit(
-                    proceedWithVerificationUseCase.invoke(shortId)
-                )
-            }
+            _proceedWithVerificationFlow.emit(
+                proceedWithVerificationUseCase.invoke(DataspikeInjector.component.shortId)
+            )
         }
     }
 }

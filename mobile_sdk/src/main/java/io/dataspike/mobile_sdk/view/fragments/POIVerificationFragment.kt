@@ -33,71 +33,43 @@ internal class POIVerificationFragment : BaseCameraFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //TODO recreate state with taken image
-        val vb = viewBinding ?: return
-
-        with(vb) {
+        with(viewBinding ?: return) {
             initActivityResultLauncher(pvViewFinder)
             setCameraButtonsListeners(
-                ivImageCaptionButton,
-                ivCameraSwitchButton,
+                clCameraButtons.ivImageCaptionButton,
+                clCameraButtons.ivCameraSwitchButton,
                 pvViewFinder,
             )
 
-            ivBackButton.setOnClickListener {
-                parentFragmentManager.popBackStack()
+            with(clWhiteTextHeaderLayout) {
+                tvTopInstructions.text = requireContext().getString(
+                    R.string.place_the_document_in_frame_and_take_a_photo
+                )
+                ivBackButton.setOnClickListener {
+                    parentFragmentManager.popBackStack()
+                }
             }
+
         }
     }
 
-    override fun analyseImage(luminosityIsFine: Boolean, boundingBox: RectF?, headIsStraight: Boolean?) {
-        //TODO return this
-//        val stringId: Int
-//        val textColorId: Int
-//
-//        with(viewBinding ?: return) {
-//            if (!luminosityIsFine) {
-//                stringId = R.string.photo_requires_more_light
-//                textColorId = R.color.light_red
-//            } else {
-//                stringId = R.string.document_instructions
-//                textColorId = R.color.white
-//            }
-//
-//            with(tvBottomInstructionsText) {
-//                text = getString(stringId)
-//                setTextColor(ResourcesCompat.getColor(resources, textColorId, null))
-//            }
-//        }
-
-        val poiIsInFrame = (
-                boundingBox?.let {
-                    viewBinding?.ovPoi?.poiFrameRectF?.contains(it)
-                } == true
-                )
-                && luminosityIsFine
-
-        viewBinding?.ovPoi?.setDocumentIsInFrame(poiIsInFrame)
-        viewBinding?.ovPoi?.poiBoundingBox = boundingBox
-    }
-
     override fun photoTaken(bitmap: Bitmap) {
-        val croppedBitmap = bitmap.crop(
-            activity?.windowManager?.defaultDisplay,
-            viewBinding?.ovPoi?.poiFrameRectF
-        )
+        val croppedBitmap = bitmap.crop(viewBinding?.ovPoi?.poiFrameRectF)
 
         ImageCacheManager.putBitmapIntoCache(imageType ?: "", croppedBitmap)
 
-        activity
-            ?.supportFragmentManager
-            ?.beginTransaction()
-            ?.replace(
-                R.id.container,
-                ImagePreviewFragment().apply {
-                    arguments = bundleOf(IMAGE_TYPE to imageType)
-                }
-            )
-            ?.addToBackStack(null)
-            ?.commit()
+        navigateToFragment(
+            ImagePreviewFragment().apply {
+                arguments = bundleOf(IMAGE_TYPE to imageType)
+            },
+            false
+        )
+    }
+
+    override fun analyseDocument(boundingBox: RectF) {
+        val poiIsInFrame = viewBinding?.ovPoi?.poiFrameRectF?.contains(boundingBox) ?: false
+
+        viewBinding?.ovPoi?.setDocumentIsInFrame(poiIsInFrame)
+        viewBinding?.ovPoi?.poiBoundingBox = boundingBox
     }
 }

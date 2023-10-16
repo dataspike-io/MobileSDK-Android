@@ -1,4 +1,4 @@
-package io.dataspike.mobile_sdk.view
+package io.dataspike.mobile_sdk.view.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,21 +6,25 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.OnboardingPageLayoutBinding
-import io.dataspike.mobile_sdk.domain.VerificationChecksManager
+import io.dataspike.mobile_sdk.domain.VerificationManager
+import io.dataspike.mobile_sdk.view.LIVENESS
+import io.dataspike.mobile_sdk.view.POA
+import io.dataspike.mobile_sdk.view.POI_FRONT
 
-internal class OnboardingViewPager2Adapter: RecyclerView.Adapter<OnboardingViewPager2Adapter.ViewHolder>() {
+internal class OnboardingViewPager2Adapter:
+    RecyclerView.Adapter<OnboardingViewPager2Adapter.ViewHolder>() {
 
     private val items: MutableMap<Int, Triple<Int, Int, String>> = mutableMapOf()
 
     init {
         var position = 0
 
-        with(VerificationChecksManager.checks) {
+        with(VerificationManager.checks) {
             if (poiIsRequired) {
                 items[position++] = Triple(
                     R.drawable.onboarding_poi,
                     R.string.onboarding_step_1,
-                    POI
+                    POI_FRONT
                 )
             }
             if (livenessIsRequired) {
@@ -41,7 +45,12 @@ internal class OnboardingViewPager2Adapter: RecyclerView.Adapter<OnboardingViewP
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = OnboardingPageLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = OnboardingPageLayoutBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+
         return ViewHolder(binding)
     }
 
@@ -66,7 +75,7 @@ internal class OnboardingViewPager2Adapter: RecyclerView.Adapter<OnboardingViewP
 
     fun getCurrentPage(position: Int) = items[position]?.third
 
-    inner class ViewHolder(binding: OnboardingPageLayoutBinding) :
+    inner class ViewHolder(binding: OnboardingPageLayoutBinding):
         RecyclerView.ViewHolder(binding.root) {
         val ivOnboardingImage = binding.ivOnboardingImage
         val tvOnboardingText = binding.tvOnboardingText

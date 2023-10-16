@@ -15,9 +15,7 @@ internal class DataspikeActivityViewModel(
 
     fun getVerification() {
         launchInVMScope {
-            DataspikeInjector.component.shortId?.let { shortId ->
-                _verificationFlow.emit(getVerificationUseCase(shortId))
-            }
+            _verificationFlow.emit(getVerificationUseCase(DataspikeInjector.component.shortId))
         }
     }
 }

@@ -3,7 +3,7 @@ package io.dataspike.mobile_sdk.view.view_models
 import io.dataspike.mobile_sdk.data.image_caching.ImageCacheManager
 import io.dataspike.mobile_sdk.data.use_cases.UploadImageUseCase
 import io.dataspike.mobile_sdk.dependencies_provider.DataspikeInjector
-import io.dataspike.mobile_sdk.domain.VerificationChecksManager
+import io.dataspike.mobile_sdk.domain.VerificationManager
 import io.dataspike.mobile_sdk.domain.models.UploadImageState
 import io.dataspike.mobile_sdk.utils.Utils.toFile
 import io.dataspike.mobile_sdk.view.POI
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.SharedFlow
 
 internal class ImagePreviewViewModel(
     private val uploadImageUseCase: UploadImageUseCase,
-    private val verificationSettingsManager: VerificationChecksManager,
+    private val verificationSettingsManager: VerificationManager,
 //    private val uiMapper: ImagePreviewUiMapper,
 ): BaseViewModel() {
 
@@ -38,7 +38,7 @@ internal class ImagePreviewViewModel(
                     ?.toFile("${System.currentTimeMillis()}_DS", dir)
 
             val uploadImageResult = uploadImageUseCase.invoke(
-                DataspikeInjector.component.shortId ?: return@launchInVMScope,
+                DataspikeInjector.component.shortId,
                 docType,
                 file ?: return@launchInVMScope
             )

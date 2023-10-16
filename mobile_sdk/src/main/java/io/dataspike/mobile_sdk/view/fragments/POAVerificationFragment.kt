@@ -30,52 +30,40 @@ internal class POAVerificationFragment : BaseCameraFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewBinding?.let { vb ->
-            initActivityResultLauncher(vb.pvViewFinder)
+        with(viewBinding ?: return) {
+            initActivityResultLauncher(pvViewFinder)
             setCameraButtonsListeners(
-                vb.ivImageCaptionButton,
-                vb.ivCameraSwitchButton,
-                vb.pvViewFinder
+                clCameraButtons.ivImageCaptionButton,
+                clCameraButtons.ivCameraSwitchButton,
+                pvViewFinder
             )
+
+            with(clWhiteTextHeaderLayout) {
+                tvTopInstructions.text = requireContext().getString(
+                    R.string.place_the_document_in_frame_and_take_a_photo
+                )
+                ivBackButton.setOnClickListener {
+                    parentFragmentManager.popBackStack()
+                }
+            }
         }
     }
 
     override fun photoTaken(bitmap: Bitmap) {
-        val croppedBitmap = bitmap.crop(
-            activity?.windowManager?.defaultDisplay,
-            viewBinding?.ovPoa?.poiFrameRectF
-        )
+        val croppedBitmap = bitmap.crop(viewBinding?.ovPoa?.poiFrameRectF)
 
         ImageCacheManager.putBitmapIntoCache(POA, croppedBitmap)
 
-        activity
-            ?.supportFragmentManager
-            ?.beginTransaction()
-            ?.replace(
-                R.id.container,
-                ImagePreviewFragment().apply {
-                    arguments = bundleOf(IMAGE_TYPE to POA)
-                }
-            )
-            ?.addToBackStack(null)
-            ?.commit()
+        navigateToFragment(
+            ImagePreviewFragment().apply {
+                arguments = bundleOf(IMAGE_TYPE to POA)
+            },
+            false
+        )
     }
 
-    override fun analyseImage(luminosityIsFine: Boolean, boundingBox: RectF?, headIsStraight: Boolean?) {
-//        with(viewBinding ?: return) {
-//            tvMessage.visibility = if (!luminosityIsFine) {
-//                View.VISIBLE
-//            } else {
-//                View.GONE
-//            }
-//        }
-
-        val poaIsInFrame = (
-                boundingBox?.let {
-                    viewBinding?.ovPoa?.poiFrameRectF?.contains(it)
-                } == true
-                )
-                && luminosityIsFine
+    override fun analyseDocument(boundingBox: RectF) {
+        val poaIsInFrame = viewBinding?.ovPoa?.poaFrameRectF?.contains(boundingBox) ?: false
 
         viewBinding?.ovPoa?.setDocumentIsInFrame(poaIsInFrame)
         viewBinding?.ovPoa?.poaBoundingBox = boundingBox

@@ -4,6 +4,7 @@ import android.Manifest
 import android.graphics.Bitmap
 import android.graphics.RectF
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
 import android.view.View
@@ -14,7 +15,6 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -22,29 +22,36 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toRectF
 import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.face.Face
 import com.google.mlkit.vision.face.FaceDetection
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.google.mlkit.vision.face.FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE
 import com.google.mlkit.vision.objects.ObjectDetection
 import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
-import io.dataspike.mobile_sdk.ImageAnalysisListener
+import io.dataspike.mobile_sdk.DocumentAnalysisListener
+import io.dataspike.mobile_sdk.LivenessAnalysisListener
+import io.dataspike.mobile_sdk.R
+import io.dataspike.mobile_sdk.utils.Utils.displayMetrics
 import io.dataspike.mobile_sdk.utils.Utils.rotate
 import io.dataspike.mobile_sdk.utils.Utils.toByteArray
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import kotlin.math.abs
 
 private const val TAG = "DataspikeSDK"
 private const val CAMERA_PERMISSION = Manifest.permission.CAMERA
+private const val MIN_HEAD_ROTATION = -10
 private const val MAX_HEAD_ROTATION = 10
-const val MINIMUM_LUMINOSITY = 80
+private const val MIN_LUMINOSITY = 80
 
-
-internal abstract class BaseCameraFragment : BaseFragment(), ImageAnalysisListener {
+internal abstract class BaseCameraFragment
+    : BaseFragment(), DocumentAnalysisListener, LivenessAnalysisListener {
 
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var activityResultLauncher: ActivityResultLauncher<String>
+    private val imageAnalysis = ImageAnalysis.Builder()
+        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+        .build()
     var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,7 +64,14 @@ internal abstract class BaseCameraFragment : BaseFragment(), ImageAnalysisListen
         cameraExecutor.shutdown()
     }
 
-    private fun startCamera(previewView: PreviewView?) {
+    override fun analyseDocument(boundingBox: RectF) = Unit
+    override fun analyseLiveness(
+        luminosityIsFine: Boolean?,
+        boundingBox: RectF?,
+        livenessStatusStringId: Int?
+    ) = Unit
+
+    fun startCamera(previewView: PreviewView?) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         cameraProviderFuture.addListener(
@@ -66,9 +80,15 @@ internal abstract class BaseCameraFragment : BaseFragment(), ImageAnalysisListen
                 val preview = Preview.Builder().build().also {  preview ->
                     preview.setSurfaceProvider(previewView?.surfaceProvider)
                 }
-                val width = activity?.windowManager?.defaultDisplay?.width ?: 0
-                val height = activity?.windowManager?.defaultDisplay?.height ?: 0
-                imageCapture = ImageCapture.Builder().setTargetResolution(Size(width, height)).build()
+
+                imageCapture = ImageCapture.Builder()
+                    .setTargetResolution(
+                        Size(
+                            displayMetrics.widthPixels,
+                            displayMetrics.heightPixels
+                        )
+                    )
+                    .build()
 
                 try {
                     cameraProvider.unbindAll()
@@ -77,7 +97,7 @@ internal abstract class BaseCameraFragment : BaseFragment(), ImageAnalysisListen
                         cameraSelector,
                         preview,
                         imageCapture,
-                        startImageAnalyzer()
+                        startImageAnalyzer(displayMetrics)
                     )
                 } catch (e: Exception) {
                     Log.e(TAG, "Use case binding failed", e)
@@ -88,21 +108,16 @@ internal abstract class BaseCameraFragment : BaseFragment(), ImageAnalysisListen
     }
 
     @OptIn(ExperimentalGetImage::class)
-    private fun startImageAnalyzer(): ImageAnalysis {
-        val width = activity?.windowManager?.defaultDisplay?.width ?: 0
-        val height = activity?.windowManager?.defaultDisplay?.height ?: 0
-        val imageAnalysis = ImageAnalysis.Builder()
-//            .setTargetResolution(Size(width, height))
-            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-            .build()
-
+    private fun startImageAnalyzer(displayMetrics: DisplayMetrics): ImageAnalysis {
         imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(requireContext())) { imageProxy ->
-            val buffer = imageProxy.planes[0].buffer
-            val data = buffer.toByteArray()
-            val pixels = data.map { it.toInt() and 0xFF }
-            val luminosity = pixels.average()
+            val scaleX = (displayMetrics.widthPixels / imageProxy.height).toFloat()
+            val scaleY = (displayMetrics.heightPixels / imageProxy.width).toFloat()
 
             if (this@BaseCameraFragment is LivenessVerificationFragment) {
+                val buffer = imageProxy.planes[0].buffer
+                val data = buffer.toByteArray()
+                val pixels = data.map { it.toInt() and 0xFF }
+                val luminosity = pixels.average()
                 val faceDetectorOptions = FaceDetectorOptions.Builder()
                     .setPerformanceMode(PERFORMANCE_MODE_ACCURATE)
                     .build()
@@ -119,26 +134,19 @@ internal abstract class BaseCameraFragment : BaseFragment(), ImageAnalysisListen
                     } else {
                         null
                     }
-                    val headIsStraight = successfulResult?.let { face ->
-                        abs(face.headEulerAngleX) < MAX_HEAD_ROTATION
-                        && abs(face.headEulerAngleY) < MAX_HEAD_ROTATION
-                        && abs(face.headEulerAngleZ) < MAX_HEAD_ROTATION
-                    }
-
-                    val scaleX = (width / (imageProxy.image?.height ?: 1)).toFloat()
-                    val scaleY = (height / (imageProxy.image?.width ?: 1)).toFloat()
+                    val livenessStatusId = getLivenessStatusText(successfulResult, luminosity)
                     val box = successfulResult?.boundingBox?.toRectF() ?: RectF()
                     val scaledBoundingBox = RectF(
-                        box.left * 1.4f,
-                        box.top * scaleY * 1.1f,
-                        box.right * scaleX * 1.3f,
+                        box.left * scaleX,
+                        box.top * scaleY,
+                        box.right * scaleX,
                         box.bottom * scaleY
                     )
 
-                    analyseImage(
-                        luminosity >= MINIMUM_LUMINOSITY,
-                        scaledBoundingBox,
-                        headIsStraight,
+                    analyseLiveness(
+                        luminosityIsFine = luminosity >= MIN_LUMINOSITY,
+                        boundingBox = scaledBoundingBox,
+                        livenessStatusStringId = livenessStatusId,
                     )
 
                     imageProxy.close()
@@ -161,20 +169,15 @@ internal abstract class BaseCameraFragment : BaseFragment(), ImageAnalysisListen
                         null
                     }
 
-                    val scaleX = (width / (imageProxy.image?.height ?: 1)).toFloat()
-                    val scaleY = (height / (imageProxy.image?.width ?: 1)).toFloat()
                     val box = successfulResult?.boundingBox?.toRectF() ?: RectF()
                     val scaledBoundingBox = RectF(
-                        box.left,
+                        box.left * scaleX,
                         box.top * scaleY,
-                        box.right * scaleX * 1.4f,
+                        box.right * scaleX,
                         box.bottom * scaleY
                     )
 
-                    analyseImage(
-                        luminosity >= MINIMUM_LUMINOSITY,
-                        scaledBoundingBox
-                    )
+                    analyseDocument(boundingBox = scaledBoundingBox)
 
                     imageProxy.close()
                 }
@@ -184,32 +187,8 @@ internal abstract class BaseCameraFragment : BaseFragment(), ImageAnalysisListen
         return imageAnalysis
     }
 
-    fun takePhoto() {
-        val imageCapture = imageCapture ?: return
-
-        imageCapture.takePicture(
-            ContextCompat.getMainExecutor(requireContext()),
-            object : ImageCapture.OnImageCapturedCallback() {
-                @OptIn(androidx.camera.core.ExperimentalGetImage::class)
-                override fun onCaptureSuccess(image: ImageProxy) {
-                    super.onCaptureSuccess(image)
-
-                    val bitmap = image.toBitmap().rotate(image.imageInfo.rotationDegrees.toFloat())
-
-                    photoTaken(bitmap)
-                    //TODO image.close() needed?
-                    image.close()
-                }
-
-                //TODO
-                override fun onError(exception: ImageCaptureException) {
-                    super.onError(exception)
-                }
-            })
-    }
-
     private fun switchCamera(previewView: PreviewView?) {
-
+        //TODO fix object detection on switch
         cameraSelector = when (cameraSelector) {
             CameraSelector.DEFAULT_FRONT_CAMERA -> {
                 CameraSelector.DEFAULT_BACK_CAMERA
@@ -231,7 +210,51 @@ internal abstract class BaseCameraFragment : BaseFragment(), ImageAnalysisListen
         activityResultLauncher.launch(CAMERA_PERMISSION)
     }
 
-    fun initActivityResultLauncher(viewFinder: PreviewView) {
+    private fun getLivenessStatusText(face: Face?, luminosity: Double): Int? = when {
+            luminosity < MIN_LUMINOSITY -> { R.string.adjust_lighting_conditions }
+
+            face == null -> { null }
+
+            face.headEulerAngleX < MIN_HEAD_ROTATION -> { R.string.tilt_your_face_upward }
+
+            face.headEulerAngleX > MAX_HEAD_ROTATION -> { R.string.tilt_your_face_downward }
+
+            face.headEulerAngleY < MIN_HEAD_ROTATION -> { R.string.turn_your_face_slightly_left }
+
+            face.headEulerAngleY > MAX_HEAD_ROTATION -> { R.string.turn_your_face_slightly_right }
+
+            face.headEulerAngleZ < MIN_HEAD_ROTATION -> { R.string.tilt_your_face_to_the_right }
+
+            face.headEulerAngleZ > MAX_HEAD_ROTATION -> { R.string.tilt_your_face_to_the_left }
+
+            else -> { R.string.liveness_instructions_bad_title }
+        }
+
+    fun takePhoto() {
+        val imageCapture = imageCapture ?: return
+
+        imageCapture.takePicture(
+            ContextCompat.getMainExecutor(requireContext()),
+            object : ImageCapture.OnImageCapturedCallback() {
+                @OptIn(androidx.camera.core.ExperimentalGetImage::class)
+                override fun onCaptureSuccess(image: ImageProxy) {
+                    super.onCaptureSuccess(image)
+
+                    val bitmap = image.toBitmap().rotate(image.imageInfo.rotationDegrees.toFloat())
+
+                    photoTaken(bitmap)
+                    //TODO image.close() needed?
+                    image.close()
+                }
+            }
+        )
+    }
+
+    fun stopImageAnalyzer() {
+        imageAnalysis.clearAnalyzer()
+    }
+
+    fun initActivityResultLauncher(viewFinder: PreviewView?) {
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { granted ->

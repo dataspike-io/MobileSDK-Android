@@ -7,7 +7,7 @@
     android:background="@color/white">
 
     <include
-        android:id="@+id/cl_header_layout"
+        android:id="@+id/cl_black_text_header_layout"
         layout="@layout/black_text_header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,12 +16,9 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:overScrollMode="never"
-        android:scrollbars="none"
+        style="@style/ScrollView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_header_layout"
+        app:layout_constraintTop_toBottomOf="@+id/cl_black_text_header_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -57,7 +54,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mb_continue"
         style="@style/PurpleMaterialButton"
-        android:layout_marginBottom="@dimen/margin_30dp"
+        android:layout_marginBottom="@dimen/dimen_30dp"
         android:text="@string/_continue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

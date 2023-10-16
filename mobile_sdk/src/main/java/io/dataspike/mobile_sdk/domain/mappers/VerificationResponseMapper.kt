@@ -16,7 +16,8 @@ internal object VerificationResponseMapper {
     fun map(result: Result<VerificationResponse>): VerificationState {
         result
             .onSuccess { verificationResponse ->
-                return VerificationState.VerificationSuccess(id = verificationResponse.id ?: "",
+                return VerificationState.VerificationSuccess(
+                    id = verificationResponse.id ?: "",
                     status = verificationResponse.status ?: "",
                     checks = VerificationChecksDomainModel(
                         faceComparison = CheckDomainModel(
@@ -64,7 +65,7 @@ internal object VerificationResponseMapper {
                                 ?: emptyList(),
                         ),
                     ),
-                    redirectUrl = verificationResponse.redirectUrl ?: "",
+                    verificationUrl = verificationResponse.verificationUrl ?: "",
                     countryCode = verificationResponse.countryCode ?: "",
                     settings = VerificationSettingsDomainModel(
                         poiRequired = verificationResponse.settings?.poiRequired ?: false,
@@ -78,7 +79,8 @@ internal object VerificationResponseMapper {
                         poaAllowedDocuments = verificationResponse.settings?.poaAllowedDocuments
                             ?: emptyList(),
                         countries = verificationResponse.settings?.countries ?: emptyList(),
-                    )
+                    ),
+                     expiresAt = verificationResponse.expiresAt ?: "",
                 )
             }
             .onFailure { throwable ->
