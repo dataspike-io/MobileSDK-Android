@@ -19,40 +19,6 @@ internal class UploadImageUiMapper {
                 val checks = DataspikeInjector.component.verificationManager.checks
 
                 val fragmentToNavigateToOnContinue = when (imageType) {
-//                    POI -> {
-//                        val haveFront =
-//                            DataspikeInjector
-//                                .component
-//                                .imageCacheManager
-//                                .getBitmapFromCache(POI_FRONT) != null
-//                        val haveBack =
-//                            DataspikeInjector
-//                                .component
-//                                .imageCacheManager
-//                                .getBitmapFromCache(POI_BACK) != null
-//                        val isTwoSided = uploadImageState.detectedTwoSideDocument
-//                        val haveAllPoi = (isTwoSided && haveFront && haveBack)
-//                                || (!isTwoSided && haveFront)
-//
-//                        if (haveAllPoi) {
-//                            when {
-//                                checks.livenessIsRequired -> {
-//                                    LIVENESS
-//                                }
-//
-//                                checks.poaIsRequired -> {
-//                                    POA
-//                                }
-//
-//                                else -> {
-//                                    VERIFICATION_COMPLETE
-//                                }
-//                            }
-//                        } else {
-//                            POI
-//                        }
-//                    }
-
                     POI_FRONT -> {
                         if (uploadImageState.detectedTwoSideDocument) {
                             POI_BACK
@@ -112,6 +78,7 @@ internal class UploadImageUiMapper {
                     fragmentToNavigateToOnContinue = fragmentToNavigateToOnContinue,
                 )
             }
+
             is UploadImageState.UploadImageError -> {
                 UploadImageUiState.UploadImageUiError(
                     shouldNavigateToVerificationExpiredFragment =

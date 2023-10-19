@@ -75,5 +75,7 @@
     <string name="file_size_must_be_between_100kb_and_8mb">File size must be between 100KB and 8MB</string>
     <string name="please_select_a_supported_file_format">Please select a supported file format</string>
     <string name="_00_00_00">00:00:00</string>
+    <string name="front_photo_instructions">Please take photo of the front side of your ID card</string>
+    <string name="back_photo_instructions">Now let’s take a photo of the back side of ID card</string>
 
 </resources>

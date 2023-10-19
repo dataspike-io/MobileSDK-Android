@@ -43,7 +43,7 @@ internal class OnboardingFragment : BaseFragment() {
 
             roblButtons.setup(
                 stringResId = R.string._continue,
-                continueButtonAction = ::goToVerification,
+                continueButtonAction = ::navigateToVerification,
             ) {
                 openRequirementsScreen(getRequirementsType())
             }

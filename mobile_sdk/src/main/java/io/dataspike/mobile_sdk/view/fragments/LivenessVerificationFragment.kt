@@ -159,7 +159,6 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
                 colorResId = textColorId,
             )
             ovLiveness.setFaceIsInFrame(faceIsInFrame)
-            ovLiveness.livenessBoundingBox = boundingBox
         }
     }
 

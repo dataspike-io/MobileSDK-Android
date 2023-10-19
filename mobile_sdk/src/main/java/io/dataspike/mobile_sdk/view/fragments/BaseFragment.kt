@@ -74,10 +74,10 @@ internal abstract class BaseFragment: Fragment() {
             .commit()
     }
 
-    protected fun navigateToFragment(fragment: BaseFragment?, add: Boolean? = true) {
+    protected fun navigateToFragment(fragment: BaseFragment?, useAdd: Boolean? = true) {
         fragment ?: return
 
-        if (add == true) {
+        if (useAdd == true) {
             requireActivity()
                 .supportFragmentManager
                 .beginTransaction()
@@ -100,7 +100,7 @@ internal abstract class BaseFragment: Fragment() {
         }
     }
 
-    protected fun goToVerification() {
+    protected fun navigateToVerification() {
         val verificationManager = DataspikeInjector.component.verificationManager
         val fragmentToNavigateTo = when {
             verificationManager.checks.poiIsRequired -> {
@@ -139,7 +139,9 @@ internal abstract class BaseFragment: Fragment() {
             when (imageType) {
                 POI_INTRO -> { R.string.poi_intro_instructions }
 
-                POI_FRONT, POI_BACK -> { R.string.poi_instructions_title }
+                POI_FRONT -> { R.string.front_photo_instructions }
+
+                POI_BACK -> { R.string.back_photo_instructions }
 
                 LIVENESS -> { R.string.liveness_instructions_bad_title }
 
