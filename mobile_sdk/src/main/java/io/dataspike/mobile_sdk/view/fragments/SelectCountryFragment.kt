@@ -9,9 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentSelectCountryBinding
-import io.dataspike.mobile_sdk.utils.Utils.launchInMain
+import io.dataspike.mobile_sdk.utils.launchInMain
 import io.dataspike.mobile_sdk.view.POI_FRONT
 import io.dataspike.mobile_sdk.view.adapters.CountriesListAdapter
+import io.dataspike.mobile_sdk.view.custom_views.NEED_TO_SELECT_COUNTRY
 import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
 import io.dataspike.mobile_sdk.view.view_models.SelectCountryViewModel
 
@@ -25,6 +26,7 @@ internal class SelectCountryFragment: BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewBinding = FragmentSelectCountryBinding.inflate(inflater, container, false)
+
         return viewBinding?.root
     }
 
@@ -37,29 +39,17 @@ internal class SelectCountryFragment: BaseFragment() {
         viewModel.getCountries()
 
         with(viewBinding ?: return) {
-            with(clUploadResult) {
-                tvUploadSuccessful.visibility = View.GONE
-                tvUploadWithErrors.visibility = View.GONE
-                tvCountryNotIdentified.visibility = View.VISIBLE
-            }
-
-            with(clBlackTextHeaderLayout) {
-                tvTopInstructions.text = requireContext().getString(R.string.select_country_title)
-                ivBackButton.setOnClickListener {
-                    parentFragmentManager.popBackStack()
-                }
-            }
-
-            etSearch.doOnTextChanged { text, _, _, _ ->
-                viewModel.updateCountriesList(text)
-            }
-
-            clSteps.setStepsState(POI_FRONT)
-
-            mbContinue.isEnabled = false
-
-            mbContinue.setOnClickListener {
-                viewModel.setCountry()
+            urlUploadResult.setup(uploadStatus = NEED_TO_SELECT_COUNTRY)
+            hlTextHeader.setup(
+                popBackStackAction = ::popBackStack,
+                stringResId = R.string.select_country_title,
+                colorResId = R.color.black,
+            )
+            etSearch.doOnTextChanged { text, _, _, _ -> viewModel.updateCountriesList(text) }
+            clSteps.setup(step = POI_FRONT)
+            with(mbContinue) {
+                isEnabled = false
+                setOnClickListener { viewModel.setCountry() }
             }
         }
     }
@@ -79,15 +69,12 @@ internal class SelectCountryFragment: BaseFragment() {
 
     private fun collectSetCountryFlow() {
         launchInMain {
-            viewModel.setCountryFlow.collect {
-                parentFragmentManager.popBackStack()
-            }
+            // TODO errors
+            viewModel.setCountryFlow.collect { popBackStack() }
         }
     }
 
     private fun updateSelectedCountry(countryCode: String?) {
-        countryCode ?: return
-
         viewModel.setCountrySelected(countryCode)
 
         viewBinding?.mbContinue?.isEnabled = true

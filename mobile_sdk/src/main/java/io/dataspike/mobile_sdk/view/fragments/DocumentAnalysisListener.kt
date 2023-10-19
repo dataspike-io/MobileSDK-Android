@@ -1,10 +1,10 @@
-package io.dataspike.mobile_sdk
+package io.dataspike.mobile_sdk.view.fragments
 
 import android.graphics.RectF
 
 internal interface DocumentAnalysisListener {
 
-    fun analyseDocument(
+    fun analyzeDocument(
         boundingBox: RectF,
     )
 }

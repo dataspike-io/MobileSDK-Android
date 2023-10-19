@@ -6,11 +6,12 @@ import io.dataspike.mobile_sdk.domain.models.NewVerificationState
 
 internal class SampleAppRepositoryImpl(
     private val sampleAppApiService: ISampleAppApiService,
+    private val newVerificationResponseMapper: NewVerificationResponseMapper,
 ): ISampleAppRepository {
 
-    override suspend fun createVerification(
-        body: Map<String, Array<String>>
-    ): NewVerificationState = NewVerificationResponseMapper.map(
-        runCatching { sampleAppApiService.createVerification(body) }
-    )
+    override suspend fun createVerification(): NewVerificationState {
+        return newVerificationResponseMapper.map(
+            runCatching { sampleAppApiService.createVerification(emptyMap()) }
+        )
+    }
 }

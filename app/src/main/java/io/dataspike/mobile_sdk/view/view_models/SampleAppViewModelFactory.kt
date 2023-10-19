@@ -12,9 +12,9 @@ internal class SampleAppViewModelFactory: ViewModelProvider.Factory {
         when (modelClass) {
             HomeViewModel::class.java -> {
                 HomeViewModel(
-                    CreateVerificationUseCase(
-                        SampleAppInjector.component.sampleAppRepository
-                    )
+                    createVerificationUseCase =
+                    CreateVerificationUseCase { SampleAppInjector.component.sampleAppRepository },
+                    newVerificationUiMapper = SampleAppInjector.component.newVerificationUiMapper,
                 ) as T
             }
 

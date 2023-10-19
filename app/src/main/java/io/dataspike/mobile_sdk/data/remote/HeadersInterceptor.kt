@@ -17,11 +17,10 @@ internal class HeadersInterceptor(
             .header(CONTENT_TYPE_HEADER, CONTENT_TYPE_VALUE)
             .build()
 
-        return try {
+        return kotlin.runCatching {
             chain.proceed(newRequest)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            chain.proceed(chain.request())
-        }
+        }.onFailure { throwable ->
+            throwable.printStackTrace()
+        }.getOrNull() ?: chain.proceed(chain.request())
     }
 }

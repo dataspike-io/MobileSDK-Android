@@ -5,12 +5,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import io.dataspike.mobile_sdk.AppInfo
 import io.dataspike.mobile_sdk.R
-import io.dataspike.mobile_sdk.data.image_caching.ImageCacheManager
+import io.dataspike.mobile_sdk.data.remote.AppInfo
 import io.dataspike.mobile_sdk.databinding.ActivityDataspikeBinding
 import io.dataspike.mobile_sdk.domain.models.VerificationState
-import io.dataspike.mobile_sdk.utils.Utils.launchInMain
+import io.dataspike.mobile_sdk.utils.launchInMain
 import io.dataspike.mobile_sdk.view.fragments.OnboardingFragment
 import io.dataspike.mobile_sdk.view.view_models.DataspikeActivityViewModel
 import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
@@ -18,11 +17,13 @@ import kotlinx.coroutines.runBlocking
 
 internal const val REQUIREMENTS_TYPE = "requirements_type"
 internal const val IMAGE_TYPE = "image_type"
+internal const val POI_INTRO = "poi_intro"
 internal const val POI = "poi"
 internal const val POI_FRONT = "poi_front"
 internal const val POI_BACK = "poi_back"
 internal const val LIVENESS = "liveness_photo"
 internal const val POA = "poa"
+internal const val VERIFICATION_COMPLETE = "verification_complete"
 
 internal class DataspikeActivity : AppCompatActivity() {
 
@@ -33,7 +34,6 @@ internal class DataspikeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityDataspikeBinding.inflate(layoutInflater)
         setContentView(viewBinding?.root)
-
         collectVerificationFlow()
 
         runBlocking {
@@ -51,11 +51,6 @@ internal class DataspikeActivity : AppCompatActivity() {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
     }
 
-    override fun onDestroy() {
-        ImageCacheManager.clearImageCache()
-        super.onDestroy()
-    }
-
     private fun collectVerificationFlow() {
         launchInMain {
             viewModel.verificationFlow.collect { result ->
@@ -71,7 +66,7 @@ internal class DataspikeActivity : AppCompatActivity() {
                     is VerificationState.VerificationError -> {
                         Toast.makeText(
                             this@DataspikeActivity,
-                            "${result.error}: ${result.details}",
+                            "${result.details}: ${result.error}",
                             Toast.LENGTH_LONG
                         ).show()
                     }

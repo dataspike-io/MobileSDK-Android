@@ -1,12 +1,15 @@
 package io.dataspike.mobile_sdk.data.repository
 
 import io.dataspike.mobile_sdk.data.api.IDataspikeApiService
+import io.dataspike.mobile_sdk.data.models.requests.CountryRequestBody
 import io.dataspike.mobile_sdk.domain.mappers.CountriesResponseMapper
 import io.dataspike.mobile_sdk.domain.mappers.EmptyResponseMapper
+import io.dataspike.mobile_sdk.domain.mappers.ProceedWithVerificationResponseMapper
 import io.dataspike.mobile_sdk.domain.mappers.UploadImageResponseMapper
 import io.dataspike.mobile_sdk.domain.mappers.VerificationResponseMapper
 import io.dataspike.mobile_sdk.domain.models.CountriesState
 import io.dataspike.mobile_sdk.domain.models.EmptyState
+import io.dataspike.mobile_sdk.domain.models.ProceedWithVerificationState
 import io.dataspike.mobile_sdk.domain.models.UploadImageState
 import io.dataspike.mobile_sdk.domain.models.VerificationState
 import okhttp3.MediaType.Companion.toMediaType
@@ -17,43 +20,52 @@ import java.io.File
 
 internal class DataspikeRepositoryImpl(
     private val dataspikeApiService: IDataspikeApiService,
-): IDataspikeRepository {
+    private val shortId: String,
+    private val verificationResponseMapper: VerificationResponseMapper,
+    private val uploadImageResponseMapper: UploadImageResponseMapper,
+    private val countriesResponseMapper: CountriesResponseMapper,
+    private val emptyResponseMapper: EmptyResponseMapper,
+    private val proceedWithVerificationResponseMapper: ProceedWithVerificationResponseMapper,
+) : IDataspikeRepository {
 
-    override suspend fun getVerification(
-        shortId: String,
-    ): VerificationState = VerificationResponseMapper.map(
-        runCatching { dataspikeApiService.getVerification(shortId) }
-    )
+    override suspend fun getVerification(): VerificationState {
+        return verificationResponseMapper.map(
+            runCatching { dataspikeApiService.getVerification(shortId) }
+        )
+    }
 
     override suspend fun uploadImage(
-        shortId: String,
         documentType: String,
         image: File,
     ): UploadImageState {
         val requestBody = image.asRequestBody("image/*".toMediaType())
         val multiPart = MultipartBody.Part.createFormData("file", image.name, requestBody)
-        val rT = documentType.toRequestBody("text/plain".toMediaType())
+        val documentTypeRequestBody = documentType.toRequestBody("text/plain".toMediaType())
 
-        return UploadImageResponseMapper.map(
-            runCatching { dataspikeApiService.uploadImage(shortId, rT, multiPart) }
+        return uploadImageResponseMapper.map(
+            runCatching {
+                dataspikeApiService.uploadImage(shortId, documentTypeRequestBody, multiPart)
+            }
         )
     }
 
-    override suspend fun getCountries(): CountriesState = CountriesResponseMapper.map(
-        runCatching { dataspikeApiService.getCountries() }
-    )
+    override suspend fun getCountries(): CountriesState {
+        return countriesResponseMapper.map(
+            runCatching { dataspikeApiService.getCountries() }
+        )
+    }
 
     override suspend fun setCountry(
-        shortId: String,
-        body: Map<String, String>,
-    ): EmptyState = EmptyResponseMapper.map(
-        runCatching { dataspikeApiService.setCountry(shortId, body) }
-    )
+        body: CountryRequestBody,
+    ): EmptyState {
+        return emptyResponseMapper.map(
+            runCatching { dataspikeApiService.setCountry(shortId, body) }
+        )
+    }
 
-    override suspend fun proceedWithVerification(
-        shortId: String,
-        body: Map<String, String>,
-    ): EmptyState = EmptyResponseMapper.map(
-        runCatching { dataspikeApiService.proceedWithVerification("V22BFC4E95A98571F", body) }
-    )
+    override suspend fun proceedWithVerification(): ProceedWithVerificationState {
+        return proceedWithVerificationResponseMapper.map(
+            runCatching { dataspikeApiService.proceedWithVerification(shortId) }
+        )
+    }
 }

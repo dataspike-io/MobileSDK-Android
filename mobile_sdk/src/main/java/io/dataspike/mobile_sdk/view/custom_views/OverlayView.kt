@@ -12,7 +12,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import io.dataspike.mobile_sdk.R
-import io.dataspike.mobile_sdk.utils.Utils.dpToPx
+import io.dataspike.mobile_sdk.utils.dpToPx
 
 private const val POI_OVERLAY = "0"
 private const val LIVENESS_OVERLAY = "1"
@@ -27,6 +27,7 @@ internal class OverlayView @JvmOverloads constructor(
     attrs,
     defStyleAttr
 ) {
+
     private var faceIsInFrame = false
     private var documentIsInFrame = false
     private val overlayType = context.obtainStyledAttributes(
@@ -67,7 +68,7 @@ internal class OverlayView @JvmOverloads constructor(
 
             when (overlayType) {
                 POI_OVERLAY -> {
-                    drawOverlayCutoutForPOI(this)
+                    drawOverlayCutoutForPoi(this)
                 }
 
                 LIVENESS_OVERLAY -> {
@@ -75,13 +76,13 @@ internal class OverlayView @JvmOverloads constructor(
                 }
 
                 POA_OVERLAY -> {
-                    drawOverlayCutoutForPOA(this)
+                    drawOverlayCutoutForPoa(this)
                 }
             }
         }
     }
 
-    private fun drawOverlayCutoutForPOI(canvas: Canvas) {
+    private fun drawOverlayCutoutForPoi(canvas: Canvas) {
         val cutoutMargin = dpToPx(16f)
         val cutoutHeight = ((width - (cutoutMargin * 2)) * .66).toInt()
         val top = (height / 1.6f) - cutoutHeight
@@ -168,7 +169,7 @@ internal class OverlayView @JvmOverloads constructor(
         }
     }
 
-    private fun drawOverlayCutoutForPOA(canvas: Canvas) {
+    private fun drawOverlayCutoutForPoa(canvas: Canvas) {
         val cutoutMargin = dpToPx(50f)
         val cutoutHeight = ((width - (cutoutMargin * 2)) * 1.38).toInt()
         val top = (height / 1.25f) - cutoutHeight

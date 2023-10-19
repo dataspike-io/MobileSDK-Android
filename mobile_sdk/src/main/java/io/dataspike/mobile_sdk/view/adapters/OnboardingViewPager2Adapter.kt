@@ -6,39 +6,42 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.OnboardingPageLayoutBinding
-import io.dataspike.mobile_sdk.domain.VerificationManager
+import io.dataspike.mobile_sdk.dependencies_provider.DataspikeInjector
 import io.dataspike.mobile_sdk.view.LIVENESS
 import io.dataspike.mobile_sdk.view.POA
 import io.dataspike.mobile_sdk.view.POI_FRONT
+import io.dataspike.mobile_sdk.view.ui_models.OnboardingUiModel
 
 internal class OnboardingViewPager2Adapter:
     RecyclerView.Adapter<OnboardingViewPager2Adapter.ViewHolder>() {
 
-    private val items: MutableMap<Int, Triple<Int, Int, String>> = mutableMapOf()
+    private val items: MutableMap<Int, OnboardingUiModel> = mutableMapOf()
 
     init {
         var position = 0
 
-        with(VerificationManager.checks) {
+        with(DataspikeInjector.component.verificationManager.checks) {
             if (poiIsRequired) {
-                items[position++] = Triple(
-                    R.drawable.onboarding_poi,
-                    R.string.onboarding_step_1,
-                    POI_FRONT
+                items[position++] = OnboardingUiModel(
+                    drawableResId = R.drawable.onboarding_poi,
+                    stringResId = R.string.onboarding_step_1,
+                    pageType = POI_FRONT,
                 )
             }
+
             if (livenessIsRequired) {
-                items[position++] = Triple(
-                    R.drawable.onboarding_liveness,
-                    R.string.onboarding_step_2,
-                    LIVENESS
+                items[position++] = OnboardingUiModel(
+                    drawableResId = R.drawable.onboarding_liveness,
+                    stringResId = R.string.onboarding_step_2,
+                    pageType = LIVENESS
                 )
             }
+
             if (poaIsRequired) {
-                items[position] = Triple(
-                    R.drawable.onboarding_poa,
-                    R.string.onboarding_step_3,
-                    POA
+                items[position] = OnboardingUiModel(
+                    drawableResId = R.drawable.onboarding_poa,
+                    stringResId = R.string.onboarding_step_3,
+                    pageType = POA
                 )
             }
         }
@@ -56,8 +59,8 @@ internal class OnboardingViewPager2Adapter:
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
-            val drawableRes = items[position]?.first ?: -1
-            val textRes = items[position]?.second ?: -1
+            val drawableRes = items[position]?.drawableResId ?: -1
+            val textRes = items[position]?.stringResId ?: -1
 
             ivOnboardingImage.setImageDrawable(
                 ResourcesCompat.getDrawable(
@@ -71,9 +74,13 @@ internal class OnboardingViewPager2Adapter:
         }
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int {
+        return items.size
+    }
 
-    fun getCurrentPage(position: Int) = items[position]?.third
+    fun getCurrentPage(position: Int): String? {
+        return items[position]?.pageType
+    }
 
     inner class ViewHolder(binding: OnboardingPageLayoutBinding):
         RecyclerView.ViewHolder(binding.root) {

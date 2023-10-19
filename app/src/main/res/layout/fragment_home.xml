@@ -7,14 +7,51 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.HomeFragment">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/mb_start_verification"
-        style="@style/PurpleMaterialButton"
-        android:text="@string/start_verification"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/tv_short_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_30dp"
+        android:hint="@string/enter_verification_id_optional"
+        android:singleLine="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/tv_api_token"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:layout_marginHorizontal="@dimen/dimen_30dp"
+        android:hint="@string/enter_api_token_optional"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_short_id"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <CheckBox
+        android:id="@+id/cb_is_debug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_16sp"
+        android:fontFamily="@font/mont_regular"
+        android:textColor="@color/ds_purple"
+        android:checked="true"
+        android:layout_marginHorizontal="@dimen/dimen_30dp"
+        android:text="@string/debug"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_api_token"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_start_verification"
+        style="@style/DisabledPurpleMaterialButton"
+        android:text="@string/start_verification"
+        android:layout_marginTop="@dimen/dimen_30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cb_is_debug"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"

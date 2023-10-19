@@ -5,10 +5,10 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.StepsLayoutBinding
-import io.dataspike.mobile_sdk.domain.VerificationManager
-import io.dataspike.mobile_sdk.utils.Utils.visible
+import io.dataspike.mobile_sdk.dependencies_provider.DataspikeInjector
 import io.dataspike.mobile_sdk.view.LIVENESS
 import io.dataspike.mobile_sdk.view.POA
 import io.dataspike.mobile_sdk.view.POI_BACK
@@ -24,11 +24,11 @@ internal class StepsLayout @JvmOverloads constructor(
         this
     )
 
-    fun setStepsState(
-        step: String,
+    fun setup(
+        step: String?,
         stepIsSuccessful: Boolean = false,
         ) {
-        val checks = VerificationManager.checks
+        val checks = DataspikeInjector.component.verificationManager.checks
 
         with(viewBinding) {
             val lightGreenColor = ResourcesCompat.getColor(
@@ -47,9 +47,9 @@ internal class StepsLayout @JvmOverloads constructor(
                 null
             )
 
-            llPoi.visible(checks.poiIsRequired)
-            llLiveness.visible(checks.livenessIsRequired)
-            llPoa.visible(checks.poaIsRequired)
+            llPoi.isVisible = checks.poiIsRequired
+            llLiveness.isVisible = checks.livenessIsRequired
+            llPoa.isVisible = checks.poaIsRequired
 
             when (step) {
                 POI_FRONT, POI_BACK -> {

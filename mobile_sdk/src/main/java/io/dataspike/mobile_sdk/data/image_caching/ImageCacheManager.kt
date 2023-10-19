@@ -3,7 +3,7 @@ package io.dataspike.mobile_sdk.data.image_caching
 import android.graphics.Bitmap
 import android.util.LruCache
 
-internal object ImageCacheManager {
+internal class ImageCacheManager {
 
     private var memoryCache: LruCache<String, Bitmap>
 
@@ -13,7 +13,9 @@ internal object ImageCacheManager {
 
         memoryCache = object : LruCache<String, Bitmap>(cacheSize) {
 
-            override fun sizeOf(key: String, bitmap: Bitmap): Int = bitmap.byteCount / 1024
+            override fun sizeOf(key: String, bitmap: Bitmap): Int {
+                return bitmap.byteCount / 1024
+            }
         }
     }
 
@@ -21,9 +23,7 @@ internal object ImageCacheManager {
         memoryCache.put(key, bitmap)
     }
 
-    fun getBitmapFromCache(key: String?): Bitmap? = memoryCache.get(key)
-
-    fun clearImageCache() {
-        memoryCache.evictAll()
+    fun getBitmapFromCache(key: String?): Bitmap? {
+        return memoryCache.get(key)
     }
 }

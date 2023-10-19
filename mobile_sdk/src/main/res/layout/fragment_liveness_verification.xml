@@ -8,9 +8,8 @@
     android:fitsSystemWindows="false"
     tools:context=".view.fragments.BaseCameraFragment">
 
-    <include
-        android:id="@+id/cl_white_text_header_layout"
-        layout="@layout/white_text_header_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.HeaderLayout
+        android:id="@+id/hl_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,15 +21,8 @@
         style="@style/LivenessInstructionsTextView"
         android:text="@string/liveness_instructions"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_white_text_header_layout"
+        app:layout_constraintTop_toBottomOf="@+id/hl_header"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-    <include
-        android:id="@+id/cl_upload_result"
-        layout="@layout/upload_result_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/dimen_20dp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_liveness_successful"
@@ -39,7 +31,7 @@
         android:text="@string/excellent"
         android:layout_marginTop="@dimen/dimen_20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_white_text_header_layout"
+        app:layout_constraintTop_toBottomOf="@+id/hl_header"
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone"
         tools:visibility="visible"/>
@@ -52,8 +44,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_image_preview"
+    <io.dataspike.mobile_sdk.view.custom_views.LivenessPreviewImageView
+        android:id="@+id/lpiv_image_preview"
         style="@style/PreviewImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -70,9 +62,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <include
-        android:id="@+id/cl_camera_buttons"
-        layout="@layout/camera_buttons_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.CameraButtonsLayout
+        android:id="@+id/cbl_camera_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

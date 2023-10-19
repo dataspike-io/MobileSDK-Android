@@ -1,11 +1,13 @@
 package io.dataspike.mobile_sdk.data.use_cases
 
 import io.dataspike.mobile_sdk.data.repository.ISampleAppRepository
+import io.dataspike.mobile_sdk.domain.models.NewVerificationState
 
 internal class CreateVerificationUseCase(
-    private val sampleAppRepository: ISampleAppRepository,
+    private val sampleAppRepositoryProvider: () -> ISampleAppRepository,
 ) {
 
-    suspend fun invoke(body: Map<String, Array<String>>) =
-        sampleAppRepository.createVerification(body)
+    suspend fun invoke(): NewVerificationState {
+        return sampleAppRepositoryProvider.invoke().createVerification()
+    }
 }
