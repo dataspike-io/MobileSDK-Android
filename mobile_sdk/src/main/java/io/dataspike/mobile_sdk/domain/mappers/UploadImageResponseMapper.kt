@@ -1,7 +1,6 @@
 package io.dataspike.mobile_sdk.domain.mappers
 
 import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
 import io.dataspike.mobile_sdk.data.models.responses.UploadImageErrorResponse
 import io.dataspike.mobile_sdk.data.models.responses.UploadImageResponse
 import io.dataspike.mobile_sdk.domain.models.ErrorDomainModel
@@ -10,7 +9,7 @@ import retrofit2.HttpException
 
 internal const val ERROR_CODE_EXPIRED = 8000
 
-internal object UploadImageResponseMapper {
+internal class UploadImageResponseMapper {
 
     fun map(result: Result<UploadImageResponse>): UploadImageState {
         result
@@ -41,14 +40,12 @@ internal object UploadImageResponseMapper {
     }
 
     private fun HttpException.toUploadImageError(): UploadImageState.UploadImageError {
-        val uploadImageErrorResponse = try {
+        val uploadImageErrorResponse = kotlin.runCatching {
             Gson().fromJson(
                 response()?.errorBody()?.string(),
                 UploadImageErrorResponse::class.java
             )
-        } catch (e: JsonSyntaxException) {
-            null
-        }
+        }.onFailure { throwable -> throwable.printStackTrace() }.getOrNull()
 
         val errors = uploadImageErrorResponse?.errors
         val expiredError = errors?.firstOrNull { error -> error.code == ERROR_CODE_EXPIRED }

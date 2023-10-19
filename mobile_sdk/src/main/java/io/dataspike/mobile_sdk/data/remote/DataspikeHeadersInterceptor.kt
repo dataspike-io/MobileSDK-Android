@@ -1,7 +1,6 @@
 package io.dataspike.mobile_sdk.data.remote
 
 import android.os.Build
-import io.dataspike.mobile_sdk.AppInfo
 import io.dataspike.mobile_sdk.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -15,23 +14,24 @@ private const val APPLICATION_JSON = "application/json"
 internal class DataspikeHeadersInterceptor(
     private val dsApiToken: String,
 ): Interceptor {
+
+    private val userAgent = "MobileSDK-Android/${BuildConfig.VERSION_NAME} " +
+        "(Android ${Build.VERSION.RELEASE}; ${Build.MANUFACTURER} ${Build.MODEL}) " +
+        "${AppInfo.appName}/${AppInfo.appVersion} Locale/${Locale.getDefault()}"
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        val userAgentString = "MobileSDK-Android/${BuildConfig.VERSION_NAME} " +
-                "(Android ${Build.VERSION.RELEASE}; ${Build.MANUFACTURER} ${Build.MODEL}) " +
-                "${AppInfo.appName}/${AppInfo.appVersion} Locale/${Locale.getDefault()}"
 
         val newRequest = request.newBuilder()
             .header(DS_API_TOKEN, dsApiToken)
             .header(CONTENT_TYPE_HEADER, APPLICATION_JSON)
-            .header(USER_AGENT, userAgentString)
+            .header(USER_AGENT, userAgent)
             .build()
 
-        return try {
+        return kotlin.runCatching {
             chain.proceed(newRequest)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            chain.proceed(request)
-        }
+        }.onFailure { throwable ->
+            throwable.printStackTrace()
+        }.getOrNull() ?: chain.proceed(request)
     }
 }

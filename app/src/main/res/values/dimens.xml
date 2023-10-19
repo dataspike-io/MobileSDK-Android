@@ -1,7 +1,13 @@
 <resources>
     <dimen name="dimen_16dp">16dp</dimen>
-    <dimen name="buttons_margin">30dp</dimen>
-    <dimen name="button_text_size">20sp</dimen>
+    <dimen name="dimen_20dp">20dp</dimen>
     <dimen name="dimen_30dp">30dp</dimen>
     <dimen name="dimen_40dp">40dp</dimen>
+
+    //text size
+    <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="text_size_20sp">20sp</dimen>
+
+    //misc
+    <dimen name="float_0">0</dimen>
 </resources>

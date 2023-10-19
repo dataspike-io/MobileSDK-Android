@@ -1,24 +1,25 @@
 package io.dataspike.mobile_sdk.view.fragments
 
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentOnboardingBinding
-import io.dataspike.mobile_sdk.domain.VerificationManager
+import io.dataspike.mobile_sdk.utils.disableOverscroll
+import io.dataspike.mobile_sdk.utils.launchInMain
 import io.dataspike.mobile_sdk.view.adapters.OnboardingViewPager2Adapter
-
-private const val ACTIVE = "active"
-private const val COMPLETED = "completed"
+import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
+import io.dataspike.mobile_sdk.view.view_models.OnboardingViewModel
 
 internal class OnboardingFragment : BaseFragment() {
 
     private var viewBinding: FragmentOnboardingBinding? = null
+    private val viewModel: OnboardingViewModel by viewModels {
+        DataspikeViewModelFactory()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,119 +27,58 @@ internal class OnboardingFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewBinding = FragmentOnboardingBinding.inflate(inflater, container, false)
+
         return viewBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        collectTimerFlow()
+
         with(viewBinding ?: return) {
-            //TODO make onboarding show only required checks
             vpOnboarding.adapter = OnboardingViewPager2Adapter()
-            (vpOnboarding.getChildAt(0) as? RecyclerView)?.overScrollMode =
-                View.OVER_SCROLL_NEVER
+            vpOnboarding.disableOverscroll()
             TabLayoutMediator(tlIndicators, vpOnboarding) { _, _ -> }.attach()
 
-            clButtons.mbContinue.setOnClickListener { goToVerification() }
-
-            clButtons.tvRequirements.setOnClickListener {
-                val requirementsType =
-                    (vpOnboarding.adapter as? OnboardingViewPager2Adapter)?.getCurrentPage(
-                        vpOnboarding.currentItem
-                    )
-
-                openRequirementsScreen(requirementsType)
+            roblButtons.setup(
+                stringResId = R.string._continue,
+                continueButtonAction = ::goToVerification,
+            ) {
+                openRequirementsScreen(getRequirementsType())
             }
 
-            setTimer(this)
+            viewModel.setVerificationTimer()
         }
     }
 
-    private fun setTimer(viewBinding: FragmentOnboardingBinding) {
-        with(viewBinding.clTimer) {
-            val verificationStatus = VerificationManager.status
-            val millisecondsUntilVerificationExpired =
-                VerificationManager.millisecondsUntilVerificationExpired
-
-            when {
-                verificationStatus == ACTIVE && millisecondsUntilVerificationExpired > 0 -> {
-                    tvTimer.visibility = View.VISIBLE
-                    tvTimerExpired.visibility = View.GONE
-
-                    val timer = object : CountDownTimer(
-                        millisecondsUntilVerificationExpired,
-                        1000
-                    ) {
-                        override fun onTick(millisUntilFinished: Long) {
-                            val seconds = millisUntilFinished / 1000
-                            val hours = seconds / 3600
-                            val minutes = (seconds % 3600) / 60
-                            val remainingSeconds = seconds % 60
-                            val formattedTime =
-                                String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
-
-                            //TODO fix not attached to a context
-                            tvTimer.text = context?.applicationContext?.getString(
-                                R.string.time_left,
-                                formattedTime
-                            )
-                        }
-
-                        override fun onFinish() {
-                            tvTimer.visibility = View.GONE
-                            tvTimerExpired.visibility = View.VISIBLE
-                            tvTimerExpired.text = requireContext().getString(
-                                R.string.time_left,
-                                "00:00:00"
-                            )
-
-                            if (this@OnboardingFragment.isResumed) {
-                                navigateToFragment(VerificationExpiredFragment())
-                            }
-                        }
-                    }
-
-                    timer.start()
-                }
-
-                verificationStatus == COMPLETED -> {
-                    navigateToFragment(VerificationCompleteFragment())
-                }
-
-                else -> {
-                    tvTimer.visibility = View.GONE
-                    tvTimerExpired.visibility = View.VISIBLE
-                    tvTimerExpired.text = requireContext().getString(
-                        R.string.time_left,
-                        "00:00:00"
-                    )
-
-                    navigateToFragment(VerificationExpiredFragment())
-                }
+    private fun collectTimerFlow() {
+        launchInMain {
+            viewModel.timerFlow.collect { timerState ->
+                viewBinding?.tlTimer?.setup(
+                    timerState = timerState,
+                    completedAction = ::navigateToVerificationCompleteFragment,
+                    expiredAction = ::navigateToVerificationExpiredFragment,
+                )
             }
         }
     }
 
-    private fun goToVerification() {
-        val fragmentToNavigateTo = when {
-            VerificationManager.checks.poiIsRequired -> {
-                POIIntroFragment()
-            }
-
-            VerificationManager.checks.livenessIsRequired -> {
-                LivenessVerificationFragment()
-            }
-
-            VerificationManager.checks.poaIsRequired -> {
-                POAChooserFragment()
-            }
-
-            else -> {
-                Log.d("Dataspike", "Verification has no required checks")
-                return
-            }
+    private fun getRequirementsType(): String? {
+        with(viewBinding?.vpOnboarding ?: return null) {
+            return (adapter as? OnboardingViewPager2Adapter)?.getCurrentPage(currentItem)
         }
+    }
 
-        navigateToFragment(fragmentToNavigateTo, false)
+    private fun navigateToVerificationCompleteFragment() {
+        navigateToFragment(
+            VerificationCompleteFragment()
+        )
+    }
+
+    private fun navigateToVerificationExpiredFragment() {
+        navigateToFragment(
+            VerificationExpiredFragment()
+        )
     }
 }

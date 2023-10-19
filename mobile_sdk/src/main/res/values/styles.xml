@@ -278,7 +278,7 @@
         <item name="android:paddingBottom">@dimen/dimen_4dp</item>
         <item name="android:textSize">@dimen/text_size_14sp</item>
         <item name="android:textColor">@color/light_green</item>
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:background">@drawable/light_green_upload_status_background</item>
         <item name="android:visibility">gone</item>
     </style>
@@ -326,6 +326,7 @@
         <item name="android:foreground">@drawable/camera_button_ripple</item>
         <item name="android:src">@drawable/camera_button</item>
         <item name="android:tint">@color/white</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="SwitchCameraButtonImageView">
@@ -378,7 +379,7 @@
         <item name="android:paddingBottom">@dimen/dimen_4dp</item>
         <item name="android:textSize">@dimen/text_size_14sp</item>
         <item name="android:textColor">@color/light_red</item>
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:background">@drawable/light_red_upload_status_background</item>
         <item name="android:visibility">gone</item>
     </style>
@@ -429,7 +430,7 @@
         <item name="android:paddingTop">@dimen/dimen_4dp</item>
         <item name="android:paddingRight">@dimen/dimen_8dp</item>
         <item name="android:paddingBottom">@dimen/dimen_4dp</item>
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:background">@drawable/light_yellow_upload_status_background</item>
         <item name="android:visibility">gone</item>
         <item name="android:textSize">@dimen/text_size_14sp</item>
@@ -567,7 +568,7 @@
         <item name="android:layout_marginRight">@dimen/dimen_20dp</item>
     </style>
 
-    <style name="POIExampleImageView">
+    <style name="PoiExampleImageView">
         <item name="android:layout_width">@dimen/dimen_0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:src">@drawable/poi_example</item>
@@ -578,7 +579,7 @@
         <item name="android:layout_marginRight">@dimen/dimen_40dp</item>
     </style>
 
-    <style name="POAExampleImageView">
+    <style name="PoaExampleImageView">
         <item name="android:layout_width">@dimen/dimen_0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:src">@drawable/poa_example</item>

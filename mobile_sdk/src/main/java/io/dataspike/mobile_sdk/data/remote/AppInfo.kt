@@ -1,9 +1,9 @@
-package io.dataspike.mobile_sdk
+package io.dataspike.mobile_sdk.data.remote
 
 internal object AppInfo {
 
-    var appName = ""
-    var appVersion = ""
+    var appName = "n/a"
+    var appVersion = "n/a"
 
     fun setAppInfo(appName: String, appVersion: String) {
         this.appName = appName

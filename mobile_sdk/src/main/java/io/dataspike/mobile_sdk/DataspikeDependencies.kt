@@ -1,4 +1,4 @@
-package io.dataspike.mobile_sdk.dependencies_provider.model
+package io.dataspike.mobile_sdk
 
 data class DataspikeDependencies(
     val isDebug: Boolean,

@@ -9,14 +9,14 @@ internal class GetVerificationUseCase(
     private val verificationSettingsManager: VerificationManager,
 ) {
 
-    suspend operator fun invoke(shortId: String): VerificationState {
-        val state = dataspikeRepository.getVerification(shortId)
+    suspend operator fun invoke(): VerificationState {
+        val state = dataspikeRepository.getVerification()
 
         if (state is VerificationState.VerificationSuccess) {
             verificationSettingsManager.setChecksAndExpiration(
-                state.settings,
-                state.status,
-                state.expiresAt
+                settings = state.settings,
+                status = state.status,
+                expiresAt = state.expiresAt
             )
         }
 

@@ -1,6 +1,16 @@
 package io.dataspike.mobile_sdk.dependencies_provider.model
 
-data class SampleAppDependencies(
+internal data class SampleAppDependencies(
     val isDebug: Boolean,
     val dsApiToken: String,
-)
+    val shortId: String,
+) {
+
+    companion object {
+        val DEFAULT = SampleAppDependencies(
+            isDebug = true,
+            dsApiToken = "place_your_api_token_here",
+            shortId = "",
+        )
+    }
+}

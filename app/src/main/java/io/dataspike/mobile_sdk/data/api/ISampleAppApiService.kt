@@ -8,6 +8,6 @@ internal interface ISampleAppApiService {
 
     @POST("api/v3/verifications")
     suspend fun createVerification(
-        @Body body: Map<String, Array<String>>
+        @Body body: Map<String, String>
     ): NewVerificationResponse
 }

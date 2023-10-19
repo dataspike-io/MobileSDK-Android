@@ -8,47 +8,49 @@ import androidx.activity.OnBackPressedCallback
 import io.dataspike.mobile_sdk.DataspikeVerificationStatus
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentVerificationExpiredBinding
+import io.dataspike.mobile_sdk.domain.setVerificationResult
+import io.dataspike.mobile_sdk.view.ui_models.TimerUiModel
+import io.dataspike.mobile_sdk.view.view_models.EXPIRED
 
 internal class VerificationExpiredFragment : BaseFragment() {
 
     private var viewBinding: FragmentVerificationExpiredBinding? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewBinding = FragmentVerificationExpiredBinding.inflate(inflater, container, false)
+        viewBinding = FragmentVerificationExpiredBinding.inflate(
+            inflater,
+            container,
+            false
+        )
+
         return viewBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(viewBinding?: return) {
-            with(clTimer) {
-                tvTimerExpired.visibility = View.VISIBLE
-                tvTimerExpired.text = requireContext().getString(
-                    R.string.time_left,
-                    "00:00:00"
-                )
-            }
+        setVerificationResult(DataspikeVerificationStatus.VERIFICATION_EXPIRED)
 
-            clCompleteVerification.mbComplete.setOnClickListener {
-                setVerificationStatusAndFinish(
-                    DataspikeVerificationStatus.VERIFICATION_EXPIRED
+        with(viewBinding?: return) {
+            tlTimer.setup(
+                timerState = TimerUiModel(
+                    timerString = EXPIRED,
+                    timerStatus = requireContext().getString(R.string._00_00_00)
                 )
-            }
+            )
+            ctalCompleteVerification.setup(completeAction = ::passVerificationStatusAndFinish)
         }
 
-        //TODO test
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                setVerificationStatusAndFinish(
-                    DataspikeVerificationStatus.VERIFICATION_EXPIRED
-                )
+                passVerificationStatusAndFinish()
             }
         }
 
-        activity?.onBackPressedDispatcher?.addCallback(onBackPressedCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
 }

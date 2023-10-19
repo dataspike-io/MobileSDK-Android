@@ -1,9 +1,7 @@
 package io.dataspike.mobile_sdk.domain.models
 
 internal sealed class EmptyState {
-    internal data class EmptyStateSuccess(
-        val empty: String,
-    ): EmptyState()
+    internal object EmptyStateSuccess: EmptyState()
 
     internal data class EmptyStateError(
         val error: String,

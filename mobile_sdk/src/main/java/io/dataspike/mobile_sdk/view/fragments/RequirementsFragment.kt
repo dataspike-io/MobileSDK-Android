@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentRequirementsBinding
-import io.dataspike.mobile_sdk.view.LIVENESS
-import io.dataspike.mobile_sdk.view.POA
-import io.dataspike.mobile_sdk.view.POI_BACK
-import io.dataspike.mobile_sdk.view.POI_FRONT
 import io.dataspike.mobile_sdk.view.REQUIREMENTS_TYPE
+
+internal const val REQUIREMENTS_SCREEN = "requirements_screen"
 
 internal class RequirementsFragment: BaseFragment() {
 
@@ -23,6 +21,7 @@ internal class RequirementsFragment: BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewBinding = FragmentRequirementsBinding.inflate(inflater, container, false)
+
         return viewBinding?.root
     }
 
@@ -32,35 +31,13 @@ internal class RequirementsFragment: BaseFragment() {
         requirementsType = arguments?.getString(REQUIREMENTS_TYPE)
 
         with(viewBinding ?: return) {
-            clBlackTextHeaderLayout.ivBackButton.setOnClickListener {
-                parentFragmentManager.popBackStack()
-            }
-
-            mbContinue.setOnClickListener {
-                parentFragmentManager.popBackStack()
-            }
-
-            clBlackTextHeaderLayout.tvTopInstructions.text = when (requirementsType) {
-                POI_FRONT, POI_BACK -> {
-                    clPoiRequirements.root.visibility = View.VISIBLE
-                    requireContext().getString(R.string.poi_requirements_title)
-                }
-
-                LIVENESS -> {
-                    clLivenessRequirements.root.visibility = View.VISIBLE
-                    requireContext().getString(R.string.liveness_requirements_title)
-                }
-
-                POA -> {
-                    clPoaRequirements.root.visibility = View.VISIBLE
-                    requireContext().getString(R.string.poa_requirements_title)
-                }
-
-
-                else -> {
-                    ""
-                }
-            }
+            bthlHeader.setup(
+                popBackStackAction = ::popBackStack,
+                stringResId = getStringResFromImageType(requirementsType, REQUIREMENTS_SCREEN),
+                colorResId = R.color.black,
+            )
+            rlRequirements.setup(imageType = requirementsType)
+            mbContinue.setOnClickListener { popBackStack() }
         }
     }
 }

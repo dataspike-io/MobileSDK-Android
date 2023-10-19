@@ -18,9 +18,6 @@ internal class CountriesListAdapter(
             parent,
             false
         )
-        val viewHolder = ViewHolder(binding)
-
-        viewHolder.setIsRecyclable(false)
 
         return ViewHolder(binding)
     }
@@ -30,7 +27,6 @@ internal class CountriesListAdapter(
             val country = countries?.get(position)
 
             itemView.isSelected = country?.isSelected ?: false
-
             tvCountryName.text = country?.name ?: ""
             Glide
                 .with(ivFlag)
@@ -48,7 +44,9 @@ internal class CountriesListAdapter(
             }
         }
     }
-    override fun getItemCount() = countries?.size ?: 0
+    override fun getItemCount(): Int {
+        return countries?.size ?: 0
+    }
 
     inner class ViewHolder(binding: CountryItemBinding): RecyclerView.ViewHolder(binding.root) {
 

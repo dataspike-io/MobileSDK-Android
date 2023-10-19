@@ -12,53 +12,63 @@ import io.dataspike.mobile_sdk.dependencies_provider.DataspikeInjector
 internal class DataspikeViewModelFactory: ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        when (modelClass) {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return when (modelClass) {
             DataspikeActivityViewModel::class.java -> {
                 DataspikeActivityViewModel(
-                    GetVerificationUseCase(
+                    getVerificationUseCase = GetVerificationUseCase(
+                        dataspikeRepository =
                         DataspikeInjector.component.dataspikeRepository,
-                        DataspikeInjector.component.verificationSettingsManager,
+                        verificationSettingsManager =
+                        DataspikeInjector.component.verificationManager,
                     ),
                 ) as T
             }
 
+            BaseViewModel::class.java -> {
+                BaseViewModel() as T
+            }
+
+            OnboardingViewModel::class.java -> {
+                OnboardingViewModel() as T
+            }
+
             ImagePreviewViewModel::class.java -> {
                 ImagePreviewViewModel(
-                    UploadImageUseCase(
-                        DataspikeInjector.component.dataspikeRepository,
-
+                    uploadImageUseCase = UploadImageUseCase(
+                        dataspikeRepository = DataspikeInjector.component.dataspikeRepository,
                     ),
-                    DataspikeInjector.component.verificationSettingsManager,
+                    uploadImageUiMapper = DataspikeInjector.component.uploadImageUiMapper,
                 ) as T
             }
 
             VerificationCompleteViewModel::class.java -> {
                 VerificationCompleteViewModel(
-                    ProceedWithVerificationUseCase(
-                        DataspikeInjector.component.dataspikeRepository,
+                    proceedWithVerificationUseCase = ProceedWithVerificationUseCase(
+                        dataspikeRepository = DataspikeInjector.component.dataspikeRepository,
                     ),
+                    proceedWithVerificationUiMapper =
+                    DataspikeInjector.component.proceedWithVerificationUiMapper,
                 ) as T
             }
 
             SelectCountryViewModel::class.java -> {
                 SelectCountryViewModel(
-                    GetCountriesUseCase(
-                        DataspikeInjector.component.dataspikeRepository,
+                    getCountriesUseCase = GetCountriesUseCase(
+                        dataspikeRepository = DataspikeInjector.component.dataspikeRepository,
                     ),
                     SetCountryUseCase(
-                        DataspikeInjector.component.dataspikeRepository,
+                        dataspikeRepository = DataspikeInjector.component.dataspikeRepository,
                     ),
                 ) as T
             }
 
             LivenessVerificationViewModel::class.java -> {
                 LivenessVerificationViewModel(
-                    UploadImageUseCase(
-                        DataspikeInjector.component.dataspikeRepository,
+                    uploadImageUseCase = UploadImageUseCase(
+                        dataspikeRepository = DataspikeInjector.component.dataspikeRepository,
 
                         ),
-                    DataspikeInjector.component.verificationSettingsManager,
                 ) as T
             }
 
@@ -66,4 +76,5 @@ internal class DataspikeViewModelFactory: ViewModelProvider.Factory {
                 throw Exception("Unknown ViewModel Type")
             }
         }
+    }
 }

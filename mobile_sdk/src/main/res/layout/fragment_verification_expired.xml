@@ -20,9 +20,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/your_verification_link_has_expired"/>
 
-    <include
-        android:id="@+id/cl_timer"
-        layout="@layout/timer_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.TimerLayout
+        android:id="@+id/tl_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +32,7 @@
         android:id="@+id/iv_clock"
         style="@style/VerificationExpiredImageView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_timer"
+        app:layout_constraintTop_toBottomOf="@+id/tl_timer"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -43,9 +42,8 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_clock"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <include
-        android:id="@+id/cl_complete_verification"
-        layout="@layout/complete_try_again_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.CompleteTryAgainLayout
+        android:id="@+id/ctal_complete_verification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

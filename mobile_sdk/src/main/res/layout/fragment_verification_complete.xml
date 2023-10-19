@@ -9,30 +9,16 @@
     android:background="@color/white"
     tools:context=".view.fragments.VerificationCompleteFragment">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_checkmark"
-        style="@style/VerificationCompleteImageView"
+    <io.dataspike.mobile_sdk.view.custom_views.VerificationResultLayout
+        android:id="@+id/vrl_verification_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_verification_complete_title"
-        style="@style/VerificationCompleteScreenTitleTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_checkmark"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_verification_complete_description"
-        style="@style/VerificationCompleteScreenTextTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_verification_complete_title"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <include
-        android:id="@+id/cl_complete_try_again_verification"
-        layout="@layout/complete_try_again_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.CompleteTryAgainLayout
+        android:id="@+id/ctal_complete_try_again"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/iv_powered_by"

@@ -9,9 +9,8 @@
     android:background="@color/white"
     tools:context=".view.fragments.BaseCameraFragment">
 
-    <include
-        android:id="@+id/cl_black_text_header_layout"
-        layout="@layout/black_text_header_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.HeaderLayout
+        android:id="@+id/hl_header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,19 +21,18 @@
         android:id="@+id/cl_steps"
         style="@style/StepsLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_black_text_header_layout"
+        app:layout_constraintTop_toBottomOf="@+id/hl_header_layout"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_poa_example"
-        style="@style/POAExampleImageView"
+        style="@style/PoaExampleImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cl_steps"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <include
-        android:id="@+id/cl_buttons"
-        layout="@layout/requirements_take_a_photo_upload_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.RequirementsTakeAPhotoUploadLayout
+        android:id="@+id/rtapul_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

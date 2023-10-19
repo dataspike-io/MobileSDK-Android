@@ -1,7 +1,6 @@
 package io.dataspike.mobile_sdk.domain.mappers
 
 import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
 import io.dataspike.mobile_sdk.data.models.responses.CountryResponse
 import io.dataspike.mobile_sdk.data.models.responses.UploadImageErrorResponse
 import io.dataspike.mobile_sdk.domain.models.CountriesState
@@ -9,7 +8,7 @@ import io.dataspike.mobile_sdk.domain.models.CountryDomainModel
 import retrofit2.HttpException
 import java.util.Locale
 
-internal object CountriesResponseMapper {
+internal class CountriesResponseMapper {
 
     fun map(result: Result<Array<CountryResponse>>): CountriesState {
         result
@@ -43,14 +42,12 @@ internal object CountriesResponseMapper {
     }
 
     private fun HttpException.toCountriesStateErrorMessage(): String {
-        val uploadImageErrorResponse = try {
+        val uploadImageErrorResponse = kotlin.runCatching {
             Gson().fromJson(
                 response()?.errorBody()?.string(),
                 UploadImageErrorResponse::class.java
             )
-        } catch (e: JsonSyntaxException) {
-            null
-        }
+        }.onFailure { throwable -> throwable.printStackTrace() }.getOrNull()
 
         return uploadImageErrorResponse?.errors?.get(0)?.message?.replaceFirstChar { char ->
             if (char.isLowerCase()) {

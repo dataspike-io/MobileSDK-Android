@@ -1,38 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:paddingHorizontal="@dimen/dimen_20dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-<androidx.appcompat.widget.AppCompatTextView
-    android:id="@+id/tv_upload_successful"
-    style="@style/UploadedTextView"
-    android:text="@string/upload_successful"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    tools:visibility="visible"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal">
 
-    <androidx.appcompat.widget.AppCompatTextView
-    android:id="@+id/tv_upload_with_errors"
-    style="@style/UploadWithErrorsTextView"
-    android:text="@string/something_went_wrong"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_upload_successful"
+            style="@style/UploadedTextView"
+            android:text="@string/upload_successful"
+            tools:visibility="visible"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-    android:id="@+id/tv_country_not_identified"
-    style="@style/CountryNotIdentifiedTextView"
-    android:text="@string/country_not_identified"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_upload_with_errors"
+            style="@style/UploadWithErrorsTextView"
+            android:text="@string/something_went_wrong"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_country_not_identified"
+            style="@style/CountryNotIdentifiedTextView"
+            android:text="@string/country_not_identified"/>
+
+    </LinearLayout>
+
+</merge>

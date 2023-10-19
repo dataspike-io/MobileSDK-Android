@@ -8,19 +8,22 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import io.dataspike.mobile_sdk.R
-import io.dataspike.mobile_sdk.data.image_caching.ImageCacheManager
 import io.dataspike.mobile_sdk.databinding.FragmentPoaChooserBinding
-import io.dataspike.mobile_sdk.utils.Utils.acceptableForUploadFileFormats
-import io.dataspike.mobile_sdk.utils.Utils.displayMetrics
-import io.dataspike.mobile_sdk.utils.Utils.toBitmap
+import io.dataspike.mobile_sdk.utils.acceptableForUploadFileFormats
+import io.dataspike.mobile_sdk.utils.displayMetrics
+import io.dataspike.mobile_sdk.utils.toBitmap
 import io.dataspike.mobile_sdk.view.IMAGE_TYPE
 import io.dataspike.mobile_sdk.view.POA
+import io.dataspike.mobile_sdk.view.view_models.BaseViewModel
+import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
 
 
-internal class POAChooserFragment : BaseFragment() {
+internal class PoaChooserFragment : BaseFragment() {
 
     private var viewBinding: FragmentPoaChooserBinding? = null
+    private val viewModel by viewModels<BaseViewModel> { DataspikeViewModelFactory() }
     private var getFile: ActivityResultLauncher<Array<String>>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +37,7 @@ internal class POAChooserFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewBinding = FragmentPoaChooserBinding.inflate(inflater, container, false)
+
         return viewBinding?.root
     }
 
@@ -41,27 +45,21 @@ internal class POAChooserFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         with(viewBinding ?: return) {
-            with(clBlackTextHeaderLayout) {
-                tvTopInstructions.text =
-                    requireContext().getString(R.string.let_s_upload_proof_of_address_document)
-                ivBackButton.setOnClickListener {
-                    parentFragmentManager.popBackStack()
-                }
-            }
+            hlHeaderLayout.setup(
+                popBackStackAction = ::popBackStack,
+                stringResId = R.string.let_s_upload_proof_of_address_document,
+                colorResId = R.color.black,
+            )
 
-            with(clButtons) {
-                tvRequirements.setOnClickListener {
-                    openRequirementsScreen(POA)
-                }
-                mbTakeAPhoto.setOnClickListener {
-                    navigateToFragment(POAVerificationFragment())
-                }
-                mbUpload.setOnClickListener {
-                    pickFile()
-                }
-            }
+            rtapulButtons.setup(
+                openRequirementsAction = ::openPoaRequirementsScreen,
+                takeAPhotoAction = {
+                    navigateToFragment(PoaVerificationFragment())
+                },
+                pickFileAction = ::pickFile,
+            )
 
-            clSteps.setStepsState(POA)
+            clSteps.setup(step = POA)
         }
     }
 
@@ -71,7 +69,7 @@ internal class POAChooserFragment : BaseFragment() {
         ) { uri ->
             uri ?: return@registerForActivityResult
 
-            activity?.contentResolver?.query(
+            requireActivity().contentResolver.query(
                 uri,
                 null,
                 null,
@@ -95,7 +93,7 @@ internal class POAChooserFragment : BaseFragment() {
                             val width = displayMetrics.widthPixels
                             val height = (width * 1.3).toInt()
 
-                            ImageCacheManager.putBitmapIntoCache(
+                            viewModel.putBitmapIntoCache(
                                 POA,
                                 inputStream.toBitmap(
                                     fileType,
@@ -111,10 +109,10 @@ internal class POAChooserFragment : BaseFragment() {
                             )
                         }
                     } else {
-                        makeToast("File size must be between 100KB and 8MB")
+                        makeToast(getString(R.string.file_size_must_be_between_100kb_and_8mb))
                     }
                 } else {
-                    makeToast("Please select a supported file format")
+                    makeToast(getString(R.string.please_select_a_supported_file_format))
                 }
 
                 cursor?.close()
@@ -124,5 +122,9 @@ internal class POAChooserFragment : BaseFragment() {
 
     private fun pickFile() {
         getFile?.launch(acceptableForUploadFileFormats)
+    }
+
+    private fun openPoaRequirementsScreen() {
+        openRequirementsScreen(POA)
     }
 }

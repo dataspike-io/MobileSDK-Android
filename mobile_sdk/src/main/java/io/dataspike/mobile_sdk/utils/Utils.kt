@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.TypedValueCompat.dpToPx
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,99 +25,102 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.nio.ByteBuffer
 
-internal object Utils {
+val acceptableForUploadFileFormats = arrayOf(
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "application/pdf"
+)
+val displayMetrics: DisplayMetrics get() {
+    return Resources.getSystem().displayMetrics
+}
 
-    val acceptableForUploadFileFormats = arrayOf(
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "application/pdf"
+fun ByteBuffer.toByteArray(): ByteArray {
+    rewind()
+    val data = ByteArray(remaining())
+    get(data)
+
+    return data
+}
+
+fun Fragment.launchInMain(block: suspend CoroutineScope.() -> Unit) {
+    lifecycleScope.launch(Dispatchers.Main, block = block)
+}
+
+fun AppCompatActivity.launchInMain(block: suspend CoroutineScope.() -> Unit) {
+    lifecycleScope.launch(Dispatchers.Main, block = block)
+}
+
+fun ViewPager2.disableOverscroll() {
+    (this.getChildAt(0) as? RecyclerView)?.overScrollMode = View.OVER_SCROLL_NEVER
+}
+
+fun Bitmap.rotate(degrees: Float): Bitmap {
+    return Bitmap.createBitmap(
+        this,
+        0,
+        0,
+        width,
+        height,
+        Matrix().apply { postRotate(degrees) },
+        true
     )
-    val displayMetrics: DisplayMetrics get() = Resources.getSystem().displayMetrics
+}
 
-    fun ByteBuffer.toByteArray(): ByteArray {
-        rewind()
-        val data = ByteArray(remaining())
-        get(data)
+fun Bitmap.flipHorizontally(): Bitmap {
+    val matrix = Matrix().apply { postScale(-1f, 1f, width / 2f, height / 2f) }
 
-        return data
-    }
+    return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
+}
 
-    fun View.visible(isVisible: Boolean) {
-        visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-    }
+fun Bitmap.toFile(): File? {
+    return kotlin.runCatching {
+        val file = File.createTempFile("DS_", ".png")
+        file.createNewFile()
+        val byteArrayOutputStream = ByteArrayOutputStream()
 
-    fun Fragment.launchInMain(block: suspend CoroutineScope.() -> Unit) {
-        lifecycleScope.launch(Dispatchers.Main, block = block)
-    }
+        compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
 
-    fun AppCompatActivity.launchInMain(block: suspend CoroutineScope.() -> Unit) {
-        lifecycleScope.launch(Dispatchers.Main, block = block)
-    }
+        val bitmapData = byteArrayOutputStream.toByteArray()
+        val fileOutputStream = FileOutputStream(file)
 
-    fun Bitmap.rotate(degrees: Float): Bitmap =
-        Bitmap.createBitmap(
-            this,
-            0,
-            0,
-            width,
-            height,
-            Matrix().apply { postRotate(degrees) },
-            true
-        )
+        fileOutputStream.write(bitmapData)
+        fileOutputStream.flush()
+        fileOutputStream.close()
 
-    fun Bitmap.toFile(fileNameToSave: String, dir: String): File? {
-        var file: File? = null
-        //TODO implement with tempFile
-        return try {
-            file = File(dir + File.separator + fileNameToSave)
-            file.createNewFile()
+        file
+    }.onFailure { e ->
+        e.printStackTrace()
+    }.getOrNull()
+}
 
-            val bos = ByteArrayOutputStream()
-            compress(Bitmap.CompressFormat.JPEG, 100, bos)
-            val bitmapData = bos.toByteArray()
-            val fos = FileOutputStream(file)
-            fos.write(bitmapData)
-            fos.flush()
-            fos.close()
-            file
-        } catch (e: Exception) {
-            e.printStackTrace()
-            file
-        }
-    }
+fun Bitmap.crop(cropArea: RectF?): Bitmap {
+    cropArea ?: return this
 
-    fun Bitmap.crop(cropArea: RectF?): Bitmap {
-        cropArea ?: return this
+    val x = ((width * cropArea.left) / displayMetrics.widthPixels).toInt()
+    val y = ((height * cropArea.top) / displayMetrics.heightPixels).toInt()
+    val croppedBitmapWidth = (
+            (width * cropArea.width()) / displayMetrics.widthPixels
+            ).toInt()
+    val croppedBitmapHeight = (
+            (height * cropArea.height()) / displayMetrics.heightPixels
+            ).toInt()
 
-        val x = ((width * cropArea.left) / displayMetrics.widthPixels).toInt()
-        val y = ((height * cropArea.top) / displayMetrics.heightPixels).toInt()
-        val croppedBitmapWidth = (
-                (width * cropArea.width()) / displayMetrics.widthPixels
-                ).toInt()
-        val croppedBitmapHeight = (
-                (height * cropArea.height()) / displayMetrics.heightPixels
-                ).toInt()
+    return Bitmap.createBitmap(
+        this,
+        x,
+        y,
+        croppedBitmapWidth,
+        croppedBitmapHeight
+    )
+}
 
-        return Bitmap.createBitmap(
-            this,
-            x,
-            y,
-            croppedBitmapWidth,
-            croppedBitmapHeight
-        )
-    }
-
-    //TODO should catch possible exceptions?
-    fun InputStream.toBitmap(
-        fileType: String,
-        width: Int,
-        height: Int,
-    ): Bitmap? {
+fun InputStream.toBitmap(
+    fileType: String,
+    width: Int,
+    height: Int,
+): Bitmap? {
+    return kotlin.runCatching {
         if (!acceptableForUploadFileFormats.contains(fileType)) {
             Log.d("Dataspike", "File is not of a supported type")
             return null
@@ -133,8 +138,6 @@ internal object Utils {
                     ParcelFileDescriptor.MODE_READ_ONLY
                 )
             )
-
-            //TODO does stream need to be closed?
             val page = renderer.openPage(0)
             val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
@@ -146,17 +149,14 @@ internal object Utils {
             )
             page.close()
             renderer.close()
-            close()
 
             bitmap
         } else {
-            val bitmap = BitmapFactory.decodeStream(this)
-
-            close()
-
-            bitmap
+            BitmapFactory.decodeStream(this)
         }
-    }
+    }.onFailure { throwable -> throwable.printStackTrace() }.getOrNull()
+}
 
-    fun dpToPx(dp: Float): Float = dpToPx(dp, displayMetrics)
+fun dpToPx(dp: Float): Float {
+    return dpToPx(dp, displayMetrics)
 }

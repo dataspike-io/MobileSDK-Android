@@ -1,7 +1,6 @@
 package io.dataspike.mobile_sdk.domain.mappers
 
 import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
 import io.dataspike.mobile_sdk.data.models.responses.HttpErrorResponse
 import io.dataspike.mobile_sdk.data.models.responses.VerificationResponse
 import io.dataspike.mobile_sdk.domain.models.CheckDomainModel
@@ -11,7 +10,7 @@ import io.dataspike.mobile_sdk.domain.models.VerificationSettingsDomainModel
 import io.dataspike.mobile_sdk.domain.models.VerificationState
 import retrofit2.HttpException
 
-internal object VerificationResponseMapper {
+internal class VerificationResponseMapper {
 
     fun map(result: Result<VerificationResponse>): VerificationState {
         result
@@ -98,14 +97,12 @@ internal object VerificationResponseMapper {
     }
 
     private fun HttpException.toGetVerificationErrorMessage(): VerificationState {
-        val errorResponse = try {
+        val errorResponse = kotlin.runCatching {
             Gson().fromJson(
                 response()?.errorBody()?.string(),
                 HttpErrorResponse::class.java
             )
-        } catch (e: JsonSyntaxException) {
-            null
-        }
+        }.onFailure { throwable -> throwable.printStackTrace() }.getOrNull()
 
         return VerificationState.VerificationError(
             error = errorResponse?.error ?: "Unknown error occurred",

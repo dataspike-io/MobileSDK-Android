@@ -9,9 +9,8 @@
     android:background="@color/white"
     tools:context=".view.fragments.BaseCameraFragment">
 
-    <include
-        android:id="@+id/cl_black_text_header_layout"
-        layout="@layout/black_text_header_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.HeaderLayout
+        android:id="@+id/hl_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +21,7 @@
         android:id="@+id/cl_steps"
         style="@style/StepsLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_black_text_header_layout"
+        app:layout_constraintTop_toBottomOf="@+id/hl_header"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <ScrollView
@@ -37,47 +36,31 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/cl_upload_result"
-                layout="@layout/upload_result_layout"
+            <io.dataspike.mobile_sdk.view.custom_views.UploadResultLayout
+                android:id="@+id/url_upload_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/dimen_20dp"/>
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_taken_image"
+            <io.dataspike.mobile_sdk.view.custom_views.RoundedImageView
+                android:id="@+id/riv_taken_image"
                 style="@style/DocumentPreviewImageView"/>
 
-            <include
-                android:id="@+id/cl_poi_requirements"
-                layout="@layout/poi_requirements"
+            <io.dataspike.mobile_sdk.view.custom_views.RequirementsLayout
+                android:id="@+id/rl_requirements"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"/>
-
-            <include
-                android:id="@+id/cl_poa_requirements"
-                layout="@layout/poa_requirements"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"/>
-
-            <include
-                android:id="@+id/cl_liveness_requirements"
-                layout="@layout/liveness_requirements"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"/>
+                android:layout_height="match_parent"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_150dp" />
+
         </LinearLayout>
+
     </ScrollView>
 
-    <include
-        android:id="@+id/cl_buttons"
-        layout="@layout/requirements_redo_continue_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.RequirementsRedoContinueLayout
+        android:id="@+id/rrcl_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

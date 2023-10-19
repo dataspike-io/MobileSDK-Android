@@ -8,9 +8,8 @@
     tools:context=".view.fragments.BaseCameraFragment"
     android:fitsSystemWindows="false">
 
-    <include
-        android:id="@+id/cl_white_text_header_layout"
-        layout="@layout/white_text_header_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.HeaderLayout
+        android:id="@+id/hl__header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,9 +33,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <include
-        android:id="@+id/cl_camera_buttons"
-        layout="@layout/camera_buttons_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.CameraButtonsLayout
+        android:id="@+id/cbl_camera_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

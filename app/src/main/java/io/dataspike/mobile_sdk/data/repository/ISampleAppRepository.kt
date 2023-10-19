@@ -4,7 +4,5 @@ import io.dataspike.mobile_sdk.domain.models.NewVerificationState
 
 internal interface ISampleAppRepository {
 
-    suspend fun createVerification(
-        body: Map<String, Array<String>>
-    ): NewVerificationState
+    suspend fun createVerification(): NewVerificationState
 }

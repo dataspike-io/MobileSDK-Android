@@ -1,7 +1,9 @@
 package io.dataspike.mobile_sdk.data.api
 
+import io.dataspike.mobile_sdk.data.models.requests.CountryRequestBody
 import io.dataspike.mobile_sdk.data.models.responses.CountryResponse
 import io.dataspike.mobile_sdk.data.models.responses.EmptyResponse
+import io.dataspike.mobile_sdk.data.models.responses.ProceedWithVerificationResponse
 import io.dataspike.mobile_sdk.data.models.responses.UploadImageResponse
 import io.dataspike.mobile_sdk.data.models.responses.VerificationResponse
 import okhttp3.MultipartBody
@@ -17,7 +19,7 @@ internal interface IDataspikeApiService {
 
     @GET("api/v3/sdk/{short_id}")
     suspend fun getVerification(
-        @Path("short_id") shortId: String
+        @Path("short_id") shortId: String,
     ): VerificationResponse
 
     @Multipart
@@ -25,13 +27,13 @@ internal interface IDataspikeApiService {
     suspend fun uploadImage(
         @Path("short_id") shortId: String,
         @Part("document_type") documentType: RequestBody,
-        @Part file: MultipartBody.Part?
+        @Part file: MultipartBody.Part?,
     ): UploadImageResponse
 
     @POST("api/v3/sdk/{short_id}/set_country")
     suspend fun setCountry(
         @Path("short_id") shortId: String,
-        @Body body: Map<String, String>,
+        @Body body: CountryRequestBody,
     ): EmptyResponse
 
     @GET("api/v3/public/dictionary/countries")
@@ -40,6 +42,5 @@ internal interface IDataspikeApiService {
     @POST("api/v3/sdk/{short_id}/proceed")
     suspend fun proceedWithVerification(
         @Path("short_id") shortId: String,
-        @Body body: Map<String, String>,
-    ): EmptyResponse
+    ): ProceedWithVerificationResponse
 }

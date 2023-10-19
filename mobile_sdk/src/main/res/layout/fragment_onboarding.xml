@@ -19,9 +19,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <include
-        android:id="@+id/cl_timer"
-        layout="@layout/timer_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.TimerLayout
+        android:id="@+id/tl_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +31,7 @@
         android:id="@+id/vp_onboarding"
         style="@style/ViewPager"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_timer"
+        app:layout_constraintTop_toBottomOf="@+id/tl_timer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/tl_indicators"/>
 
@@ -42,11 +41,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vp_onboarding"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/cl_buttons"/>
+        app:layout_constraintBottom_toTopOf="@+id/robl_buttons"/>
 
-    <include
-        android:id="@+id/cl_buttons"
-        layout="@layout/requirements_one_button_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.RequirementsOneButtonLayout
+        android:id="@+id/robl_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

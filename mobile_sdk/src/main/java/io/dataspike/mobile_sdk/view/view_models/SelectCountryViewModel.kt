@@ -1,8 +1,8 @@
 package io.dataspike.mobile_sdk.view.view_models
 
+import io.dataspike.mobile_sdk.data.models.requests.CountryRequestBody
 import io.dataspike.mobile_sdk.data.use_cases.GetCountriesUseCase
 import io.dataspike.mobile_sdk.data.use_cases.SetCountryUseCase
-import io.dataspike.mobile_sdk.dependencies_provider.DataspikeInjector
 import io.dataspike.mobile_sdk.domain.models.CountriesState
 import io.dataspike.mobile_sdk.domain.models.CountryDomainModel
 import io.dataspike.mobile_sdk.domain.models.EmptyState
@@ -15,10 +15,8 @@ internal class SelectCountryViewModel(
 ): BaseViewModel() {
 
     private val countries = mutableListOf<CountryDomainModel>()
-
     private val _getCountriesFlow = MutableSharedFlow<List<CountryDomainModel>>(replay = 1)
     val getCountriesFlow: SharedFlow<List<CountryDomainModel>> = _getCountriesFlow
-
     private val _setCountryFlow = MutableSharedFlow<EmptyState>(replay = 1)
     val setCountryFlow: SharedFlow<EmptyState> = _setCountryFlow
 
@@ -44,8 +42,7 @@ internal class SelectCountryViewModel(
         launchInVMScope {
             _setCountryFlow.emit(
                 setCountryUseCase.invoke(
-                    DataspikeInjector.component.shortId,
-                    mapOf("country" to selectedCountry)
+                    CountryRequestBody(country = selectedCountry)
                 )
             )
 
@@ -61,7 +58,7 @@ internal class SelectCountryViewModel(
         }
     }
 
-    fun setCountrySelected(countryCode: String) {
+    fun setCountrySelected(countryCode: String?) {
         countries.forEach { country ->
             country.isSelected = country.alphaTwo == countryCode
         }

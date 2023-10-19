@@ -9,9 +9,8 @@
     android:background="@color/white"
     tools:context=".view.fragments.BaseCameraFragment">
 
-    <include
-        android:id="@+id/cl_black_text_header_layout"
-        layout="@layout/black_text_header_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.HeaderLayout
+        android:id="@+id/hl_text_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,12 +21,11 @@
         android:id="@+id/cl_steps"
         style="@style/StepsLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_black_text_header_layout"
+        app:layout_constraintTop_toBottomOf="@+id/hl_text_header"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <include
-        android:id="@+id/cl_upload_result"
-        layout="@layout/upload_result_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.UploadResultLayout
+        android:id="@+id/url_upload_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_20dp"
@@ -39,7 +37,7 @@
         android:id="@+id/et_search"
         style="@style/SearchBarTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_upload_result"/>
+        app:layout_constraintTop_toBottomOf="@+id/url_upload_result"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_search"

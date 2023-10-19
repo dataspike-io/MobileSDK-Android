@@ -1,6 +1,6 @@
 package io.dataspike.mobile_sdk.dependencies_provider
 
-import io.dataspike.mobile_sdk.dependencies_provider.model.DataspikeDependencies
+import io.dataspike.mobile_sdk.DataspikeDependencies
 
 internal object DataspikeInjector {
 

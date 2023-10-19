@@ -1,43 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingTop="@dimen/dimen_20dp"
-    android:paddingBottom="@dimen/dimen_30dp">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_requirements"
-        style="@style/RequirementsTextView"
-        android:layout_marginBottom="@dimen/dimen_16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tv_poa_format_and_size_info"/>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_poa_format_and_size_info"
-        style="@style/UploadRequirementsTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/mb_take_a_photo"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dimen_20dp"
+        android:paddingBottom="@dimen/dimen_30dp">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/mb_take_a_photo"
-        style="@style/ShortTransparentMaterialButtonWithPurpleStroke"
-        android:layout_marginTop="@dimen/dimen_20dp"
-        android:text="@string/take_a_photo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_poa_format_and_size_info"
-        app:layout_constraintEnd_toStartOf="@+id/mb_upload"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_requirements"
+            style="@style/RequirementsTextView"
+            android:layout_marginBottom="@dimen/dimen_16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tv_poa_format_and_size_info"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/mb_upload"
-        style="@style/ShortPurpleMaterialButton"
-        app:icon="@drawable/upload"
-        app:iconGravity="textStart"
-        android:text="@string/upload"
-        app:layout_constraintStart_toEndOf="@+id/mb_take_a_photo"
-        app:layout_constraintTop_toTopOf="@+id/mb_take_a_photo"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_poa_format_and_size_info"
+            style="@style/UploadRequirementsTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/mb_take_a_photo"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mb_take_a_photo"
+            style="@style/ShortTransparentMaterialButtonWithPurpleStroke"
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:text="@string/take_a_photo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_poa_format_and_size_info"
+            app:layout_constraintEnd_toStartOf="@+id/mb_upload"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mb_upload"
+            style="@style/ShortPurpleMaterialButton"
+            app:icon="@drawable/upload"
+            app:iconGravity="textStart"
+            android:text="@string/upload"
+            app:layout_constraintStart_toEndOf="@+id/mb_take_a_photo"
+            app:layout_constraintTop_toTopOf="@+id/mb_take_a_photo"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

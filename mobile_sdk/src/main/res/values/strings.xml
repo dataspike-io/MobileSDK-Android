@@ -70,5 +70,10 @@
     <string name="your_verification_link_has_expired">Your verification link has expired</string>
     <string name="please_contact_your_compliance_officer">Please contact your compliance officer to request a new link.</string>
     <string name="time_left">Time left: %s</string>
+    <string name="poi_intro_instructions">Take a photo of your document</string>
+    <string name="permission_request_denied">Permission request denied</string>
+    <string name="file_size_must_be_between_100kb_and_8mb">File size must be between 100KB and 8MB</string>
+    <string name="please_select_a_supported_file_format">Please select a supported file format</string>
+    <string name="_00_00_00">00:00:00</string>
 
 </resources>

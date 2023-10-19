@@ -3,12 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white">
 
-    <include
-        android:id="@+id/cl_black_text_header_layout"
-        layout="@layout/black_text_header_layout"
+    <io.dataspike.mobile_sdk.view.custom_views.HeaderLayout
+        android:id="@+id/bthl_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,37 +16,15 @@
     <ScrollView
         style="@style/ScrollView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_black_text_header_layout"
+        app:layout_constraintTop_toBottomOf="@+id/bthl_header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout
+        <io.dataspike.mobile_sdk.view.custom_views.RequirementsLayout
+            android:id="@+id/rl_requirements"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"/>
 
-            <include
-                android:id="@+id/cl_poi_requirements"
-                layout="@layout/poi_requirements"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible"/>
-
-            <include
-                android:id="@+id/cl_poa_requirements"
-                layout="@layout/poa_requirements"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"/>
-
-            <include
-                android:id="@+id/cl_liveness_requirements"
-                layout="@layout/liveness_requirements"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"/>
-        </LinearLayout>
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
