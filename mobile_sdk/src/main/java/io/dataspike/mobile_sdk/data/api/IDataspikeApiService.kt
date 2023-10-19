@@ -2,7 +2,7 @@ package io.dataspike.mobile_sdk.data.api
 
 import io.dataspike.mobile_sdk.data.models.requests.CountryRequestBody
 import io.dataspike.mobile_sdk.data.models.responses.CountryResponse
-import io.dataspike.mobile_sdk.data.models.responses.EmptyResponse
+import io.dataspike.mobile_sdk.data.models.responses.DataspikeEmptyResponse
 import io.dataspike.mobile_sdk.data.models.responses.ProceedWithVerificationResponse
 import io.dataspike.mobile_sdk.data.models.responses.UploadImageResponse
 import io.dataspike.mobile_sdk.data.models.responses.VerificationResponse
@@ -34,7 +34,7 @@ internal interface IDataspikeApiService {
     suspend fun setCountry(
         @Path("short_id") shortId: String,
         @Body body: CountryRequestBody,
-    ): EmptyResponse
+    ): DataspikeEmptyResponse
 
     @GET("api/v3/public/dictionary/countries")
     suspend fun getCountries(): Array<CountryResponse>

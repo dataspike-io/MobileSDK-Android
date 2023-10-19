@@ -1,14 +1,14 @@
 package io.dataspike.mobile_sdk.domain.mappers
 
 import com.google.gson.Gson
-import io.dataspike.mobile_sdk.data.models.responses.EmptyResponse
+import io.dataspike.mobile_sdk.data.models.responses.DataspikeEmptyResponse
 import io.dataspike.mobile_sdk.data.models.responses.HttpErrorResponse
 import io.dataspike.mobile_sdk.domain.models.EmptyState
 import retrofit2.HttpException
 
 internal class EmptyResponseMapper {
 
-    fun map(result: Result<EmptyResponse>): EmptyState {
+    fun map(result: Result<DataspikeEmptyResponse>): EmptyState {
         result
             .onSuccess {
                 return EmptyState.EmptyStateSuccess
