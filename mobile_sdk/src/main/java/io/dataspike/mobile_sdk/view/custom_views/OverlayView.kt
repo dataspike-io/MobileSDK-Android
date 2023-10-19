@@ -2,7 +2,6 @@ package io.dataspike.mobile_sdk.view.custom_views
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
@@ -53,9 +52,6 @@ internal class OverlayView @JvmOverloads constructor(
     var poiFrameRectF: RectF? = null
     var livenessFrameRectF: RectF? = null
     var poaFrameRectF: RectF? = null
-    var poiBoundingBox: RectF? = null
-    var livenessBoundingBox: RectF? = null
-    var poaBoundingBox: RectF? = null
 
     init {
         setLayerType(LAYER_TYPE_SOFTWARE, null)
@@ -116,17 +112,6 @@ internal class OverlayView @JvmOverloads constructor(
                 ),
                 framePaint
             )
-
-            poiBoundingBox?.let { rectF ->
-                canvas.drawRect(
-                    rectF,
-                    Paint().apply {
-                        color = Color.RED
-                        strokeWidth = 2f
-                        style = Paint.Style.STROKE
-                    }
-                )
-            }
         }
     }
 
@@ -155,17 +140,6 @@ internal class OverlayView @JvmOverloads constructor(
         livenessFrameRectF?.let {
             canvas.drawOval(it, cutoutAreaPaint)
             canvas.drawOval(it, livenessFrame)
-        }
-
-        livenessBoundingBox?.let {
-            canvas.drawRect(
-                it,
-                Paint().apply {
-                    color = Color.RED
-                    strokeWidth = 2f
-                    style = Paint.Style.STROKE
-                }
-            )
         }
     }
 
@@ -203,17 +177,6 @@ internal class OverlayView @JvmOverloads constructor(
                 ),
                 framePaint
             )
-
-            poaBoundingBox?.let { rectF ->
-                canvas.drawRect(
-                    rectF,
-                    Paint().apply {
-                        color = Color.RED
-                        strokeWidth = 2f
-                        style = Paint.Style.STROKE
-                    }
-                )
-            }
         }
     }
 
@@ -237,7 +200,6 @@ internal class OverlayView @JvmOverloads constructor(
     ): Path {
         val path = Path()
 
-        // top left
         path.moveTo(left, (top + cornerRadius))
         path.arcTo(
             RectF(left, top, left + cornerRadius, top + cornerRadius),
@@ -245,14 +207,11 @@ internal class OverlayView @JvmOverloads constructor(
             90f,
             true
         )
-
         path.moveTo(left + (cornerRadius / 2f), top)
         path.lineTo(left + (cornerRadius / 2f) + cornerLength, top)
-
         path.moveTo(left, top + (cornerRadius / 2f))
         path.lineTo(left, top + (cornerRadius / 2f) + cornerLength)
 
-        // top right
         path.moveTo(right - cornerRadius, top)
         path.arcTo(
             RectF(right - cornerRadius, top, right, top + cornerRadius),
@@ -260,14 +219,11 @@ internal class OverlayView @JvmOverloads constructor(
             90f,
             true
         )
-
         path.moveTo(right - (cornerRadius / 2f), top)
         path.lineTo(right - (cornerRadius / 2f) - cornerLength, top)
-
         path.moveTo(right, top + (cornerRadius / 2f))
         path.lineTo(right, top + (cornerRadius / 2f) + cornerLength)
 
-        // bottom left
         path.moveTo(left, bottom - cornerRadius)
         path.arcTo(
             RectF(left, bottom - cornerRadius, left+cornerRadius, bottom),
@@ -275,14 +231,11 @@ internal class OverlayView @JvmOverloads constructor(
             90f,
             true
         )
-
         path.moveTo(left + (cornerRadius / 2f), bottom)
         path.lineTo(left + (cornerRadius / 2f) + cornerLength, bottom)
-
         path.moveTo(left, bottom - (cornerRadius / 2f))
         path.lineTo(left, bottom - (cornerRadius / 2f) - cornerLength)
 
-        // bottom right
         path.moveTo(left, bottom - cornerRadius)
         path.arcTo(
             RectF(right - cornerRadius, bottom - cornerRadius, right, bottom),
@@ -290,10 +243,8 @@ internal class OverlayView @JvmOverloads constructor(
             90f,
             true
         )
-
         path.moveTo(right - (cornerRadius / 2f), bottom)
         path.lineTo(right - (cornerRadius / 2f) - cornerLength, bottom)
-
         path.moveTo(right, bottom - (cornerRadius / 2f))
         path.lineTo(right, bottom - (cornerRadius / 2f) - cornerLength)
 

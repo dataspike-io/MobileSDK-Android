@@ -70,7 +70,6 @@ internal class PoaVerificationFragment : BaseCameraFragment() {
     override fun analyzeDocument(boundingBox: RectF) {
         with(viewBinding?.ovPoa ?: return) {
             setDocumentIsInFrame(poaFrameRectF?.contains(boundingBox) ?: false)
-            poaBoundingBox = boundingBox
         }
     }
 }

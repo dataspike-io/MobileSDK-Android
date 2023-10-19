@@ -12,6 +12,7 @@ import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentPoiVerificationBinding
 import io.dataspike.mobile_sdk.utils.crop
 import io.dataspike.mobile_sdk.view.IMAGE_TYPE
+import io.dataspike.mobile_sdk.view.POI_FRONT
 import io.dataspike.mobile_sdk.view.view_models.BaseViewModel
 import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
 
@@ -47,9 +48,16 @@ internal class PoiVerificationFragment : BaseCameraFragment() {
                 takePhotoAction = ::takePhoto,
                 switchCameraAction = ::switchCamera,
             )
+
+            val stringResId = if (imageType == POI_FRONT) {
+                R.string.front_photo_instructions
+            } else {
+                R.string.back_photo_instructions
+            }
+
             hlHeader.setup(
                 popBackStackAction = ::popBackStack,
-                stringResId = R.string.place_the_document_in_frame_and_take_a_photo,
+                stringResId = stringResId,
                 colorResId = R.color.white,
             )
         }
@@ -71,7 +79,6 @@ internal class PoiVerificationFragment : BaseCameraFragment() {
     override fun analyzeDocument(boundingBox: RectF) {
         with(viewBinding?.ovPoi ?: return) {
             setDocumentIsInFrame(poiFrameRectF?.contains(boundingBox) ?: false)
-            poiBoundingBox = boundingBox
         }
     }
 }

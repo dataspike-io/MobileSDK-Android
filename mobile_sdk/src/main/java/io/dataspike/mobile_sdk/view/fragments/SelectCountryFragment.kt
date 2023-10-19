@@ -69,7 +69,6 @@ internal class SelectCountryFragment: BaseFragment() {
 
     private fun collectSetCountryFlow() {
         launchInMain {
-            // TODO errors
             viewModel.setCountryFlow.collect { popBackStack() }
         }
     }
