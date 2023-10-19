@@ -9,7 +9,8 @@ internal data class SampleAppDependencies(
     companion object {
         val DEFAULT = SampleAppDependencies(
             isDebug = true,
-            dsApiToken = "place_your_api_token_here",
+            // put your api token here
+            dsApiToken = "",
             shortId = "",
         )
     }
