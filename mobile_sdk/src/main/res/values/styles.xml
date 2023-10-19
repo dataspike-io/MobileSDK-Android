@@ -206,8 +206,8 @@
         <item name="android:background">@drawable/transparent_button_with_purple_stroke_background</item>
         <item name="android:foreground">@drawable/rectangular_button_ripple</item>
         <item name="android:layout_marginLeft">@dimen/dimen_20dp</item>
+        <item name="android:layout_marginTop">@dimen/dimen_16dp</item>
         <item name="android:layout_marginRight">@dimen/dimen_20dp</item>
-        <item name="android:layout_marginBottom">@dimen/dimen_30dp</item>
     </style>
 
     <style name="ShortTransparentMaterialButtonWithPurpleStroke">
