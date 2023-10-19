@@ -22,7 +22,7 @@ dependencies {
     implementation 'com.github.dataspike-io:MobileSDK-Android:1.0.0-rc09'
 }
 ```
-3. In your app's activity of fragment implement VerificationCompletedCallback interface.
+3. In your app's activity or fragment implement VerificationCompletedCallback interface.
 4. Initialize SDK in your project.
 ```
 val dataspikeDependencies = DataspikeDependencies(
