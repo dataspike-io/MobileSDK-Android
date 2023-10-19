@@ -15,13 +15,11 @@ internal class DataspikeHeadersInterceptor(
     private val dsApiToken: String,
 ): Interceptor {
 
-    private val userAgent = "MobileSDK-Android/${BuildConfig.VERSION_NAME} " +
-        "(Android ${Build.VERSION.RELEASE}; ${Build.MANUFACTURER} ${Build.MODEL}) " +
-        "${AppInfo.appName}/${AppInfo.appVersion} Locale/${Locale.getDefault()}"
-
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-
+        val userAgent = "MobileSDK-Android/${BuildConfig.VERSION_NAME} " +
+                "(Android ${Build.VERSION.RELEASE}; ${Build.MANUFACTURER} ${Build.MODEL}) " +
+                "${AppInfo.appName}/${AppInfo.appVersion} Locale/${Locale.getDefault()}"
         val newRequest = request.newBuilder()
             .header(DS_API_TOKEN, dsApiToken)
             .header(CONTENT_TYPE_HEADER, APPLICATION_JSON)
