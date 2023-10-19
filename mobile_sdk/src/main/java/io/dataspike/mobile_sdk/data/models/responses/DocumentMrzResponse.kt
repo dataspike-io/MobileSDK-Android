@@ -10,5 +10,5 @@ internal data class DocumentMrzResponse(
     @SerializedName("pending_documents")
     val pendingDocuments: List<String>?,
     @SerializedName("errors")
-    val errors: List<ErrorResponse>?,
+    val errors: List<DataspikeErrorResponse>?,
 )

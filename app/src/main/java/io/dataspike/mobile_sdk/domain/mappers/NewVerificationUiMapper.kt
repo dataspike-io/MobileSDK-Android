@@ -8,12 +8,12 @@ internal class NewVerificationUiMapper {
     fun map(newVerificationState: NewVerificationState): NewVerificationUiState {
         return when (newVerificationState) {
             is NewVerificationState.NewVerificationSuccess -> {
-                return NewVerificationUiState.NewVerificationUiSuccess(
+                NewVerificationUiState.NewVerificationUiSuccess(
                     shortId = newVerificationState.verificationUrlId,
                 )
             }
             is NewVerificationState.NewVerificationError -> {
-                return NewVerificationUiState.NewVerificationUiError(
+                NewVerificationUiState.NewVerificationUiError(
                     error = newVerificationState.error,
                     details = newVerificationState.validationError,
                 )

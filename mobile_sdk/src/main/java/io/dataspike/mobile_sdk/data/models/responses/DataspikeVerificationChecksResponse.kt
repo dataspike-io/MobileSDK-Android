@@ -2,13 +2,13 @@ package io.dataspike.mobile_sdk.data.models.responses
 
 import com.google.gson.annotations.SerializedName
 
-internal data class VerificationChecksResponse(
+internal data class DataspikeVerificationChecksResponse(
     @SerializedName("face_comparison")
-    val faceComparison: CheckResponse?,
+    val faceComparison: DataspikeCheckResponse?,
     @SerializedName("liveness")
-    val liveness: CheckResponse?,
+    val liveness: DataspikeCheckResponse?,
     @SerializedName("document_mrz")
-    val documentMrz: CheckResponse?,
+    val documentMrz: DataspikeCheckResponse?,
     @SerializedName("poa")
-    val poa: CheckResponse?,
+    val poa: DataspikeCheckResponse?,
 )

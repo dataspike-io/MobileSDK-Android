@@ -8,7 +8,7 @@ internal data class VerificationResponse(
     @SerializedName("status")
     val status: String?,
     @SerializedName("checks")
-    val checks: VerificationChecksResponse?,
+    val checks: DataspikeVerificationChecksResponse?,
     @SerializedName("verification_url")
     val verificationUrl: String?,
     @SerializedName("country_code")

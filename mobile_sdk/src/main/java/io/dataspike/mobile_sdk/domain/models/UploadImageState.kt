@@ -8,7 +8,7 @@ internal sealed class UploadImageState {
         val detectedDocumentSide: String,
         val detectedTwoSideDocument: Boolean,
         val detectedCountry: String,
-        val errors: List<ErrorDomainModel>,
+        val errors: List<DataspikeErrorDomainModel>,
     ): UploadImageState()
 
     internal data class UploadImageError(

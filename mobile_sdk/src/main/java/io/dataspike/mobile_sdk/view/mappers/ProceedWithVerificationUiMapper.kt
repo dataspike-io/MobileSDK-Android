@@ -10,7 +10,7 @@ internal class ProceedWithVerificationUiMapper {
 
     fun map(proceedWithVerificationState: ProceedWithVerificationState)
     : ProceedWithVerificationUiState {
-        when (proceedWithVerificationState) {
+        return when (proceedWithVerificationState) {
             is ProceedWithVerificationState.ProceedWithVerificationStateSuccess -> {
                 val verificationStatus = when (proceedWithVerificationState.status) {
                     COMPLETED -> {
@@ -26,12 +26,12 @@ internal class ProceedWithVerificationUiMapper {
                     }
                 }
 
-                return ProceedWithVerificationUiState.ProceedWithVerificationUiSuccess(
+                ProceedWithVerificationUiState.ProceedWithVerificationUiSuccess(
                     verificationStatus = verificationStatus,
                 )
             }
             is ProceedWithVerificationState.ProceedWithVerificationStateError -> {
-                return ProceedWithVerificationUiState.ProceedWithVerificationUiError
+                ProceedWithVerificationUiState.ProceedWithVerificationUiError
             }
         }
     }
