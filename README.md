@@ -28,7 +28,7 @@ dependencies {
 val dataspikeDependencies = DataspikeDependencies(
     isDebug = true/false,
     dsApiToken = your_api_token,
-    shortId = verification_url_id
+    shortId = verification_url_id,
 )
 
 fun startDataspikeFlow(
@@ -39,7 +39,7 @@ fun startDataspikeFlow(
 ```
 5. Receive and handle verification result in your app after user completed verification process in SDK.
 ```
-override fun onVerificationCompleted(verificationSucceeded: Boolean) {
+override fun onVerificationCompleted(verificationSucceeded: DataspikeVerificationStatus?) {
     ...
 } 
 ```
