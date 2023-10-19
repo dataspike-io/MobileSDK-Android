@@ -1,7 +1,7 @@
 package io.dataspike.mobile_sdk.domain.mappers
 
 import com.google.gson.Gson
-import io.dataspike.mobile_sdk.data.models.responses.HttpErrorResponse
+import io.dataspike.mobile_sdk.data.models.responses.DataspikeHttpErrorResponse
 import io.dataspike.mobile_sdk.data.models.responses.ProceedWithVerificationResponse
 import io.dataspike.mobile_sdk.domain.models.ProceedWithVerificationState
 import retrofit2.HttpException
@@ -35,7 +35,7 @@ internal class ProceedWithVerificationResponseMapper {
         val errorResponse = kotlin.runCatching {
             Gson().fromJson(
                 response()?.errorBody()?.string(),
-                HttpErrorResponse::class.java
+                DataspikeHttpErrorResponse::class.java
             )
         }.onFailure { throwable -> throwable.printStackTrace() }.getOrNull()
 

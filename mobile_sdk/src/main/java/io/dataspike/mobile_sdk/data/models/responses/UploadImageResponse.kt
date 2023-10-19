@@ -14,5 +14,5 @@ internal data class UploadImageResponse(
     @SerializedName("detected_country")
     val detectedCountry: String?,
     @SerializedName("errors")
-    val errors: List<ErrorResponse>?,
+    val errors: List<DataspikeErrorResponse>?,
 )

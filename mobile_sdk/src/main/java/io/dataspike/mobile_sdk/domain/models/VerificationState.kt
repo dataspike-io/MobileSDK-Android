@@ -5,7 +5,7 @@ internal sealed class VerificationState {
     internal data class VerificationSuccess(
         val id: String,
         val status: String,
-        val checks: VerificationChecksDomainModel,
+        val checks: DataspikeVerificationChecksDomainModel,
         val verificationUrl: String,
         val countryCode: String,
         val settings: VerificationSettingsDomainModel,

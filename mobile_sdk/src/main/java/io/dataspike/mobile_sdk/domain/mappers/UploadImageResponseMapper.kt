@@ -3,7 +3,7 @@ package io.dataspike.mobile_sdk.domain.mappers
 import com.google.gson.Gson
 import io.dataspike.mobile_sdk.data.models.responses.UploadImageErrorResponse
 import io.dataspike.mobile_sdk.data.models.responses.UploadImageResponse
-import io.dataspike.mobile_sdk.domain.models.ErrorDomainModel
+import io.dataspike.mobile_sdk.domain.models.DataspikeErrorDomainModel
 import io.dataspike.mobile_sdk.domain.models.UploadImageState
 import retrofit2.HttpException
 
@@ -21,7 +21,7 @@ internal class UploadImageResponseMapper {
                     detectedTwoSideDocument = uploadImageResponse.detectedTwoSideDocument ?: false,
                     detectedCountry = uploadImageResponse.detectedCountry ?: "",
                     errors = uploadImageResponse.errors?.map { errorResponse ->
-                        ErrorDomainModel(
+                        DataspikeErrorDomainModel(
                             code = errorResponse.code ?: -1,
                             message = errorResponse.message ?: "",
                         )

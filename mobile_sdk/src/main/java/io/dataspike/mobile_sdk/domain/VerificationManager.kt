@@ -1,7 +1,7 @@
 package io.dataspike.mobile_sdk.domain
 
 import android.util.Log
-import io.dataspike.mobile_sdk.domain.models.ChecksDomainModel
+import io.dataspike.mobile_sdk.domain.models.DataspikeChecksDomainModel
 import io.dataspike.mobile_sdk.domain.models.VerificationSettingsDomainModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -14,7 +14,7 @@ internal class VerificationManager {
         status: String,
         expiresAt: String,
     ) {
-        checks = ChecksDomainModel(
+        checks = DataspikeChecksDomainModel(
             poiIsRequired = settings.poiRequired,
             livenessIsRequired = settings.faceComparisonRequired,
             poaIsRequired = settings.poaRequired,
@@ -24,7 +24,7 @@ internal class VerificationManager {
         this.expiresAt = expiresAt
     }
 
-    var checks: ChecksDomainModel = ChecksDomainModel(
+    var checks: DataspikeChecksDomainModel = DataspikeChecksDomainModel(
         poiIsRequired = false,
         livenessIsRequired = false,
         poaIsRequired = false,

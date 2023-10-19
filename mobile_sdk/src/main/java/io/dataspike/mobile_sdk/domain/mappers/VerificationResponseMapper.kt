@@ -1,11 +1,11 @@
 package io.dataspike.mobile_sdk.domain.mappers
 
 import com.google.gson.Gson
-import io.dataspike.mobile_sdk.data.models.responses.HttpErrorResponse
+import io.dataspike.mobile_sdk.data.models.responses.DataspikeHttpErrorResponse
 import io.dataspike.mobile_sdk.data.models.responses.VerificationResponse
-import io.dataspike.mobile_sdk.domain.models.CheckDomainModel
-import io.dataspike.mobile_sdk.domain.models.ErrorDomainModel
-import io.dataspike.mobile_sdk.domain.models.VerificationChecksDomainModel
+import io.dataspike.mobile_sdk.domain.models.DataspikeCheckDomainModel
+import io.dataspike.mobile_sdk.domain.models.DataspikeErrorDomainModel
+import io.dataspike.mobile_sdk.domain.models.DataspikeVerificationChecksDomainModel
 import io.dataspike.mobile_sdk.domain.models.VerificationSettingsDomainModel
 import io.dataspike.mobile_sdk.domain.models.VerificationState
 import retrofit2.HttpException
@@ -18,11 +18,11 @@ internal class VerificationResponseMapper {
                 return VerificationState.VerificationSuccess(
                     id = verificationResponse.id ?: "",
                     status = verificationResponse.status ?: "",
-                    checks = VerificationChecksDomainModel(
-                        faceComparison = CheckDomainModel(
+                    checks = DataspikeVerificationChecksDomainModel(
+                        faceComparison = DataspikeCheckDomainModel(
                             status = verificationResponse.checks?.faceComparison?.status ?: "",
                             errors = verificationResponse.checks?.faceComparison?.errors?.map { errorResponse ->
-                                ErrorDomainModel(
+                                DataspikeErrorDomainModel(
                                     code = errorResponse.code ?: -1,
                                     message = errorResponse.message ?: "",
                                 )
@@ -30,10 +30,10 @@ internal class VerificationResponseMapper {
                             pendingDocuments = verificationResponse.checks?.faceComparison?.pendingDocuments
                                 ?: emptyList(),
                         ),
-                        liveness = CheckDomainModel(
+                        liveness = DataspikeCheckDomainModel(
                             status = verificationResponse.checks?.liveness?.status ?: "",
                             errors = verificationResponse.checks?.liveness?.errors?.map { errorResponse ->
-                                ErrorDomainModel(
+                                DataspikeErrorDomainModel(
                                     code = errorResponse.code ?: -1,
                                     message = errorResponse.message ?: "",
                                 )
@@ -41,10 +41,10 @@ internal class VerificationResponseMapper {
                             pendingDocuments = verificationResponse.checks?.liveness?.pendingDocuments
                                 ?: emptyList(),
                         ),
-                        documentMrz = CheckDomainModel(
+                        documentMrz = DataspikeCheckDomainModel(
                             status = verificationResponse.checks?.documentMrz?.status ?: "",
                             errors = verificationResponse.checks?.documentMrz?.errors?.map { errorResponse ->
-                                ErrorDomainModel(
+                                DataspikeErrorDomainModel(
                                     code = errorResponse.code ?: -1,
                                     message = errorResponse.message ?: "",
                                 )
@@ -52,10 +52,10 @@ internal class VerificationResponseMapper {
                             pendingDocuments = verificationResponse.checks?.documentMrz?.pendingDocuments
                                 ?: emptyList(),
                         ),
-                        poa = CheckDomainModel(
+                        poa = DataspikeCheckDomainModel(
                             status = verificationResponse.checks?.poa?.status ?: "",
                             errors = verificationResponse.checks?.poa?.errors?.map { errorResponse ->
-                                ErrorDomainModel(
+                                DataspikeErrorDomainModel(
                                     code = errorResponse.code ?: -1,
                                     message = errorResponse.message ?: "",
                                 )
@@ -100,7 +100,7 @@ internal class VerificationResponseMapper {
         val errorResponse = kotlin.runCatching {
             Gson().fromJson(
                 response()?.errorBody()?.string(),
-                HttpErrorResponse::class.java
+                DataspikeHttpErrorResponse::class.java
             )
         }.onFailure { throwable -> throwable.printStackTrace() }.getOrNull()
 
