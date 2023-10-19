@@ -38,8 +38,8 @@ internal class VerificationExpiredFragment : BaseFragment() {
         with(viewBinding?: return) {
             tlTimer.setup(
                 timerState = TimerUiModel(
-                    timerString = EXPIRED,
-                    timerStatus = requireContext().getString(R.string._00_00_00)
+                    timerString = requireContext().getString(R.string._00_00_00),
+                    timerStatus = EXPIRED,
                 )
             )
             ctalCompleteVerification.setup(completeAction = ::passVerificationStatusAndFinish)
