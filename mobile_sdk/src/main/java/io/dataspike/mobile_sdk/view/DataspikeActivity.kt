@@ -13,7 +13,6 @@ import io.dataspike.mobile_sdk.utils.launchInMain
 import io.dataspike.mobile_sdk.view.fragments.OnboardingFragment
 import io.dataspike.mobile_sdk.view.view_models.DataspikeActivityViewModel
 import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
-import kotlinx.coroutines.runBlocking
 
 internal const val REQUIREMENTS_TYPE = "requirements_type"
 internal const val IMAGE_TYPE = "image_type"
@@ -32,16 +31,13 @@ internal class DataspikeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityDataspikeBinding.inflate(layoutInflater)
+
         setContentView(viewBinding?.root)
         collectVerificationFlow()
-
-        runBlocking {
-            AppInfo.setAppInfo(
-                getString(applicationInfo.labelRes),
-                packageManager.getPackageInfo(packageName, 0).versionName,
-            )
-        }
-
+        AppInfo.setAppInfo(
+            getString(applicationInfo.labelRes),
+            packageManager.getPackageInfo(packageName, 0).versionName,
+        )
         viewModel.getVerification()
     }
 
