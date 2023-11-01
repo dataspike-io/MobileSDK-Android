@@ -17,13 +17,12 @@ import kotlinx.coroutines.runBlocking
 
 internal const val REQUIREMENTS_TYPE = "requirements_type"
 internal const val IMAGE_TYPE = "image_type"
-internal const val POI_INTRO = "poi_intro"
 internal const val POI = "poi"
 internal const val POI_FRONT = "poi_front"
 internal const val POI_BACK = "poi_back"
 internal const val LIVENESS = "liveness_photo"
 internal const val POA = "poa"
-internal const val VERIFICATION_COMPLETE = "verification_complete"
+internal const val VERIFICATION_COMPLETED = "verification_completed"
 
 internal class DataspikeActivity : AppCompatActivity() {
 
@@ -53,8 +52,8 @@ internal class DataspikeActivity : AppCompatActivity() {
 
     private fun collectVerificationFlow() {
         launchInMain {
-            viewModel.verificationFlow.collect { result ->
-                when (result) {
+            viewModel.verificationFlow.collect { verificationState ->
+                when (verificationState) {
                     is VerificationState.VerificationSuccess -> {
                         supportFragmentManager
                             .beginTransaction()
@@ -66,7 +65,7 @@ internal class DataspikeActivity : AppCompatActivity() {
                     is VerificationState.VerificationError -> {
                         Toast.makeText(
                             this@DataspikeActivity,
-                            "${result.details}: ${result.error}",
+                            "${verificationState.details}: ${verificationState.error}",
                             Toast.LENGTH_LONG
                         ).show()
                     }

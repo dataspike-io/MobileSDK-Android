@@ -1,7 +1,7 @@
 package io.dataspike.mobile_sdk.domain.mappers
 
 import com.google.gson.Gson
-import io.dataspike.mobile_sdk.data.models.responses.DataspikeHttpErrorResponse
+import io.dataspike.mobile_sdk.data.models.responses.ProceedWithVerificationErrorResponse
 import io.dataspike.mobile_sdk.data.models.responses.ProceedWithVerificationResponse
 import io.dataspike.mobile_sdk.domain.models.ProceedWithVerificationState
 import retrofit2.HttpException
@@ -21,8 +21,9 @@ internal class ProceedWithVerificationResponseMapper {
                     throwable.toProceedWithVerificationErrorMessage()
                 } else {
                     ProceedWithVerificationState.ProceedWithVerificationStateError(
-                        error = "Unknown error occurred",
-                        details = "Try again later",
+                        error = "",
+                        pendingDocuments = emptyList(),
+                        message = "",
                     )
                 }
             }
@@ -35,13 +36,14 @@ internal class ProceedWithVerificationResponseMapper {
         val errorResponse = kotlin.runCatching {
             Gson().fromJson(
                 response()?.errorBody()?.string(),
-                DataspikeHttpErrorResponse::class.java
+                ProceedWithVerificationErrorResponse::class.java
             )
         }.onFailure { throwable -> throwable.printStackTrace() }.getOrNull()
 
         return ProceedWithVerificationState.ProceedWithVerificationStateError(
-            error = errorResponse?.error ?: "Unknown error occurred",
-            details = errorResponse?.details ?: "Try again later",
+            error = errorResponse?.error ?: "",
+            pendingDocuments = errorResponse?.pendingDocuments ?: emptyList(),
+            message = errorResponse?.message ?: "",
         )
     }
 }

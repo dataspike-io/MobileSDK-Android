@@ -25,17 +25,17 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.nio.ByteBuffer
 
-val acceptableForUploadFileFormats = arrayOf(
+internal val acceptableForUploadFileFormats = arrayOf(
     "image/jpeg",
     "image/jpg",
     "image/png",
-    "application/pdf"
+    "application/pdf",
 )
-val displayMetrics: DisplayMetrics get() {
+internal val displayMetrics: DisplayMetrics get() {
     return Resources.getSystem().displayMetrics
 }
 
-fun ByteBuffer.toByteArray(): ByteArray {
+internal fun ByteBuffer.toByteArray(): ByteArray {
     rewind()
     val data = ByteArray(remaining())
     get(data)
@@ -43,19 +43,19 @@ fun ByteBuffer.toByteArray(): ByteArray {
     return data
 }
 
-fun Fragment.launchInMain(block: suspend CoroutineScope.() -> Unit) {
+internal fun Fragment.launchInMain(block: suspend CoroutineScope.() -> Unit) {
     lifecycleScope.launch(Dispatchers.Main, block = block)
 }
 
-fun AppCompatActivity.launchInMain(block: suspend CoroutineScope.() -> Unit) {
+internal fun AppCompatActivity.launchInMain(block: suspend CoroutineScope.() -> Unit) {
     lifecycleScope.launch(Dispatchers.Main, block = block)
 }
 
-fun ViewPager2.disableOverscroll() {
+internal fun ViewPager2.disableOverscroll() {
     (this.getChildAt(0) as? RecyclerView)?.overScrollMode = View.OVER_SCROLL_NEVER
 }
 
-fun Bitmap.rotate(degrees: Float): Bitmap {
+internal fun Bitmap.rotate(degrees: Float): Bitmap {
     return Bitmap.createBitmap(
         this,
         0,
@@ -67,13 +67,13 @@ fun Bitmap.rotate(degrees: Float): Bitmap {
     )
 }
 
-fun Bitmap.flipHorizontally(): Bitmap {
+internal fun Bitmap.flipHorizontally(): Bitmap {
     val matrix = Matrix().apply { postScale(-1f, 1f, width / 2f, height / 2f) }
 
     return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
 }
 
-fun Bitmap.toFile(): File? {
+internal fun Bitmap.toFile(): File? {
     return kotlin.runCatching {
         val file = File.createTempFile("DS_", ".png")
         file.createNewFile()
@@ -94,7 +94,7 @@ fun Bitmap.toFile(): File? {
     }.getOrNull()
 }
 
-fun Bitmap.crop(cropArea: RectF?): Bitmap {
+internal fun Bitmap.crop(cropArea: RectF?): Bitmap {
     cropArea ?: return this
 
     val x = ((width * cropArea.left) / displayMetrics.widthPixels).toInt()
@@ -115,7 +115,7 @@ fun Bitmap.crop(cropArea: RectF?): Bitmap {
     )
 }
 
-fun InputStream.toBitmap(
+internal fun InputStream.toBitmap(
     fileType: String,
     width: Int,
     height: Int,
@@ -157,6 +157,6 @@ fun InputStream.toBitmap(
     }.onFailure { throwable -> throwable.printStackTrace() }.getOrNull()
 }
 
-fun dpToPx(dp: Float): Float {
+internal fun dpToPx(dp: Float): Float {
     return dpToPx(dp, displayMetrics)
 }

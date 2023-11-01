@@ -82,16 +82,29 @@ internal class ImagePreviewFragment: BaseFragment() {
                 }
 
                 is UploadImageUiState.UploadImageUiError -> {
-                    if (uploadImageUiState.shouldNavigateToVerificationExpiredFragment) {
-                        navigateToFragment(VerificationExpiredFragment())
-                    }
+                    when {
+                        uploadImageUiState.isExpired -> {
+                            navigateToFragment(VerificationExpiredFragment())
+                        }
 
-                    urlUploadResult.setup(
-                        uploadStatus = UPLOAD_WITH_ERRORS,
-                        errorMessage = uploadImageUiState.errorMessage,
-                    )
-                    rrclButtons.setup(popBackStackAction = ::popBackStack, uploadSuccessful = false)
-                    rlRequirements.setup(imageType = imageType)
+                        uploadImageUiState.tooManyAttempts -> {
+                            navigateToFragment(
+                                getFragmentFromType(uploadImageUiState.fragmentToNavigateTo)
+                            )
+                        }
+
+                        else -> {
+                            urlUploadResult.setup(
+                                uploadStatus = UPLOAD_WITH_ERRORS,
+                                message = uploadImageUiState.errorMessage,
+                            )
+                            rrclButtons.setup(
+                                popBackStackAction = ::popBackStack,
+                                uploadSuccessful = false,
+                            )
+                            rlRequirements.setup(imageType = imageType)
+                        }
+                    }
                 }
             }
         }

@@ -9,7 +9,6 @@ import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentPoiIntroBinding
 import io.dataspike.mobile_sdk.view.IMAGE_TYPE
 import io.dataspike.mobile_sdk.view.POI_FRONT
-import io.dataspike.mobile_sdk.view.POI_INTRO
 
 internal class PoiIntroFragment: BaseFragment() {
 
@@ -37,7 +36,7 @@ internal class PoiIntroFragment: BaseFragment() {
             }
             hlHeader.setup(
                 popBackStackAction = ::popBackStack,
-                stringResId = getStringResFromImageType(POI_INTRO),
+                stringResId = R.string.poi_intro_instructions,
                 colorResId = R.color.black,
             )
             clSteps.setup(step = POI_FRONT)

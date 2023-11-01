@@ -94,15 +94,15 @@ internal class HomeFragment : Fragment(), VerificationCompletedCallback {
 
     private fun collectVerificationFlow() {
         launchInMain {
-            viewModel.verificationFlow.collect { result ->
-                when (result) {
+            viewModel.verificationFlow.collect { newVerificationUiState ->
+                when (newVerificationUiState) {
                     is NewVerificationUiState.NewVerificationUiSuccess -> {
                         with(viewBinding ?: return@collect) {
                             startDataspikeFlow(
                                 isDebug = cbIsDebug.isChecked,
                                 apiToken = tvApiToken.text.toString().ifEmpty { null }
                                     ?: SampleAppDependencies.DEFAULT.dsApiToken,
-                                shortId = result.shortId,
+                                shortId = newVerificationUiState.shortId,
                             )
                         }
                     }
@@ -110,7 +110,7 @@ internal class HomeFragment : Fragment(), VerificationCompletedCallback {
                     is NewVerificationUiState.NewVerificationUiError -> {
                         Toast.makeText(
                             requireContext(),
-                            "${result.details}: ${result.error}",
+                            "${newVerificationUiState.details}: ${newVerificationUiState.error}",
                             Toast.LENGTH_LONG
                         ).show()
                     }
