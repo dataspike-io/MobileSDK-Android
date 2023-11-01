@@ -55,7 +55,7 @@ internal class PoaVerificationFragment : BaseCameraFragment() {
     }
 
     override fun photoTaken(bitmap: Bitmap) {
-        val croppedBitmap = bitmap.crop(viewBinding?.ovPoa?.poiFrameRectF)
+        val croppedBitmap = bitmap.crop(viewBinding?.ovPoa?.poaFrameRectF)
 
         viewModel.putBitmapIntoCache(POA, croppedBitmap)
 

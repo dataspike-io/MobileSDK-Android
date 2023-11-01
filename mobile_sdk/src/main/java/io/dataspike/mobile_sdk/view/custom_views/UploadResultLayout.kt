@@ -20,7 +20,7 @@ internal class UploadResultLayout @JvmOverloads constructor(
         this
     )
 
-    fun setup(uploadStatus: Int, errorMessage: String? = null) {
+    fun setup(uploadStatus: Int, message: String? = null) {
         with(viewBinding) {
             when (uploadStatus) {
                 UPLOAD_SUCCESSFUL -> {
@@ -28,7 +28,7 @@ internal class UploadResultLayout @JvmOverloads constructor(
                 }
 
                 UPLOAD_WITH_ERRORS -> {
-                    tvUploadWithErrors.text = errorMessage
+                    tvUploadWithErrors.text = message
                     tvUploadWithErrors.visibility = VISIBLE
                 }
 

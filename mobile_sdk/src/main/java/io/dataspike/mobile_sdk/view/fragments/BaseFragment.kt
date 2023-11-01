@@ -1,6 +1,5 @@
 package io.dataspike.mobile_sdk.view.fragments
 
-import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -8,7 +7,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import io.dataspike.mobile_sdk.R
-import io.dataspike.mobile_sdk.dependencies_provider.DataspikeInjector
 import io.dataspike.mobile_sdk.domain.passVerificationCompletedResult
 import io.dataspike.mobile_sdk.utils.launchInMain
 import io.dataspike.mobile_sdk.view.IMAGE_TYPE
@@ -17,9 +15,8 @@ import io.dataspike.mobile_sdk.view.POA
 import io.dataspike.mobile_sdk.view.POI
 import io.dataspike.mobile_sdk.view.POI_BACK
 import io.dataspike.mobile_sdk.view.POI_FRONT
-import io.dataspike.mobile_sdk.view.POI_INTRO
 import io.dataspike.mobile_sdk.view.REQUIREMENTS_TYPE
-import io.dataspike.mobile_sdk.view.VERIFICATION_COMPLETE
+import io.dataspike.mobile_sdk.view.VERIFICATION_COMPLETED
 import io.dataspike.mobile_sdk.view.view_models.BaseViewModel
 
 internal abstract class BaseFragment: Fragment() {
@@ -100,30 +97,6 @@ internal abstract class BaseFragment: Fragment() {
         }
     }
 
-    protected fun navigateToVerification() {
-        val verificationManager = DataspikeInjector.component.verificationManager
-        val fragmentToNavigateTo = when {
-            verificationManager.checks.poiIsRequired -> {
-                PoiIntroFragment()
-            }
-
-            verificationManager.checks.livenessIsRequired -> {
-                LivenessVerificationFragment()
-            }
-
-            verificationManager.checks.poaIsRequired -> {
-                PoaChooserFragment()
-            }
-
-            else -> {
-                Log.d("Dataspike", "Verification has no required checks")
-                return
-            }
-        }
-
-        navigateToFragment(fragmentToNavigateTo, false)
-    }
-
     protected fun getStringResFromImageType(imageType: String?, screenType: String? = null): Int {
         return if (screenType == REQUIREMENTS_SCREEN) {
             when (imageType) {
@@ -133,12 +106,10 @@ internal abstract class BaseFragment: Fragment() {
 
                 POA -> { R.string.poa_requirements_title }
 
-                else -> { -1 }
+                else -> { R.string.requirements }
             }
         } else {
             when (imageType) {
-                POI_INTRO -> { R.string.poi_intro_instructions }
-
                 POI_FRONT -> { R.string.front_photo_instructions }
 
                 POI_BACK -> { R.string.back_photo_instructions }
@@ -147,7 +118,7 @@ internal abstract class BaseFragment: Fragment() {
 
                 POA -> { R.string.let_s_upload_proof_of_address_document }
 
-                else -> { -1 }
+                else -> { R.string.take_a_photo }
             }
         }
     }
@@ -155,9 +126,7 @@ internal abstract class BaseFragment: Fragment() {
     protected fun getFragmentFromType(fragmentType: String): BaseFragment? {
         return when (fragmentType) {
             POI, POI_FRONT -> {
-                PoiVerificationFragment().apply {
-                    arguments = bundleOf(IMAGE_TYPE to POI_FRONT)
-                }
+                PoiIntroFragment()
             }
 
             POI_BACK -> {
@@ -174,7 +143,7 @@ internal abstract class BaseFragment: Fragment() {
                 PoaChooserFragment()
             }
 
-            VERIFICATION_COMPLETE -> {
+            VERIFICATION_COMPLETED -> {
                 VerificationCompleteFragment()
             }
 

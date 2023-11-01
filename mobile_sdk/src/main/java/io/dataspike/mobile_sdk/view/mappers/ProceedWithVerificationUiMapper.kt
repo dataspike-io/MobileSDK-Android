@@ -6,6 +6,8 @@ import io.dataspike.mobile_sdk.view.ui_models.ProceedWithVerificationUiState
 import io.dataspike.mobile_sdk.view.view_models.COMPLETED
 import io.dataspike.mobile_sdk.view.view_models.EXPIRED
 
+private const val COUNTRY_UNKNOWN = "country_unknown"
+
 internal class ProceedWithVerificationUiMapper {
 
     fun map(proceedWithVerificationState: ProceedWithVerificationState)
@@ -14,7 +16,7 @@ internal class ProceedWithVerificationUiMapper {
             is ProceedWithVerificationState.ProceedWithVerificationStateSuccess -> {
                 val verificationStatus = when (proceedWithVerificationState.status) {
                     COMPLETED -> {
-                        DataspikeVerificationStatus.VERIFICATION_SUCCESSFUL
+                        DataspikeVerificationStatus.VERIFICATION_COMPLETED
                     }
 
                     EXPIRED -> {
@@ -31,7 +33,10 @@ internal class ProceedWithVerificationUiMapper {
                 )
             }
             is ProceedWithVerificationState.ProceedWithVerificationStateError -> {
-                ProceedWithVerificationUiState.ProceedWithVerificationUiError
+                ProceedWithVerificationUiState.ProceedWithVerificationUiError(
+                    shouldNavigateToSelectCountryFragment = proceedWithVerificationState.error ==
+                            COUNTRY_UNKNOWN
+                )
             }
         }
     }

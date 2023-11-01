@@ -27,9 +27,7 @@ internal class SelectCountryViewModel(
                     ?.countries ?: emptyList()
             )
 
-            _getCountriesFlow.emit(
-                countries
-            )
+            _getCountriesFlow.emit(countries)
         }
     }
 

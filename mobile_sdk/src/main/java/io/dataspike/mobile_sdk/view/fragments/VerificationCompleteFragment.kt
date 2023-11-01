@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
+import io.dataspike.mobile_sdk.DataspikeVerificationStatus
+import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentVerificationCompleteBinding
 import io.dataspike.mobile_sdk.domain.setVerificationResult
 import io.dataspike.mobile_sdk.utils.launchInMain
@@ -35,7 +37,7 @@ internal class VerificationCompleteFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        collectUploadImageFlow()
+        collectProceedWithVerificationFlow()
         viewModel.proceedWithVerification()
         viewBinding?.ctalCompleteTryAgain?.setup(
             completeAction = ::passVerificationStatusAndFinish,
@@ -51,30 +53,31 @@ internal class VerificationCompleteFragment : BaseFragment() {
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
 
-    private fun collectUploadImageFlow() {
+    private fun collectProceedWithVerificationFlow() {
         launchInMain {
-            viewModel.proceedWithVerificationFlow.collect { result ->
-                when (result) {
+            viewModel.proceedWithVerificationFlow.collect { proceedWithVerificationUiState ->
+                when (proceedWithVerificationUiState) {
                     is ProceedWithVerificationUiState.ProceedWithVerificationUiSuccess -> {
-                        setVerificationResult(result.verificationStatus)
+                        setVerificationResult(proceedWithVerificationUiState.verificationStatus)
+
+                        if (
+                            proceedWithVerificationUiState.verificationStatus ==
+                            DataspikeVerificationStatus.VERIFICATION_EXPIRED
+                        ) {
+                            navigateToFragment(VerificationExpiredFragment())
+                        }
                     }
 
                     is ProceedWithVerificationUiState.ProceedWithVerificationUiError -> {
-                        setErrorUiState()
+                        if (proceedWithVerificationUiState.shouldNavigateToSelectCountryFragment) {
+                            navigateToFragment(SelectCountryFragment())
+                        } else {
+                            makeToast(getString(R.string.unknown_error_occurred))
+                            popBackStack()
+                        }
                     }
                 }
             }
-        }
-    }
-
-    private fun setErrorUiState() {
-        with(viewBinding ?: return) {
-            ctalCompleteTryAgain.setup(
-                completeAction = ::passVerificationStatusAndFinish,
-                tryAgainAction = ::retryVerification,
-                verificationFailed = true,
-            )
-            vrlVerificationResult.setupError()
         }
     }
 }

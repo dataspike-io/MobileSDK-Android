@@ -10,15 +10,11 @@
     <string name="poi_instructions_title">First let’s get photo of your document</string>
     <string name="liveness_instructions_title">Keep your face in the ellipse</string>
     <string name="liveness_instructions_bad_title">Place your face in the ellipse</string>
-    <string name="document_instructions">The text is clear, your finger is not covering anything, the whole document is visible</string>
     <string name="liveness_instructions">Whole face is visible, eyes open, no hats or eyeglasses</string>
-    <string name="please_make_sure">Please make sure</string>
     <string name="redo_photo">Redo photo</string>
     <string name="_continue">Continue</string>
-    <string name="uploaded">Uploaded</string>
     <string name="upload">Upload</string>
     <string name="take_a_photo">Take a photo</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="start_verification">Start Verification</string>
     <string name="let_s_get_you_verified">Let\'s get you verified</string>
     <string name="good_poi">Original, full-size, unedited document</string>
@@ -28,8 +24,8 @@
     <string name="no_blurred_poi">No blurred and without reflections</string>
     <string name="no_damaged_poi">No damaged documents</string>
     <string name="no_expired_poi">No expired documents</string>
-    <string name="poi_requirements_description">To confirm your identity, we need you to upload front and back side of your ID card. Check out the requirements below</string>
-    <string name="poa_requirements_description">To confirm your address, upload a PoA document. Check out the requirements below</string>
+    <string name="poi_requirements_description">To confirm your identity, we need you to upload a valid document. Check out the requirements below</string>
+    <string name="poa_requirements_description">To confirm your address, upload a Proof of Address document. Check out the requirements below</string>
     <string name="no_cropped_poa">No cropped documents</string>
     <string name="no_filters_poa">No filters, too light or too dark images</string>
     <string name="no_expired_poa">No expired documents</string>
@@ -38,16 +34,15 @@
     <string name="no_dark_liveness">No dark selfies</string>
     <string name="no_cropped_liveness">No cropped selfies</string>
     <string name="no_accessories_liveness">No accessories</string>
-    <string name="poi_requirements_title">POI requirements</string>
-    <string name="poa_requirements_title">POA requirements</string>
+    <string name="poi_requirements_title">Document requirements</string>
+    <string name="poa_requirements_title">Proof of Address requirements</string>
     <string name="liveness_requirements_title">Liveness requirements</string>
     <string name="upload_successful">Upload successful</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="requirements">Requirements</string>
     <string name="thank_you">Thank you!</string>
     <string name="verification_successful">You have successfully uploaded all required documents</string>
-    <string name="go_back">Go back</string>
-    <string name="onboarding_step_1">Step 1. Prepare a valid Passport</string>
+    <string name="onboarding_step_1">Step 1. Prepare a valid identity document</string>
     <string name="onboarding_step_2">Step 2. Be prepared to take Selfie</string>
     <string name="onboarding_step_3">Step 3. Prepare a Proof of Address document</string>
     <string name="excellent">Excellent</string>
@@ -56,7 +51,6 @@
     <string name="try_again">Try Again</string>
     <string name="verification_failed">Verification failed</string>
     <string name="something_went_wrong_this_time">Something went wrong this time.</string>
-    <string name="poa_instructions_title">Finally let’s take Proof of Address photo</string>
     <string name="poa_format_and_size_info">File size must be between 100KB and 8MB in .pdf / .jpg / .jpeg / .png format</string>
     <string name="place_the_document_in_frame_and_take_a_photo">Place the document in frame and take a photo</string>
     <string name="let_s_upload_proof_of_address_document">Let’s upload Proof of Address document</string>
@@ -75,7 +69,9 @@
     <string name="file_size_must_be_between_100kb_and_8mb">File size must be between 100KB and 8MB</string>
     <string name="please_select_a_supported_file_format">Please select a supported file format</string>
     <string name="_00_00_00">00:00:00</string>
-    <string name="front_photo_instructions">Please take photo of the front side of your ID card</string>
-    <string name="back_photo_instructions">Now let’s take a photo of the back side of ID card</string>
+    <string name="front_photo_instructions">Please take a photo of the document front side</string>
+    <string name="back_photo_instructions">Now take a photo of the document back side</string>
+    <string name="poi_example_instructions">Original, full-size, unedited document, all corners are visible</string>\
+    <string name="unknown_error_occurred">Unknown error occurred</string>\
 
 </resources>

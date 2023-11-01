@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
 }
 
-def versionName = "1.0.0-rc07"
+def versionName = "1.0.0-rc11"
 
 android {
     namespace 'io.dataspike.mobile_sdk'

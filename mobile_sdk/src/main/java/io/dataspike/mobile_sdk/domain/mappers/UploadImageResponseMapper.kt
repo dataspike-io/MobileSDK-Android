@@ -8,6 +8,7 @@ import io.dataspike.mobile_sdk.domain.models.UploadImageState
 import retrofit2.HttpException
 
 internal const val ERROR_CODE_EXPIRED = 8000
+internal const val ERROR_TOO_MANY_ATTEMPTS = 9000
 
 internal class UploadImageResponseMapper {
 
@@ -48,12 +49,18 @@ internal class UploadImageResponseMapper {
         }.onFailure { throwable -> throwable.printStackTrace() }.getOrNull()
 
         val errors = uploadImageErrorResponse?.errors
-        val expiredError = errors?.firstOrNull { error -> error.code == ERROR_CODE_EXPIRED }
+        val isExpiredError = errors?.firstOrNull { error ->
+            error.code == ERROR_CODE_EXPIRED
+        }
+        val tooManyAttemptsError = errors?.firstOrNull { error ->
+            error.code == ERROR_TOO_MANY_ATTEMPTS
+        }
         val firstError = uploadImageErrorResponse?.errors?.get(0)
 
         return UploadImageState.UploadImageError(
-            code = expiredError?.code ?: firstError?.code ?: -1,
-            message = expiredError?.message ?: firstError?.message ?: "Unknown error occurred"
+            code = isExpiredError?.code ?: tooManyAttemptsError?.code ?: firstError?.code ?: -1,
+            message = isExpiredError?.message ?: tooManyAttemptsError?.message
+                ?: firstError?.message ?: "Unknown error occurred",
         )
     }
 }

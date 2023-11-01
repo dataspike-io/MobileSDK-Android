@@ -8,7 +8,9 @@ internal sealed class UploadImageUiState {
     ): UploadImageUiState()
 
     internal data class UploadImageUiError(
-        val shouldNavigateToVerificationExpiredFragment: Boolean,
+        val isExpired: Boolean,
+        val tooManyAttempts: Boolean,
         val errorMessage: String,
+        val fragmentToNavigateTo: String,
     ): UploadImageUiState()
 }

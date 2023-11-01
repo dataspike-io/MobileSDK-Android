@@ -15,7 +15,7 @@ internal class EmptyResponseMapper {
             }
             .onFailure { throwable ->
                 return if (throwable is HttpException) {
-                    throwable.toProceedWithVerificationErrorMessage()
+                    throwable.toEmptyResponseErrorMessage()
                 } else {
                     EmptyState.EmptyStateError(
                         error = "Unknown error occurred",
@@ -27,7 +27,7 @@ internal class EmptyResponseMapper {
         throw IllegalStateException("Unknown error occurred")
     }
 
-    private fun HttpException.toProceedWithVerificationErrorMessage(): EmptyState {
+    private fun HttpException.toEmptyResponseErrorMessage(): EmptyState {
         val errorResponse = kotlin.runCatching {
             Gson().fromJson(
                 response()?.errorBody()?.string(),

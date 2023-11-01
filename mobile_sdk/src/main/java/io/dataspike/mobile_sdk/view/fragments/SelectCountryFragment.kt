@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentSelectCountryBinding
+import io.dataspike.mobile_sdk.domain.models.EmptyState
 import io.dataspike.mobile_sdk.utils.launchInMain
 import io.dataspike.mobile_sdk.view.POI_FRONT
 import io.dataspike.mobile_sdk.view.adapters.CountriesListAdapter
@@ -20,6 +21,7 @@ internal class SelectCountryFragment: BaseFragment() {
 
     private var viewBinding: FragmentSelectCountryBinding? = null
     private val viewModel: SelectCountryViewModel by viewModels { DataspikeViewModelFactory() }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,7 +71,17 @@ internal class SelectCountryFragment: BaseFragment() {
 
     private fun collectSetCountryFlow() {
         launchInMain {
-            viewModel.setCountryFlow.collect { popBackStack() }
+            viewModel.setCountryFlow.collect { emptyState ->
+                when (emptyState) {
+                    is EmptyState.EmptyStateSuccess -> {
+                        popBackStack()
+                    }
+
+                    is EmptyState.EmptyStateError -> {
+                        makeToast("${emptyState.details}: ${emptyState.error}")
+                    }
+                }
+            }
         }
     }
 

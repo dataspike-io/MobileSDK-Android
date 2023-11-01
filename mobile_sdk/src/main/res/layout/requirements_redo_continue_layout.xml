@@ -14,7 +14,8 @@
         style="@style/RequirementsTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/mb_redo"/>
+        app:layout_constraintBottom_toTopOf="@+id/mb_redo"
+        android:visibility="gone"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mb_redo"

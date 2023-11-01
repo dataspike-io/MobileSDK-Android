@@ -5,6 +5,7 @@ import io.dataspike.mobile_sdk.VerificationCompletedCallback
 
 private var verificationCompletedCallback: VerificationCompletedCallback? = null
 private var verificationStatus: DataspikeVerificationStatus? = null
+
 internal fun setVerificationResult(
     dataspikeVerificationStatus: DataspikeVerificationStatus
 ) {
