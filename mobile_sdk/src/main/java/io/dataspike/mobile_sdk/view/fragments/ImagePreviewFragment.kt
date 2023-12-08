@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentImagePreviewBinding
 import io.dataspike.mobile_sdk.utils.launchInMain
 import io.dataspike.mobile_sdk.view.IMAGE_TYPE
@@ -47,7 +46,6 @@ internal class ImagePreviewFragment: BaseFragment() {
             hlHeader.setup(
                 popBackStackAction = ::popBackStack,
                 stringResId = getStringResFromImageType(imageType),
-                colorResId = R.color.black,
             )
         }
     }

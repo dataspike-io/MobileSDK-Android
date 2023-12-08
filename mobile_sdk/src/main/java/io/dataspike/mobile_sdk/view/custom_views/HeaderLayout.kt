@@ -11,7 +11,7 @@ import android.view.LayoutInflater
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.ContextCompat
 import androidx.core.text.toSpannable
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.HeaderLayoutBinding
@@ -29,20 +29,17 @@ internal class HeaderLayout @JvmOverloads constructor(
     fun setup(
         popBackStackAction: () -> Unit,
         @StringRes stringResId: Int,
-        @ColorRes colorResId: Int,
+        @ColorRes colorResId: Int? = null,
     ) {
         with(viewBinding) {
             with(tvTopInstructions) {
-                setTextColor(
-                    ResourcesCompat.getColor(resources, colorResId, null)
-                )
+                colorResId?.let { setTextColor(ContextCompat.getColor(context, it)) }
                 text = getHeaderText(stringResId)
             }
 
             with(ivBackButton) {
-                ivBackButton.setColorFilter(
-                    ResourcesCompat.getColor(resources, colorResId, null)
-                )
+                colorResId?.let { setColorFilter(ContextCompat.getColor(context, it)) }
+
                 setOnClickListener {
                     popBackStackAction.invoke()
                 }
@@ -58,13 +55,7 @@ internal class HeaderLayout @JvmOverloads constructor(
             val headerText = context.getString(stringResId)
             val spannable = SpannableString(headerText)
             val underlineSpan = UnderlineSpan()
-            val colorSpan = ForegroundColorSpan(
-                ResourcesCompat.getColor(
-                    resources,
-                    R.color.ds_purple,
-                    null
-                )
-            )
+            val colorSpan = ForegroundColorSpan(ContextCompat.getColor(context, R.color.ds_purple))
             val wordToSpan = if (headerText.contains("front")) {
                 "front"
             } else {

@@ -37,7 +37,6 @@ internal class PoiIntroFragment: BaseFragment() {
             hlHeader.setup(
                 popBackStackAction = ::popBackStack,
                 stringResId = R.string.poi_intro_instructions,
-                colorResId = R.color.black,
             )
             clSteps.setup(step = POI_FRONT)
         }

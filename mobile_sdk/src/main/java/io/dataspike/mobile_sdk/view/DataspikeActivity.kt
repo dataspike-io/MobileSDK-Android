@@ -32,7 +32,7 @@ internal class DataspikeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityDataspikeBinding.inflate(layoutInflater)
 
-        setContentView(viewBinding?.root)
+        setContentView(R.layout.activity_dataspike)
         collectVerificationFlow()
         AppInfo.setAppInfo(
             getString(applicationInfo.labelRes),
@@ -58,6 +58,7 @@ internal class DataspikeActivity : AppCompatActivity() {
                                 OnboardingFragment()
                             ).commit()
                     }
+                    
                     is VerificationState.VerificationError -> {
                         Toast.makeText(
                             this@DataspikeActivity,

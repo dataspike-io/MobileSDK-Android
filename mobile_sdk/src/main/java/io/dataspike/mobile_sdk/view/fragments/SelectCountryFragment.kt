@@ -45,7 +45,6 @@ internal class SelectCountryFragment: BaseFragment() {
             hlTextHeader.setup(
                 popBackStackAction = ::popBackStack,
                 stringResId = R.string.select_country_title,
-                colorResId = R.color.black,
             )
             etSearch.doOnTextChanged { text, _, _, _ -> viewModel.updateCountriesList(text) }
             clSteps.setup(step = POI_FRONT)

@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.ContextCompat
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.RequirementsRedoContinueLayoutBinding
 
@@ -40,19 +40,12 @@ internal class RequirementsRedoContinueLayout @JvmOverloads constructor(
                 mbContinue.visibility = GONE
 
                 with(mbRedo) {
-                    background = ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.purple_button_background,
-                        null
+                    background = ContextCompat.getDrawable(
+                        context,
+                        R.drawable.purple_button_background
                     )
 
-                    setTextColor(
-                        ResourcesCompat.getColor(
-                            resources,
-                            R.color.white,
-                            null
-                        )
-                    )
+                    setTextColor(ContextCompat.getColor(context, R.color.white))
                 }
             }
         }

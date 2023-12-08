@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentRequirementsBinding
 import io.dataspike.mobile_sdk.view.REQUIREMENTS_TYPE
 
@@ -34,7 +33,6 @@ internal class RequirementsFragment: BaseFragment() {
             bthlHeader.setup(
                 popBackStackAction = ::popBackStack,
                 stringResId = getStringResFromImageType(requirementsType, REQUIREMENTS_SCREEN),
-                colorResId = R.color.black,
             )
             rlRequirements.setup(imageType = requirementsType)
             mbContinue.setOnClickListener { popBackStack() }

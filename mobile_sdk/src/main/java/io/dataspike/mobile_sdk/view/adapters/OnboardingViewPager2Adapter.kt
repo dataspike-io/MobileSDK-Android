@@ -2,7 +2,7 @@ package io.dataspike.mobile_sdk.view.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.OnboardingPageLayoutBinding
@@ -63,11 +63,7 @@ internal class OnboardingViewPager2Adapter:
             val textRes = items[position]?.stringResId ?: -1
 
             ivOnboardingImage.setImageDrawable(
-                ResourcesCompat.getDrawable(
-                    holder.itemView.resources,
-                    drawableRes,
-                    null
-                )
+                ContextCompat.getDrawable(holder.itemView.context, drawableRes)
             )
 
             tvOnboardingText.text = itemView.resources.getString(textRes)
