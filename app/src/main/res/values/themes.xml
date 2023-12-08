@@ -1,7 +1,5 @@
 <resources>
-    <style name="Theme.MobileSDKAndroid" parent="AppTheme"/>
-
-    <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Theme.SampleApp" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/ds_purple</item>
         <item name="colorPrimaryDark">@color/ds_purple</item>
         <item name="colorAccent">@color/ds_purple</item>

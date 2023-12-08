@@ -2,20 +2,15 @@ package io.dataspike.mobile_sdk.view.view_models
 
 import android.os.CountDownTimer
 import io.dataspike.mobile_sdk.data.use_cases.UploadImageUseCase
-import io.dataspike.mobile_sdk.dependencies_provider.DataspikeInjector
 import io.dataspike.mobile_sdk.domain.models.UploadImageState
 import io.dataspike.mobile_sdk.utils.toFile
 import io.dataspike.mobile_sdk.view.POI
 import io.dataspike.mobile_sdk.view.POI_BACK
 import io.dataspike.mobile_sdk.view.POI_FRONT
-import io.dataspike.mobile_sdk.view.fragments.BaseFragment
-import io.dataspike.mobile_sdk.view.fragments.PoaChooserFragment
-import io.dataspike.mobile_sdk.view.fragments.VerificationCompleteFragment
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
 private const val TAKE_PHOTO_WAIT_TIME = 2000L
-private const val LIVENESS_SUCCESSFUL_WAIT_TIME = 1000L
 private const val TICK_INTERVAL = 1000L
 
 internal class LivenessVerificationViewModel(
@@ -26,8 +21,6 @@ internal class LivenessVerificationViewModel(
     val imageUploadedFlow: SharedFlow<UploadImageState> = _imageUploadedFlow
     private val _takePhotoFlow = MutableSharedFlow<Boolean>()
     val takePhotoFlow: SharedFlow<Boolean> = _takePhotoFlow
-    private val _navigateToFragmentFlow = MutableSharedFlow<BaseFragment?>()
-    val navigateToFragmentFlow: SharedFlow<BaseFragment?> = _navigateToFragmentFlow
     private var cameraTimer = object : CountDownTimer(
         TAKE_PHOTO_WAIT_TIME,
         TICK_INTERVAL
@@ -38,26 +31,6 @@ internal class LivenessVerificationViewModel(
         override fun onFinish() {
             launchInVMScope {
                 _takePhotoFlow.emit(true)
-            }
-        }
-    }
-    private var livenessSuccessfulTimer = object : CountDownTimer(
-        LIVENESS_SUCCESSFUL_WAIT_TIME,
-        TICK_INTERVAL
-    ) {
-
-        override fun onTick(millisUntilFinished: Long) = Unit
-
-        override fun onFinish() {
-            val fragmentToNavigateTo =
-                if (DataspikeInjector.component.verificationManager.checks.poaIsRequired) {
-                    PoaChooserFragment()
-                } else {
-                    VerificationCompleteFragment()
-                }
-
-            launchInVMScope {
-                _navigateToFragmentFlow.emit(fragmentToNavigateTo)
             }
         }
     }
@@ -88,9 +61,5 @@ internal class LivenessVerificationViewModel(
 
     fun cancelCameraTimer() {
         cameraTimer.cancel()
-    }
-
-    fun startLivenessSuccessfulTimer() {
-        livenessSuccessfulTimer.start()
     }
 }

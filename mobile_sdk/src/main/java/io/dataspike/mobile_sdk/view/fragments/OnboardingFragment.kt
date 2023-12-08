@@ -73,15 +73,11 @@ internal class OnboardingFragment : BaseFragment() {
     }
 
     private fun navigateToVerificationCompleteFragment() {
-        navigateToFragment(
-            VerificationCompleteFragment()
-        )
+        navigateToFragment(VerificationCompleteFragment())
     }
 
     private fun navigateToVerificationExpiredFragment() {
-        navigateToFragment(
-            VerificationExpiredFragment()
-        )
+        navigateToFragment(VerificationExpiredFragment())
     }
 
     private fun navigateToVerification() {

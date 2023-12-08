@@ -24,18 +24,6 @@
         app:layout_constraintTop_toBottomOf="@+id/hl_header"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_liveness_successful"
-        style="@style/UploadedTextView"
-        android:background="@drawable/light_green_liveness_status_background"
-        android:text="@string/excellent"
-        android:layout_marginTop="@dimen/dimen_20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hl_header"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone"
-        tools:visibility="visible"/>
-
     <androidx.camera.view.PreviewView
         android:id="@+id/pv_view_finder"
         style="@style/PreviewView"

@@ -48,7 +48,6 @@ internal class PoaChooserFragment : BaseFragment() {
             hlHeaderLayout.setup(
                 popBackStackAction = ::popBackStack,
                 stringResId = R.string.let_s_upload_proof_of_address_document,
-                colorResId = R.color.black,
             )
 
             rtapulButtons.setup(

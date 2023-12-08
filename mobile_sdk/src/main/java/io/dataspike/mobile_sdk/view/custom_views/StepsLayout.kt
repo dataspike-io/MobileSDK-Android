@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.StepsLayoutBinding
@@ -31,21 +31,9 @@ internal class StepsLayout @JvmOverloads constructor(
         val checks = DataspikeInjector.component.verificationManager.checks
 
         with(viewBinding) {
-            val lightGreenColor = ResourcesCompat.getColor(
-                resources,
-                R.color.light_green,
-                null
-            )
-            val lighterGreyColor = ResourcesCompat.getColor(
-                resources,
-                R.color.lighter_grey,
-                null
-            )
-            val dsPurpleColor = ResourcesCompat.getColor(
-                resources,
-                R.color.ds_purple,
-                null
-            )
+            val lightGreenColor = ContextCompat.getColor(context, R.color.light_green)
+            val lighterGreyColor = ContextCompat.getColor(context, R.color.lighter_grey)
+            val dsPurpleColor = ContextCompat.getColor(context, R.color.ds_purple)
 
             llPoi.isVisible = checks.poiIsRequired
             llLiveness.isVisible = checks.livenessIsRequired

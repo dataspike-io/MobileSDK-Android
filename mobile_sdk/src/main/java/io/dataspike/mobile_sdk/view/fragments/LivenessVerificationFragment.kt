@@ -18,6 +18,7 @@ import com.google.mlkit.vision.face.FaceDetection
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentLivenessVerificationBinding
+import io.dataspike.mobile_sdk.dependencies_provider.DataspikeInjector
 import io.dataspike.mobile_sdk.domain.models.UploadImageState
 import io.dataspike.mobile_sdk.utils.flipHorizontally
 import io.dataspike.mobile_sdk.utils.launchInMain
@@ -59,7 +60,6 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
             setPreviewView(pvViewFinder)
             collectUploadImageFlow()
             collectTakePhotoFlow()
-            collectNavigateToFragmentFlow()
             collectLoading(viewModel, llLoadingView.root)
             setCameraSelector(CameraSelector.DEFAULT_FRONT_CAMERA)
             initActivityResultLauncher()
@@ -74,7 +74,6 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
 
         with(viewBinding ?: return) {
             lpivImagePreview.setup(bitmap = bitmap.flipHorizontally())
-            tvLivenessInstructionsText.visibility = View.GONE
             cblCameraButtons.visibility = View.GONE
         }
 
@@ -165,9 +164,7 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
     private fun setScreenUiState() {
         with(viewBinding ?: return) {
             lpivImagePreview.visibility = View.GONE
-            tvLivenessSuccessful.visibility = View.GONE
             cblCameraButtons.visibility = View.VISIBLE
-            tvLivenessInstructionsText.visibility = View.VISIBLE
             cblCameraButtons.setup(
                 takePhotoAction = ::takePhoto,
                 switchCameraAction = ::switchCamera,
@@ -207,16 +204,7 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
         launchInMain {
             viewModel.imageUploadedFlow.collect { uploadImageState ->
                 if (uploadImageState is UploadImageState.UploadImageSuccess) {
-                    with(viewBinding ?: return@collect) {
-                        tvLivenessSuccessful.visibility = View.VISIBLE
-                        hlHeader.setup(
-                            popBackStackAction = ::popBackStack,
-                            stringResId = R.string.completed,
-                            colorResId = R.color.white,
-                        )
-                    }
-
-                    viewModel.startLivenessSuccessfulTimer()
+                    navigateFromLiveness()
                 } else {
                     setScreenUiState()
                     startCamera()
@@ -227,17 +215,18 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
 
     private fun collectTakePhotoFlow() {
         launchInMain {
-            viewModel.takePhotoFlow.collect {
-                takePhoto()
-            }
+            viewModel.takePhotoFlow.collect { takePhoto() }
         }
     }
 
-    private fun collectNavigateToFragmentFlow() {
-        launchInMain {
-            viewModel.navigateToFragmentFlow.collect { fragment ->
-                navigateToFragment(fragment, false)
+    private fun navigateFromLiveness() {
+        val fragmentToNavigateTo =
+            if (DataspikeInjector.component.verificationManager.checks.poaIsRequired) {
+                PoaChooserFragment()
+            } else {
+                VerificationCompleteFragment()
             }
-        }
+
+        navigateToFragment(fragmentToNavigateTo, false)
     }
 }

@@ -22,7 +22,7 @@
     </style>
 
     <style name="PurpleMaterialButton">
-        <item name="theme">@style/AppTheme</item>
+        <item name="theme">@style/Theme.SampleApp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:letterSpacing">0</item>
@@ -40,7 +40,7 @@
     <style name="DisabledPurpleMaterialButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:theme">@style/AppTheme</item>
+        <item name="android:theme">@style/Theme.SampleApp</item>
         <item name="android:textSize">@dimen/text_size_16sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:letterSpacing">@dimen/float_0</item>
