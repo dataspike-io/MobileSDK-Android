@@ -5,28 +5,10 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_gravity="center_horizontal">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_upload_successful"
-            style="@style/UploadedTextView"
-            android:text="@string/upload_successful"
-            tools:visibility="visible"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_upload_with_errors"
-            style="@style/UploadWithErrorsTextView"
-            android:text="@string/something_went_wrong"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_country_not_identified"
-            style="@style/CountryNotIdentifiedTextView"
-            android:text="@string/country_not_identified"/>
-
-    </LinearLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_upload_result"
+        style="@style/UploadedTextView"
+        android:text="@string/upload_successful"
+        tools:visibility="visible"/>
 
 </merge>

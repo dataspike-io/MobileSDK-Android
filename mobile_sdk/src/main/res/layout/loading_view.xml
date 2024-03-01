@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/transparent_ds_purple"
-    android:elevation="@dimen/dimen_16dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:visibility="gone">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-<ProgressBar
-    style="@style/ProgressBar"/>
+    <LinearLayout
+        android:id="@+id/cl_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/lighter_main_color"
+        android:elevation="@dimen/dimen_16dp"
+        android:clickable="true"
+        android:focusable="true">
 
-</LinearLayout>
+        <ProgressBar
+            android:id="@+id/pb_indicator"
+            style="@style/ProgressBar"/>
+
+    </LinearLayout>
+
+</merge>

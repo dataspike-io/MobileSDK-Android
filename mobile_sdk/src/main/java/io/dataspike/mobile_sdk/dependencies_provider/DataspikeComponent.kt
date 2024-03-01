@@ -9,6 +9,7 @@ import io.dataspike.mobile_sdk.view.mappers.UploadImageUiMapper
 
 internal interface DataspikeComponent {
 
+    val shortId: String
     val dataspikeRepository: IDataspikeRepository
     val verificationManager: VerificationManager
     val imageCacheManager: ImageCacheManager

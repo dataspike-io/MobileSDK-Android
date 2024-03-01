@@ -1,6 +1,7 @@
 package io.dataspike.mobile_sdk.view.fragments
 
-import android.widget.LinearLayout
+import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -16,12 +17,28 @@ import io.dataspike.mobile_sdk.view.POI
 import io.dataspike.mobile_sdk.view.POI_BACK
 import io.dataspike.mobile_sdk.view.POI_FRONT
 import io.dataspike.mobile_sdk.view.REQUIREMENTS_TYPE
+import io.dataspike.mobile_sdk.view.UIManager
 import io.dataspike.mobile_sdk.view.VERIFICATION_COMPLETED
 import io.dataspike.mobile_sdk.view.view_models.BaseViewModel
 
 internal abstract class BaseFragment: Fragment() {
 
-    protected fun collectLoading(viewModel: BaseViewModel, loadingView: LinearLayout?) {
+    protected val palette = UIManager.getUiConfig().theme.palette
+    protected val typography = UIManager.getUiConfig().theme.typography
+    protected val options = UIManager.getUiConfig().options
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        with(this.view ?: return) {
+            setBackgroundColor(palette.backgroundColor)
+            setOnTouchListener { v, _ ->
+                v?.performClick()
+                true
+            }
+        }
+    }
+
+    protected fun collectLoading(viewModel: BaseViewModel, loadingView: View?) {
         launchInMain {
             viewModel.loadingFlow.collect { isVisible ->
                 loadingView?.isVisible = isVisible
@@ -63,7 +80,7 @@ internal abstract class BaseFragment: Fragment() {
             .beginTransaction()
             .add(
                 R.id.fcv_container,
-                RequirementsFragment().apply {
+                WebViewFragment().apply {
                     arguments = bundleOf(REQUIREMENTS_TYPE to requirementsType)
                 }
             )

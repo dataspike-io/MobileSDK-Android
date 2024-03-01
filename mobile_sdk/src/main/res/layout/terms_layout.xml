@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/accb_terms_and_conditions"
+                style="@style/AppCompatCheckBox"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_terms_and_conditions"
+                style="@style/AppCompatCheckBoxText"
+                android:text="@string/i_accept_terms_and_conditions"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/accb_personal_data"
+                style="@style/AppCompatCheckBox"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_personal_data"
+                style="@style/AppCompatCheckBoxText"
+                android:text="@string/i_agree_to_processing_my_personal_data"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</merge>

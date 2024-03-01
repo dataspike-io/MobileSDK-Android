@@ -6,12 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    android:background="?android:attr/windowBackground"
     tools:context=".view.fragments.VerificationCompleteFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_verification_expired_title"
-        style="@style/BlackTopInstructionsTextView"
+        style="@style/HeaderTextView"
         android:layout_marginTop="@dimen/dimen_40dp"
         android:gravity="center"
         android:layout_marginHorizontal="@dimen/dimen_20dp"
@@ -42,8 +41,8 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_clock"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <io.dataspike.mobile_sdk.view.custom_views.CompleteTryAgainLayout
-        android:id="@+id/ctal_complete_verification"
+    <io.dataspike.mobile_sdk.view.custom_views.ButtonsLayout
+        android:id="@+id/b_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

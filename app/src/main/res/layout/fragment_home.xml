@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_16sp"
         android:fontFamily="@font/mont_regular"
-        android:textColor="@color/ds_purple"
+        android:textColor="@color/main_color"
         android:checked="true"
         android:layout_marginHorizontal="@dimen/dimen_30dp"
         android:text="@string/debug"
@@ -45,8 +45,8 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/mb_start_verification"
-        style="@style/DisabledPurpleMaterialButton"
+        android:id="@+id/b_start_verification"
+        style="@style/PurpleButton"
         android:text="@string/start_verification"
         android:layout_marginTop="@dimen/dimen_30dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/powered_by_data_spike"
+        android:src="@drawable/powered_by_dataspike"
         android:layout_marginBottom="@dimen/dimen_30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -12,6 +12,7 @@ internal class NewVerificationUiMapper {
                     shortId = newVerificationState.verificationUrlId,
                 )
             }
+
             is NewVerificationState.NewVerificationError -> {
                 NewVerificationUiState.NewVerificationUiError(
                     error = newVerificationState.error,

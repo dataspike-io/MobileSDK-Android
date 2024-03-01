@@ -17,4 +17,6 @@ internal data class VerificationSettingsResponse(
     val poaAllowedDocuments: List<String>?,
     @SerializedName("countries")
     val countries: List<String>?,
+    @SerializedName("ui_settings")
+    val uiSettings: String?,
 )

@@ -11,7 +11,11 @@ internal class SampleAppRepositoryImpl(
 
     override suspend fun createVerification(): NewVerificationState {
         return newVerificationResponseMapper.map(
-            runCatching { sampleAppApiService.createVerification(emptyMap()) }
+            runCatching {
+                sampleAppApiService.createVerification(emptyMap())
+            }.onFailure { throwable ->
+                throwable.printStackTrace()
+            }
         )
     }
 }

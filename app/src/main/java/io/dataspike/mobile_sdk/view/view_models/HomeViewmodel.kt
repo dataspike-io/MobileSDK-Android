@@ -19,7 +19,7 @@ internal class HomeViewModel(
     private val newVerificationUiMapper: NewVerificationUiMapper,
 ): ViewModel() {
 
-    private var dependencies = SampleAppDependencies.DEFAULT
+    private var dependencies = SampleAppDependencies.dependencies
 
     private val _verificationFlow = MutableSharedFlow<NewVerificationUiState>()
     val verificationFlow: SharedFlow<NewVerificationUiState> = _verificationFlow

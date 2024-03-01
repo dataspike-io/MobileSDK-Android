@@ -18,12 +18,12 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_poi"
             style="@style/StepTextTextView"
-            android:text="@string/document"/>
+            android:layout_height="match_parent"
+            android:text="@string/document" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_poi"
-            style="@style/StepImageView"
-            android:src="@drawable/step_indicator"/>
+            style="@style/StepImageView"/>
 
     </LinearLayout>
 
@@ -43,8 +43,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_liveness"
-            style="@style/StepImageView"
-            android:src="@drawable/step_indicator"/>
+            style="@style/StepImageView"/>
 
     </LinearLayout>
 
@@ -64,8 +63,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_poa"
-            style="@style/StepImageView"
-            android:src="@drawable/step_indicator"/>
+            style="@style/StepImageView"/>
 
     </LinearLayout>
 

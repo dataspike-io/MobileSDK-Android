@@ -13,6 +13,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+private const val PROM_BASE_URL = "https://api.dataspike.io/"
+private const val DEBUG_BASE_URL = "https://sandboxapi.dataspike.io/"
+
 internal interface SampleAppModule {
 
     val sampleAppRepository: ISampleAppRepository
@@ -46,10 +49,5 @@ internal interface SampleAppModule {
                 newVerificationResponseMapper = NewVerificationResponseMapper(),
             )
         override val newVerificationUiMapper: NewVerificationUiMapper = NewVerificationUiMapper()
-    }
-
-    companion object {
-        private const val PROM_BASE_URL = "https://api.dataspike.io/"
-        private const val DEBUG_BASE_URL = "https://sandboxapi.dataspike.io/"
     }
 }

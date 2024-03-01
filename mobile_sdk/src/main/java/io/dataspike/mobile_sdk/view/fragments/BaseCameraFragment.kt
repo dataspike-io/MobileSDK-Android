@@ -181,6 +181,7 @@ internal abstract class BaseCameraFragment
         (imageCapture ?: return).takePicture(
             ContextCompat.getMainExecutor(requireContext()),
             object : ImageCapture.OnImageCapturedCallback() {
+
                 @OptIn(androidx.camera.core.ExperimentalGetImage::class)
                 override fun onCaptureSuccess(image: ImageProxy) {
                     super.onCaptureSuccess(image)

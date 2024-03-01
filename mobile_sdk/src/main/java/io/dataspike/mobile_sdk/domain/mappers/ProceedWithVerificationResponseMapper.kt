@@ -1,12 +1,27 @@
 package io.dataspike.mobile_sdk.domain.mappers
 
-import com.google.gson.Gson
 import io.dataspike.mobile_sdk.data.models.responses.ProceedWithVerificationErrorResponse
 import io.dataspike.mobile_sdk.data.models.responses.ProceedWithVerificationResponse
 import io.dataspike.mobile_sdk.domain.models.ProceedWithVerificationState
+import io.dataspike.mobile_sdk.utils.deserializeFromJson
 import retrofit2.HttpException
 
 internal class ProceedWithVerificationResponseMapper {
+
+    private fun HttpException.toProceedWithVerificationErrorMessage()
+            : ProceedWithVerificationState {
+        val errorResponse =
+            response()
+                ?.errorBody()
+                ?.string()
+                .deserializeFromJson(ProceedWithVerificationErrorResponse::class.java)
+
+        return ProceedWithVerificationState.ProceedWithVerificationStateError(
+            error = errorResponse?.error ?: "",
+            pendingDocuments = errorResponse?.pendingDocuments ?: emptyList(),
+            message = errorResponse?.message ?: "",
+        )
+    }
 
     fun map(result: Result<ProceedWithVerificationResponse>): ProceedWithVerificationState {
         result
@@ -29,21 +44,5 @@ internal class ProceedWithVerificationResponseMapper {
             }
 
         throw IllegalStateException("Unknown error occurred")
-    }
-
-    private fun HttpException.toProceedWithVerificationErrorMessage()
-            : ProceedWithVerificationState {
-        val errorResponse = kotlin.runCatching {
-            Gson().fromJson(
-                response()?.errorBody()?.string(),
-                ProceedWithVerificationErrorResponse::class.java
-            )
-        }.onFailure { throwable -> throwable.printStackTrace() }.getOrNull()
-
-        return ProceedWithVerificationState.ProceedWithVerificationStateError(
-            error = errorResponse?.error ?: "",
-            pendingDocuments = errorResponse?.pendingDocuments ?: emptyList(),
-            message = errorResponse?.message ?: "",
-        )
     }
 }

@@ -11,9 +11,11 @@ import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentSelectCountryBinding
 import io.dataspike.mobile_sdk.domain.models.EmptyState
 import io.dataspike.mobile_sdk.utils.launchInMain
+import io.dataspike.mobile_sdk.utils.setup
 import io.dataspike.mobile_sdk.view.POI_FRONT
 import io.dataspike.mobile_sdk.view.adapters.CountriesListAdapter
-import io.dataspike.mobile_sdk.view.custom_views.NEED_TO_SELECT_COUNTRY
+import io.dataspike.mobile_sdk.view.custom_views.TOP_BUTTON
+import io.dataspike.mobile_sdk.view.ui_models.ButtonConfigModel
 import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
 import io.dataspike.mobile_sdk.view.view_models.SelectCountryViewModel
 
@@ -34,24 +36,46 @@ internal class SelectCountryFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        collectLoading(viewModel, viewBinding?.lvLoader)
         collectGetCountriesFlow()
         collectSetCountryFlow()
 
         viewModel.getCountries()
 
         with(viewBinding ?: return) {
-            urlUploadResult.setup(uploadStatus = NEED_TO_SELECT_COUNTRY)
             hlTextHeader.setup(
                 popBackStackAction = ::popBackStack,
                 stringResId = R.string.select_country_title,
+                colorInt = typography.header.textColor,
             )
-            etSearch.doOnTextChanged { text, _, _, _ -> viewModel.updateCountriesList(text) }
             clSteps.setup(step = POI_FRONT)
-            with(mbContinue) {
-                isEnabled = false
-                setOnClickListener { viewModel.setCountry() }
+            with(etSearch) {
+                setup(
+                    backgroundColor = palette.lighterMainColor,
+                    font = typography.bodyTwo.font,
+                    textSize = typography.bodyTwo.textSize,
+                    textColor = typography.bodyTwo.textColor,
+                    hintColor = typography.bodyTwo.textColor,
+                )
+                compoundDrawablesRelative[2]?.setTint(palette.mainColor)
+                doOnTextChanged { text, _, _, _ -> viewModel.updateCountriesList(text) }
             }
+            tvSearch.setup(
+                font = typography.bodyOne.font,
+                textSize = typography.bodyOne.textSize,
+                textColor = typography.bodyOne.textColor,
+            )
+            bButtons.setup(
+                topButtonConfig = ButtonConfigModel(
+                    isVisible = true,
+                    isEnabled = false,
+                    isTransparent = false,
+                    backgroundColors = Pair(palette.mainColor, palette.lightMainColor),
+                    text = getString(R.string._continue),
+                    textColors = Pair(palette.backgroundColor, palette.backgroundColor),
+                    action = { viewModel.setCountry() }
+                )
+            )
         }
     }
 
@@ -87,6 +111,6 @@ internal class SelectCountryFragment: BaseFragment() {
     private fun updateSelectedCountry(countryCode: String?) {
         viewModel.setCountrySelected(countryCode)
 
-        viewBinding?.mbContinue?.isEnabled = true
+        viewBinding?.bButtons?.setButtonEnabled(TOP_BUTTON, true)
     }
 }

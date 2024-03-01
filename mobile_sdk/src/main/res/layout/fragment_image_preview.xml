@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    android:background="?android:attr/windowBackground"
     tools:context=".view.fragments.BaseCameraFragment">
 
     <io.dataspike.mobile_sdk.view.custom_views.HeaderLayout
@@ -38,18 +37,15 @@
 
             <io.dataspike.mobile_sdk.view.custom_views.UploadResultLayout
                 android:id="@+id/url_upload_result"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/dimen_20dp"/>
+                android:layout_marginVertical="@dimen/dimen_20dp"
+                android:layout_marginHorizontal="@dimen/dimen_20dp"
+                android:layout_gravity="center_horizontal"/>
 
             <io.dataspike.mobile_sdk.view.custom_views.RoundedImageView
                 android:id="@+id/riv_taken_image"
                 style="@style/DocumentPreviewImageView"/>
-
-            <io.dataspike.mobile_sdk.view.custom_views.RequirementsLayout
-                android:id="@+id/rl_requirements"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
 
             <View
                 android:layout_width="match_parent"
@@ -59,17 +55,16 @@
 
     </ScrollView>
 
-    <io.dataspike.mobile_sdk.view.custom_views.RequirementsRedoContinueLayout
-        android:id="@+id/rrcl_buttons"
+    <io.dataspike.mobile_sdk.view.custom_views.ButtonsLayout
+        android:id="@+id/b_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <include
-        android:id="@+id/ll_loading_view"
-        layout="@layout/loading_view"
+    <io.dataspike.mobile_sdk.view.custom_views.LoadingView
+        android:id="@+id/lv_loader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"

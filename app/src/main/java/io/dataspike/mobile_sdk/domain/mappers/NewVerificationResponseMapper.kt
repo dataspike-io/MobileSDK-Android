@@ -90,7 +90,9 @@ internal class NewVerificationResponseMapper {
                 response()?.errorBody()?.string(),
                 NewVerificationErrorResponse::class.java
             )
-        }.onFailure { throwable -> throwable.printStackTrace() }.getOrNull()
+        }.onFailure { throwable ->
+            throwable.printStackTrace()
+        }.getOrNull()
 
         return NewVerificationState.NewVerificationError(
             validationError = errorResponse?.validationErrors?.get(0) ?: "Unknown error occurred",

@@ -10,7 +10,7 @@ import java.io.File
 
 internal interface IDataspikeRepository {
 
-    suspend fun getVerification(): VerificationState
+    suspend fun getVerification(darkModeIsEnabled: Boolean): VerificationState
 
     suspend fun uploadImage(documentType: String, image: File): UploadImageState
 

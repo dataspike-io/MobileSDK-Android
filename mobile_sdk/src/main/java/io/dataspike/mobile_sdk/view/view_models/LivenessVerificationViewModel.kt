@@ -26,6 +26,10 @@ internal class LivenessVerificationViewModel(
         TICK_INTERVAL
     ) {
 
+        init {
+            showLoading(false)
+        }
+
         override fun onTick(millisUntilFinished: Long) = Unit
 
         override fun onFinish() {

@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    android:background="?android:attr/windowBackground"
     tools:context=".view.fragments.VerificationCompleteFragment">
 
     <io.dataspike.mobile_sdk.view.custom_views.VerificationResultLayout
@@ -17,8 +16,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <io.dataspike.mobile_sdk.view.custom_views.CompleteTryAgainLayout
-        android:id="@+id/ctal_complete_try_again"
+    <io.dataspike.mobile_sdk.view.custom_views.ButtonsLayout
+        android:id="@+id/b_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/iv_powered_by"

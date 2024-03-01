@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    android:background="?android:attr/windowBackground"
     tools:context=".view.fragments.BaseCameraFragment">
 
     <io.dataspike.mobile_sdk.view.custom_views.HeaderLayout
@@ -24,20 +23,11 @@
         app:layout_constraintTop_toBottomOf="@+id/hl_text_header"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <io.dataspike.mobile_sdk.view.custom_views.UploadResultLayout
-        android:id="@+id/url_upload_result"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_steps"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/et_search"
-        style="@style/SearchBarTextView"
+        style="@style/SearchBarEditText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/url_upload_result"/>
+        app:layout_constraintTop_toBottomOf="@+id/cl_steps"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_search"
@@ -55,17 +45,16 @@
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/country_item" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/mb_continue"
-        style="@style/DisabledPurpleMaterialButton"
-        android:text="@string/_continue"
+    <io.dataspike.mobile_sdk.view.custom_views.ButtonsLayout
+        android:id="@+id/b_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <include
-        android:id="@+id/ll_loading_view"
-        layout="@layout/loading_view"
+    <io.dataspike.mobile_sdk.view.custom_views.LoadingView
+        android:id="@+id/lv_loader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"

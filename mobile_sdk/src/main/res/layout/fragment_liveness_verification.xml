@@ -58,9 +58,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <include
-        android:id="@+id/ll_loading_view"
-        layout="@layout/loading_view"
+    <io.dataspike.mobile_sdk.view.custom_views.LoadingView
+        android:id="@+id/lv_loader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
