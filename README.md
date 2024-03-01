@@ -65,7 +65,7 @@ implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 implementation 'com.github.bumptech.glide:glide:4.16.0'
 ```
-2. Put [dataspike_mobile_sdk.aar](https://github.com/dataspike-io/MobileSDK-Android/releases/download/1.0.0-rc12/dataspike_mobile_sdk.aar) in ```libs``` folder in your project.
+2. Put [dataspike_mobile_sdk.aar](https://github.com/dataspike-io/MobileSDK-Android/releases/download/1.0.0-rc13/dataspike_mobile_sdk.aar) in ```libs``` folder in your project.
 3. In your app module's ```build.gradle``` file, add the dependency for the Dataspike Mobile SDK.
 ```
 implementation files(‘libs/dataspike_mobile_sdk.aar’)
