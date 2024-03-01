@@ -21,6 +21,8 @@ internal class SelectCountryViewModel(
     val setCountryFlow: SharedFlow<EmptyState> = _setCountryFlow
 
     fun getCountries() {
+        showLoading(true)
+
         launchInVMScope {
             countries.addAll(
                 (getCountriesUseCase.invoke() as? CountriesState.CountriesSuccess)
@@ -29,6 +31,8 @@ internal class SelectCountryViewModel(
 
             _getCountriesFlow.emit(countries)
         }
+
+        showLoading(false)
     }
 
     fun setCountry() {

@@ -2,20 +2,24 @@ package io.dataspike.mobile_sdk.view.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.OnboardingPageLayoutBinding
 import io.dataspike.mobile_sdk.dependencies_provider.DataspikeInjector
+import io.dataspike.mobile_sdk.utils.setup
 import io.dataspike.mobile_sdk.view.LIVENESS
 import io.dataspike.mobile_sdk.view.POA
 import io.dataspike.mobile_sdk.view.POI_FRONT
+import io.dataspike.mobile_sdk.view.UIManager
 import io.dataspike.mobile_sdk.view.ui_models.OnboardingUiModel
 
 internal class OnboardingViewPager2Adapter:
     RecyclerView.Adapter<OnboardingViewPager2Adapter.ViewHolder>() {
 
     private val items: MutableMap<Int, OnboardingUiModel> = mutableMapOf()
+    private val imageLinks = UIManager.getUiConfig().links.onboarding
+    private val bodyTwoTypography = UIManager.getUiConfig().theme.typography.bodyTwo
 
     init {
         var position = 0
@@ -23,7 +27,7 @@ internal class OnboardingViewPager2Adapter:
         with(DataspikeInjector.component.verificationManager.checks) {
             if (poiIsRequired) {
                 items[position++] = OnboardingUiModel(
-                    drawableResId = R.drawable.onboarding_poi,
+                    imageLink = imageLinks.poi,
                     stringResId = R.string.onboarding_step_1,
                     pageType = POI_FRONT,
                 )
@@ -31,7 +35,7 @@ internal class OnboardingViewPager2Adapter:
 
             if (livenessIsRequired) {
                 items[position++] = OnboardingUiModel(
-                    drawableResId = R.drawable.onboarding_liveness,
+                    imageLink = imageLinks.liveness,
                     stringResId = R.string.onboarding_step_2,
                     pageType = LIVENESS
                 )
@@ -39,7 +43,7 @@ internal class OnboardingViewPager2Adapter:
 
             if (poaIsRequired) {
                 items[position] = OnboardingUiModel(
-                    drawableResId = R.drawable.onboarding_poa,
+                    imageLink = imageLinks.poa,
                     stringResId = R.string.onboarding_step_3,
                     pageType = POA
                 )
@@ -59,14 +63,21 @@ internal class OnboardingViewPager2Adapter:
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
-            val drawableRes = items[position]?.drawableResId ?: -1
+            val imageLink = items[position]?.imageLink ?: -1
             val textRes = items[position]?.stringResId ?: -1
 
-            ivOnboardingImage.setImageDrawable(
-                ContextCompat.getDrawable(holder.itemView.context, drawableRes)
-            )
-
-            tvOnboardingText.text = itemView.resources.getString(textRes)
+            Glide
+                .with(ivOnboardingImage)
+                .load(imageLink)
+                .into(ivOnboardingImage)
+            with(tvOnboardingText) {
+                setup(
+                    font = bodyTwoTypography.font,
+                    textSize = bodyTwoTypography.textSize,
+                    textColor = bodyTwoTypography.textColor,
+                )
+                text = itemView.resources.getString(textRes, position + 1)
+            }
         }
     }
 

@@ -12,9 +12,9 @@ internal class DataspikeActivityViewModel(
     private val _verificationFlow = MutableSharedFlow<VerificationState>(replay = 1)
     val verificationFlow: SharedFlow<VerificationState> = _verificationFlow
 
-    fun getVerification() {
+    fun getVerification(darkModeIsEnabled: Boolean) {
         launchInVMScope {
-            _verificationFlow.emit(getVerificationUseCase())
+            _verificationFlow.emit(getVerificationUseCase.invoke(darkModeIsEnabled))
         }
     }
 }

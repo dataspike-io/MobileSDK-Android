@@ -49,7 +49,6 @@ internal class PoaVerificationFragment : BaseCameraFragment() {
             hlHeader.setup(
                 popBackStackAction = ::popBackStack,
                 stringResId = R.string.place_the_document_in_frame_and_take_a_photo,
-                colorResId = R.color.white,
             )
         }
     }

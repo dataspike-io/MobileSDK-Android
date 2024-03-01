@@ -28,9 +28,14 @@ internal class DataspikeRepositoryImpl(
     private val proceedWithVerificationResponseMapper: ProceedWithVerificationResponseMapper,
 ) : IDataspikeRepository {
 
-    override suspend fun getVerification(): VerificationState {
+    override suspend fun getVerification(darkModeIsEnabled: Boolean): VerificationState {
         return verificationResponseMapper.map(
-            runCatching { dataspikeApiService.getVerification(shortId) }
+            runCatching {
+                dataspikeApiService.getVerification(shortId)
+            }.onFailure { throwable ->
+                throwable.printStackTrace()
+            },
+            darkModeIsEnabled,
         )
     }
 
@@ -45,13 +50,19 @@ internal class DataspikeRepositoryImpl(
         return uploadImageResponseMapper.map(
             runCatching {
                 dataspikeApiService.uploadImage(shortId, documentTypeRequestBody, multiPart)
+            }.onFailure { throwable ->
+                throwable.printStackTrace()
             }
         )
     }
 
     override suspend fun getCountries(): CountriesState {
         return countriesResponseMapper.map(
-            runCatching { dataspikeApiService.getCountries() }
+            runCatching {
+                dataspikeApiService.getCountries()
+            }.onFailure { throwable ->
+                throwable.printStackTrace()
+            }
         )
     }
 
@@ -59,13 +70,21 @@ internal class DataspikeRepositoryImpl(
         body: CountryRequestBody,
     ): EmptyState {
         return emptyResponseMapper.map(
-            runCatching { dataspikeApiService.setCountry(shortId, body) }
+            runCatching {
+                dataspikeApiService.setCountry(shortId, body)
+            }.onFailure { throwable ->
+                throwable.printStackTrace()
+            }
         )
     }
 
     override suspend fun proceedWithVerification(): ProceedWithVerificationState {
         return proceedWithVerificationResponseMapper.map(
-            runCatching { dataspikeApiService.proceedWithVerification(shortId) }
+            runCatching {
+                dataspikeApiService.proceedWithVerification(shortId)
+            }.onFailure { throwable ->
+                throwable.printStackTrace()
+            }
         )
     }
 }

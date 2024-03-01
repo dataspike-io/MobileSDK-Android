@@ -1,21 +1,47 @@
 package io.dataspike.mobile_sdk.utils
 
+import android.content.Context
+import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.RectF
+import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
 import android.graphics.pdf.PdfRenderer
+import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.ColorUtils
 import androidx.core.util.TypedValueCompat.dpToPx
+import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.button.MaterialButton
+import com.google.gson.Gson
+import io.dataspike.mobile_sdk.R
+import io.dataspike.mobile_sdk.view.MONT_BOLD
+import io.dataspike.mobile_sdk.view.MONT_REGULAR
+import io.dataspike.mobile_sdk.view.MONT_SEMI_BOLD
+import io.dataspike.mobile_sdk.view.ROBOTO_BOLD
+import io.dataspike.mobile_sdk.view.ROBOTO_REGULAR
+import io.dataspike.mobile_sdk.view.ROBOTO_SEMI_BOLD
+import io.dataspike.mobile_sdk.view.UIManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,11 +69,22 @@ internal fun ByteBuffer.toByteArray(): ByteArray {
     return data
 }
 
-internal fun Fragment.launchInMain(block: suspend CoroutineScope.() -> Unit) {
-    lifecycleScope.launch(Dispatchers.Main, block = block)
+internal fun AppCompatActivity.darkModeIsEnabled(): Boolean {
+    val darkModeIsEnabled =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        resources.configuration.isNightModeActive
+    } else {
+        resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK ==
+                Configuration.UI_MODE_NIGHT_YES
+    } && !UIManager.getUiConfig().options.disableDarkMode
+
+    return darkModeIsEnabled
 }
 
 internal fun AppCompatActivity.launchInMain(block: suspend CoroutineScope.() -> Unit) {
+    lifecycleScope.launch(Dispatchers.Main, block = block)
+}
+
+internal fun Fragment.launchInMain(block: suspend CoroutineScope.() -> Unit) {
     lifecycleScope.launch(Dispatchers.Main, block = block)
 }
 
@@ -89,8 +126,8 @@ internal fun Bitmap.toFile(): File? {
         fileOutputStream.close()
 
         file
-    }.onFailure { e ->
-        e.printStackTrace()
+    }.onFailure { throwable ->
+        throwable.printStackTrace()
     }.getOrNull()
 }
 
@@ -154,9 +191,200 @@ internal fun InputStream.toBitmap(
         } else {
             BitmapFactory.decodeStream(this)
         }
-    }.onFailure { throwable -> throwable.printStackTrace() }.getOrNull()
+    }.onFailure { throwable ->
+        throwable.printStackTrace()
+    }.getOrNull()
 }
 
 internal fun dpToPx(dp: Float): Float {
     return dpToPx(dp, displayMetrics)
+}
+
+internal fun AppCompatTextView.setup(
+    font: String,
+    textSize: Float,
+    textColor: Int,
+) {
+    typeface = getFont(context, font)
+    setTextSize(textSize)
+    setTextColor(textColor)
+}
+
+internal fun AppCompatButton.setup(
+    font: String,
+    textSize: Float,
+    textColor: Int,
+    backgroundColor: Int,
+) {
+    typeface = getFont(context, font)
+    setTextSize(textSize)
+    setTextColor(textColor)
+    background.setTint(backgroundColor)
+}
+
+internal fun MaterialButton.setup(
+    isVisible: Boolean,
+    isEnabled: Boolean,
+    isTransparent: Boolean,
+    font: String,
+    textSize: Float,
+    textColors: Pair<Int, Int>,
+    text: String,
+    backgroundColors: Pair<Int, Int>,
+    margin: Float,
+    cornerRadius: Float,
+    iconRes: Int? = null,
+    action: () -> Unit,
+) {
+    this.isVisible = isVisible
+
+    if (isVisible) {
+        val backgroundDrawable = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+
+            if (isTransparent) {
+                setStroke(
+                    5,
+                    ColorStateList(
+                        arrayOf(intArrayOf(android.R.attr.state_enabled), intArrayOf()),
+                        intArrayOf(textColors.first, textColors.second)
+                    )
+                )
+            }
+
+            color = ColorStateList(
+                arrayOf(intArrayOf(android.R.attr.state_enabled), intArrayOf()),
+                intArrayOf(backgroundColors.first, backgroundColors.second)
+            )
+            this.cornerRadius = dpToPx(cornerRadius)
+        }
+        val foregroundDrawable = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+
+            color = ColorStateList(
+                arrayOf(intArrayOf(android.R.attr.state_pressed), intArrayOf()),
+                intArrayOf(
+                    ContextCompat.getColor(context, R.color.transparent_black_color),
+                    ContextCompat.getColor(context, R.color.transparent)
+                )
+            )
+            this.cornerRadius = dpToPx(cornerRadius)
+        }
+
+        backgroundTintList = null
+        background = backgroundDrawable
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) foreground = foregroundDrawable
+        iconRes?.let {
+            iconTint = ColorStateList(
+                arrayOf(intArrayOf(android.R.attr.state_selected), intArrayOf()),
+                intArrayOf(backgroundColors.first, backgroundColors.second)
+            )
+        }
+        (layoutParams as? ConstraintLayout.LayoutParams)?.leftMargin = dpToPx(margin).toInt()
+        (layoutParams as? ConstraintLayout.LayoutParams)?.rightMargin = dpToPx(margin).toInt()
+        typeface = getFont(context, font)
+        setTextSize(textSize)
+        setTextColor(
+            ColorStateList(
+                arrayOf(intArrayOf(android.R.attr.state_enabled), intArrayOf()),
+                intArrayOf(textColors.first, textColors.second)
+            )
+        )
+        this.text = text
+        this.isEnabled = isEnabled
+        iconRes?.let {
+            icon = ResourcesCompat.getDrawable(resources, iconRes, null)
+            iconTint = if (isTransparent) {
+               ColorStateList(
+                    arrayOf(intArrayOf(android.R.attr.state_selected), intArrayOf()),
+                    intArrayOf(backgroundColors.first, backgroundColors.second)
+                )
+            } else {
+                ColorStateList(
+                    arrayOf(intArrayOf(android.R.attr.state_selected), intArrayOf()),
+                    intArrayOf(textColors.first, textColors.second)
+                )
+            }
+        }
+        setOnClickListener { action.invoke() }
+    }
+}
+
+internal fun AppCompatEditText.setup(
+    backgroundColor: Int,
+    font: String,
+    textSize: Float,
+    textColor: Int,
+    hintColor: Int,
+) {
+    val backgroundDrawable = GradientDrawable().apply {
+        shape = GradientDrawable.RECTANGLE
+        color = ColorStateList.valueOf(backgroundColor)
+        cornerRadius = dpToPx(8F)
+    }
+    background = backgroundDrawable
+    updatePadding(
+        dpToPx(8F).toInt(),
+        dpToPx(8F).toInt(),
+        dpToPx(8F).toInt(),
+        dpToPx(8F).toInt()
+    )
+    typeface = getFont(context, font)
+    this.textSize = textSize
+    setTextColor(textColor)
+    setHintTextColor(hintColor)
+}
+
+internal fun <T> String?.deserializeFromJson(type: Class<T>): T? {
+    if (isNullOrEmpty()) return null
+
+    return runCatching {
+        Gson().fromJson(this, type)
+    }.onFailure { throwable ->
+        throwable.printStackTrace()
+    }.getOrNull()
+}
+
+internal fun getFont(context: Context, fontString: String): Typeface? {
+    val fontRes = when (fontString) {
+        MONT_REGULAR -> R.font.mont_regular
+
+        MONT_SEMI_BOLD -> R.font.mont_semi_bold
+
+        MONT_BOLD -> R.font.mont_bold
+
+        ROBOTO_REGULAR -> R.font.roboto_regular
+
+        ROBOTO_SEMI_BOLD -> R.font.roboto_semi_bold
+
+        ROBOTO_BOLD -> R.font.roboto_bold
+
+        else -> R.font.mont_regular
+    }
+
+    return runCatching {
+        ResourcesCompat.getFont(context, fontRes)
+    }.onFailure { throwable ->
+        throwable.printStackTrace()
+    }.getOrNull()
+}
+
+internal fun lightenColor(color: Int?, fraction: Double): Int? {
+    color ?: return null
+
+    return runCatching {
+        ColorUtils.setAlphaComponent(color, (255 * fraction).toInt())
+    }.onFailure { throwable ->
+        throwable.printStackTrace()
+    }.getOrNull() ?: color
+}
+
+internal fun parseColorString(colorString: String?): Int? {
+    colorString ?: return null
+
+    return runCatching {
+        Color.parseColor(colorString)
+    }.onFailure { throwable ->
+        throwable.printStackTrace()
+    }.getOrNull()
 }

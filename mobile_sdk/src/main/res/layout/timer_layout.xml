@@ -18,14 +18,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:visibility="visible"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_timer_expired"
-            style="@style/ExpiredTimerTextView"
-            android:text="@string/time_left"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </merge>

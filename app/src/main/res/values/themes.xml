@@ -1,7 +1,7 @@
 <resources>
     <style name="Theme.SampleApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/ds_purple</item>
-        <item name="colorPrimaryDark">@color/ds_purple</item>
-        <item name="colorAccent">@color/ds_purple</item>
+        <item name="colorPrimary">@color/main_color</item>
+        <item name="colorPrimaryDark">@color/main_color</item>
+        <item name="colorAccent">@color/main_color</item>
     </style>
 </resources>

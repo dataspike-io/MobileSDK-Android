@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    android:background="?android:attr/windowBackground"
     tools:context=".view.fragments.BaseCameraFragment">
 
     <io.dataspike.mobile_sdk.view.custom_views.HeaderLayout
@@ -31,8 +30,8 @@
         app:layout_constraintTop_toBottomOf="@+id/cl_steps"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <io.dataspike.mobile_sdk.view.custom_views.RequirementsTakeAPhotoUploadLayout
-        android:id="@+id/rtapul_buttons"
+    <io.dataspike.mobile_sdk.view.custom_views.ButtonsLayout
+        android:id="@+id/b_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

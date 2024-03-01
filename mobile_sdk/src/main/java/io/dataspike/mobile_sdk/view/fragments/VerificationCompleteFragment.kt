@@ -11,6 +11,7 @@ import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.FragmentVerificationCompleteBinding
 import io.dataspike.mobile_sdk.domain.setVerificationResult
 import io.dataspike.mobile_sdk.utils.launchInMain
+import io.dataspike.mobile_sdk.view.ui_models.ButtonConfigModel
 import io.dataspike.mobile_sdk.view.ui_models.ProceedWithVerificationUiState
 import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
 import io.dataspike.mobile_sdk.view.view_models.VerificationCompleteViewModel
@@ -39,12 +40,20 @@ internal class VerificationCompleteFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         collectProceedWithVerificationFlow()
         viewModel.proceedWithVerification()
-        viewBinding?.ctalCompleteTryAgain?.setup(
-            completeAction = ::passVerificationStatusAndFinish,
-            tryAgainAction = ::retryVerification,
+        viewBinding?.bButtons?.setup(
+            topButtonConfig = ButtonConfigModel(
+                isVisible = true,
+                isEnabled = true,
+                isTransparent = false,
+                backgroundColors = Pair(palette.mainColor, palette.lightMainColor),
+                text = getString(R.string.complete),
+                textColors = Pair(palette.backgroundColor, palette.backgroundColor),
+                action = ::passVerificationStatusAndFinish,
+            ),
         )
 
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
+
             override fun handleOnBackPressed() {
                 passVerificationStatusAndFinish()
             }

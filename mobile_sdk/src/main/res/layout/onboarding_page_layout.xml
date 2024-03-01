@@ -5,16 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/dimen_60dp"
-    android:background="?android:attr/windowBackground">
+    android:paddingTop="@dimen/dimen_60dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_onboarding_image"
         style="@style/OnboardingImageView"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/onboarding_poi"/>
+        app:layout_constraintBottom_toTopOf="@+id/tv_onboarding_text"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_onboarding_text"

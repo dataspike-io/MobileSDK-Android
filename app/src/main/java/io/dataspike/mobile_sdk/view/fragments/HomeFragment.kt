@@ -42,7 +42,7 @@ internal class HomeFragment : Fragment(), VerificationCompletedCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        SampleAppInjector.setComponent(SampleAppDependencies.DEFAULT)
+        SampleAppInjector.setComponent(SampleAppDependencies.dependencies)
         collectVerificationFlow()
         setUiState()
     }
@@ -65,24 +65,24 @@ internal class HomeFragment : Fragment(), VerificationCompletedCallback {
             tvShortId.doOnTextChanged { text, _, _, _ ->
                 viewModel.onShortIdChanged(text?.toString().orEmpty())
             }
-            mbStartVerification.setOnClickListener {
+            bStartVerification.setOnClickListener {
                 viewModel.createVerification()
             }
 
             with(tvApiToken) {
                 doOnTextChanged { text, _, _, _ ->
-                    mbStartVerification.isEnabled =
+                    bStartVerification.isEnabled =
                         text?.isNotEmpty() == true
-                                || SampleAppDependencies.DEFAULT.dsApiToken.isNotEmpty()
+                                || SampleAppDependencies.dependencies.dsApiToken.isNotEmpty()
 
                     viewModel.onApiTokenChanged(
-                        text?.toString() ?: SampleAppDependencies.DEFAULT.dsApiToken
+                        text?.toString() ?: SampleAppDependencies.dependencies.dsApiToken
                     )
                 }
 
-                if (SampleAppDependencies.DEFAULT.dsApiToken.isEmpty()) {
+                if (SampleAppDependencies.dependencies.dsApiToken.isEmpty()) {
                     tvApiToken.hint = getString(R.string.enter_api_token_required)
-                    mbStartVerification.isEnabled = false
+                    bStartVerification.isEnabled = false
                 }
             }
         }
@@ -101,7 +101,7 @@ internal class HomeFragment : Fragment(), VerificationCompletedCallback {
                             startDataspikeFlow(
                                 isDebug = cbIsDebug.isChecked,
                                 apiToken = tvApiToken.text.toString().ifEmpty { null }
-                                    ?: SampleAppDependencies.DEFAULT.dsApiToken,
+                                    ?: SampleAppDependencies.dependencies.dsApiToken,
                                 shortId = newVerificationUiState.shortId,
                             )
                         }

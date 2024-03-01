@@ -1,6 +1,7 @@
 package io.dataspike.mobile_sdk.view.fragments
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.RectF
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
 import androidx.core.graphics.toRectF
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.Face
@@ -22,6 +24,7 @@ import io.dataspike.mobile_sdk.dependencies_provider.DataspikeInjector
 import io.dataspike.mobile_sdk.domain.models.UploadImageState
 import io.dataspike.mobile_sdk.utils.flipHorizontally
 import io.dataspike.mobile_sdk.utils.launchInMain
+import io.dataspike.mobile_sdk.utils.setup
 import io.dataspike.mobile_sdk.utils.toByteArray
 import io.dataspike.mobile_sdk.view.LIVENESS
 import io.dataspike.mobile_sdk.view.view_models.DataspikeViewModelFactory
@@ -60,10 +63,19 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
             setPreviewView(pvViewFinder)
             collectUploadImageFlow()
             collectTakePhotoFlow()
-            collectLoading(viewModel, llLoadingView.root)
+            collectLoading(viewModel, viewBinding?.lvLoader)
             setCameraSelector(CameraSelector.DEFAULT_FRONT_CAMERA)
             initActivityResultLauncher()
             setScreenUiState()
+            lvLoader.setup(
+                backgroundColor = palette.lighterMainColor,
+                indicatorColor = palette.mainColor,
+            )
+            tvLivenessInstructionsText.setup(
+                font = typography.bodyTwo.font,
+                textSize = typography.bodyTwo.textSize,
+                textColor = Color.WHITE,
+            )
         }
     }
 
@@ -130,7 +142,7 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
         livenessStatusStringId: Int?,
     ) {
         var stringId: Int = livenessStatusStringId ?: R.string.liveness_instructions_bad_title
-        var textColorId: Int = R.color.light_red
+        var textColorInt: Int = palette.errorColor
         val faceIsInFrame = (
                 boundingBox?.let {
                     viewBinding?.ovLiveness?.livenessFrameRectF?.contains(it)
@@ -138,9 +150,11 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
                 )
                 && livenessStatusStringId == R.string.liveness_instructions_bad_title
 
+        viewBinding?.tvLivenessInstructionsText?.isVisible = !faceIsInFrame
+
         if (faceIsInFrame) {
             stringId = R.string.liveness_instructions_title
-            textColorId = R.color.white
+            textColorInt = Color.WHITE
 
             if (needToStartPhotoTimer) {
                 viewModel.startCameraTimer()
@@ -155,7 +169,7 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
             hlHeader.setup(
                 popBackStackAction = ::popBackStack,
                 stringResId = stringId,
-                colorResId = textColorId,
+                colorInt = textColorInt,
             )
             ovLiveness.setFaceIsInFrame(faceIsInFrame)
         }
@@ -173,7 +187,7 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
             hlHeader.setup(
                 popBackStackAction = ::popBackStack,
                 stringResId = R.string.liveness_instructions_bad_title,
-                colorResId = R.color.light_red,
+                colorInt = palette.errorColor,
             )
         }
     }

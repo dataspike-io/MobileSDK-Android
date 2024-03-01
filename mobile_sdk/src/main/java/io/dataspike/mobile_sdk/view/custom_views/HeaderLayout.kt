@@ -8,13 +8,15 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.annotation.ColorRes
+import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.text.toSpannable
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.databinding.HeaderLayoutBinding
+import io.dataspike.mobile_sdk.utils.setup
+import io.dataspike.mobile_sdk.view.UIManager
 
 internal class HeaderLayout @JvmOverloads constructor(
     context: Context,
@@ -25,21 +27,26 @@ internal class HeaderLayout @JvmOverloads constructor(
         LayoutInflater.from(context),
         this
     )
+    private val palette = UIManager.getUiConfig().theme.palette
+    private val typography = UIManager.getUiConfig().theme.typography
 
     fun setup(
         popBackStackAction: () -> Unit,
         @StringRes stringResId: Int,
-        @ColorRes colorResId: Int? = null,
+        @ColorInt colorInt: Int? = ContextCompat.getColor(context, R.color.white_color),
     ) {
         with(viewBinding) {
             with(tvTopInstructions) {
-                colorResId?.let { setTextColor(ContextCompat.getColor(context, it)) }
+                setup(
+                    font = typography.header.font,
+                    textSize = typography.header.textSize,
+                    textColor = colorInt ?: typography.header.textColor,
+                )
                 text = getHeaderText(stringResId)
             }
 
             with(ivBackButton) {
-                colorResId?.let { setColorFilter(ContextCompat.getColor(context, it)) }
-
+                colorInt?.let { drawable.setTint(it) }
                 setOnClickListener {
                     popBackStackAction.invoke()
                 }
@@ -55,7 +62,7 @@ internal class HeaderLayout @JvmOverloads constructor(
             val headerText = context.getString(stringResId)
             val spannable = SpannableString(headerText)
             val underlineSpan = UnderlineSpan()
-            val colorSpan = ForegroundColorSpan(ContextCompat.getColor(context, R.color.ds_purple))
+            val colorSpan = ForegroundColorSpan(palette.mainColor)
             val wordToSpan = if (headerText.contains("front")) {
                 "front"
             } else {
@@ -63,18 +70,18 @@ internal class HeaderLayout @JvmOverloads constructor(
             }
 
             val spanStartPosition = headerText.indexOf(wordToSpan)
-            val endSpanPosition = spanStartPosition + wordToSpan.length
+            val spanEndPosition = spanStartPosition + wordToSpan.length
 
             spannable.setSpan(
                 colorSpan,
                 spanStartPosition,
-                endSpanPosition,
+                spanEndPosition,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
             spannable.setSpan(
                 underlineSpan,
                 spanStartPosition,
-                endSpanPosition,
+                spanEndPosition,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
 

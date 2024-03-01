@@ -58,7 +58,6 @@ internal class PoiVerificationFragment : BaseCameraFragment() {
             hlHeader.setup(
                 popBackStackAction = ::popBackStack,
                 stringResId = stringResId,
-                colorResId = R.color.white,
             )
         }
     }

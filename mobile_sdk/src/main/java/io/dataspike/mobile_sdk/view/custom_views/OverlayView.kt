@@ -2,6 +2,7 @@ package io.dataspike.mobile_sdk.view.custom_views
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
@@ -12,6 +13,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.utils.dpToPx
+import io.dataspike.mobile_sdk.view.UIManager
 
 private const val POI_OVERLAY = "0"
 private const val LIVENESS_OVERLAY = "1"
@@ -29,6 +31,7 @@ internal class OverlayView @JvmOverloads constructor(
 
     private var faceIsInFrame = false
     private var documentIsInFrame = false
+    private val palette = UIManager.getUiConfig().theme.palette
     private val overlayType = context.obtainStyledAttributes(
         attrs,
         R.styleable.OverlayView
@@ -38,13 +41,13 @@ internal class OverlayView @JvmOverloads constructor(
         xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
     }
     private val backgroundPaint = Paint().apply {
-        color = ContextCompat.getColor(context, R.color.overlay_black)
+        color = ContextCompat.getColor(context, R.color.transparent_black_color)
     }
     private val framePaint get() = Paint().apply {
         color = if (documentIsInFrame) {
-            ContextCompat.getColor(context, R.color.light_green)
+            palette.successColor
         } else {
-            ContextCompat.getColor(context, R.color.white)
+            Color.WHITE
         }
         strokeWidth = dpToPx(2f)
         style = Paint.Style.STROKE
@@ -63,17 +66,11 @@ internal class OverlayView @JvmOverloads constructor(
             drawRect(0f, 0f, width.toFloat(), height.toFloat(), backgroundPaint)
 
             when (overlayType) {
-                POI_OVERLAY -> {
-                    drawOverlayCutoutForPoi(this)
-                }
+                POI_OVERLAY -> drawOverlayCutoutForPoi(this)
 
-                LIVENESS_OVERLAY -> {
-                    drawOverlayCutoutForLiveness(this)
-                }
+                LIVENESS_OVERLAY -> drawOverlayCutoutForLiveness(this)
 
-                POA_OVERLAY -> {
-                    drawOverlayCutoutForPoa(this)
-                }
+                POA_OVERLAY -> drawOverlayCutoutForPoa(this)
             }
         }
     }
@@ -122,9 +119,9 @@ internal class OverlayView @JvmOverloads constructor(
         val bottom = top + cutoutHeight
         val livenessFrame = Paint().apply {
             color = if (faceIsInFrame) {
-                ContextCompat.getColor(context, R.color.light_green)
+                palette.successColor
             } else {
-                ContextCompat.getColor(context, R.color.light_red)
+                palette.errorColor
             }
             style = Paint.Style.STROKE
             strokeWidth = dpToPx(2f)

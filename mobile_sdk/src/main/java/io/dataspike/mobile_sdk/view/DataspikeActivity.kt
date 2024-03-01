@@ -9,6 +9,7 @@ import io.dataspike.mobile_sdk.R
 import io.dataspike.mobile_sdk.data.remote.AppInfo
 import io.dataspike.mobile_sdk.databinding.ActivityDataspikeBinding
 import io.dataspike.mobile_sdk.domain.models.VerificationState
+import io.dataspike.mobile_sdk.utils.darkModeIsEnabled
 import io.dataspike.mobile_sdk.utils.launchInMain
 import io.dataspike.mobile_sdk.view.fragments.OnboardingFragment
 import io.dataspike.mobile_sdk.view.view_models.DataspikeActivityViewModel
@@ -38,7 +39,7 @@ internal class DataspikeActivity : AppCompatActivity() {
             getString(applicationInfo.labelRes),
             packageManager.getPackageInfo(packageName, 0).versionName,
         )
-        viewModel.getVerification()
+        viewModel.getVerification(darkModeIsEnabled())
     }
 
     override fun onResume() {
