@@ -33,6 +33,7 @@ import io.dataspike.mobile_sdk.view.view_models.LivenessVerificationViewModel
 private const val MIN_HEAD_ROTATION = -10
 private const val MAX_HEAD_ROTATION = 10
 private const val MIN_LUMINOSITY = 80
+private const val FACE_IN_FRAME_TOLERANCE = 1.2f
 
 internal class LivenessVerificationFragment : BaseCameraFragment() {
 
@@ -143,12 +144,14 @@ internal class LivenessVerificationFragment : BaseCameraFragment() {
     ) {
         var stringId: Int = livenessStatusStringId ?: R.string.liveness_instructions_bad_title
         var textColorInt: Int = palette.errorColor
-        val faceIsInFrame = (
-                boundingBox?.let {
-                    viewBinding?.ovLiveness?.livenessFrameRectF?.contains(it)
-                } == true
-                )
-                && livenessStatusStringId == R.string.liveness_instructions_bad_title
+        val expandedCutout = viewBinding?.ovLiveness?.livenessFrameRectF ?: return
+        val expansionWidth = expandedCutout.width() * FACE_IN_FRAME_TOLERANCE
+        val expansionHeight = expandedCutout.height() * FACE_IN_FRAME_TOLERANCE
+
+        expandedCutout.inset(-expansionWidth, -expansionHeight)
+
+        val faceIsInFrame = boundingBox?.let { expandedCutout.contains(it) } == true &&
+                livenessStatusStringId == R.string.liveness_instructions_bad_title
 
         viewBinding?.tvLivenessInstructionsText?.isVisible = !faceIsInFrame
 
